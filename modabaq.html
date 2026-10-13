@@ -1,0 +1,5957 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0B3D2E">
+<title>إدارة المسابقات | MEEZAN</title>
+<link rel="icon" type="image/png" href="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --primary: #0B3D2E;
+    --primary-light: #145A43;
+    --primary-lighter: #1E7A5A;
+    --accent: #C9A961;
+    --accent-light: #E0C888;
+    --bg-page: #F5F1E8;
+    --bg-card: #FFFFFF;
+    --bg-input: #F8FBF9;
+    --text-main: #0B3D2E;
+    --text-sub: #5A6B66;
+    --border: #E0E5E1;
+    --shadow: rgba(11, 61, 46, 0.15);
+    --error: #C0392B;
+    --success: #1E7A5A;
+    --warning: #E67E22;
+    --info: #2980B9;
+  }
+
+  [data-theme="dark"] {
+    --primary: #C9A961;
+    --primary-light: #E0C888;
+    --primary-lighter: #F0DBA8;
+    --accent: #0B3D2E;
+    --accent-light: #145A43;
+    --bg-page: #0A1612;
+    --bg-card: #11201B;
+    --bg-input: #1A2C25;
+    --text-main: #F5F1E8;
+    --text-sub: #9BAEA6;
+    --border: #1E3A31;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --error: #E74C3C;
+    --success: #2ECC71;
+    --warning: #F39C12;
+    --info: #3498DB;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg-page);
+    min-height: 100vh;
+    color: var(--text-main);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    overflow-x: hidden;
+  }
+
+  body.ready { opacity: 1; }
+
+  /* ============ Topbar ============ */
+  .topbar {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 20px var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .back-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .back-btn { color: var(--accent); }
+
+  .back-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    transform: translateX(-3px);
+  }
+
+  [data-theme="dark"] .back-btn:hover { color: var(--bg-page); }
+
+  .topbar-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .topbar-title i.header-icon { color: var(--accent); font-size: 22px; }
+
+  .topbar-title-text h1 {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  [data-theme="dark"] .topbar-title-text h1 { color: var(--accent); }
+
+  .topbar-title-text small {
+    display: block;
+    font-size: 10.5px;
+    color: var(--text-sub);
+    font-weight: 600;
+    letter-spacing: 1.5px;
+  }
+
+  .topbar-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+    align-items: center;
+  }
+
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .icon-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  [data-theme="dark"] .icon-btn:hover { color: var(--bg-page); }
+
+  .icon-btn.logout {
+    color: var(--error);
+    border-color: rgba(192, 57, 43, 0.3);
+  }
+
+  .icon-btn.logout:hover {
+    background: var(--error);
+    color: #fff;
+    border-color: var(--error);
+  }
+
+  .menu-btn {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 18px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .menu-btn:hover, .menu-btn:active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+
+  /* ============ Container ============ */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 20px 100px;
+  }
+
+  /* ============ Stats ============ */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 4px 14px var(--shadow);
+    transition: all 0.25s ease;
+  }
+
+  .stat-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px var(--shadow);
+  }
+
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .stat-icon { color: var(--bg-page); }
+
+  .stat-icon.green { background: linear-gradient(135deg, #1E7A5A, #2ECC71); }
+  .stat-icon.orange { background: linear-gradient(135deg, #E67E22, #F39C12); }
+  .stat-icon.gold { background: linear-gradient(135deg, #C9A961, #E0C888); }
+  .stat-icon.purple { background: linear-gradient(135deg, #8E44AD, #9B59B6); }
+
+  .stat-info { min-width: 0; }
+
+  .stat-number {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--text-main);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-sub);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* ============ Toolbar ============ */
+  .toolbar {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 14px var(--shadow);
+    border: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .search-wrapper {
+    flex: 1;
+    min-width: 220px;
+    position: relative;
+  }
+
+  .search-wrapper i {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-sub);
+    font-size: 15px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 13px 44px 13px 44px;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    outline: none;
+    font-weight: 500;
+    transition: all 0.25s ease;
+  }
+
+  .search-input:focus {
+    border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1);
+  }
+
+  .search-clear {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    border: none;
+    background: rgba(192, 57, 43, 0.1);
+    color: var(--error);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+
+  .search-clear:hover { background: var(--error); color: #fff; }
+  .search-clear.show { display: flex; }
+
+  /* ============ Filter Row ============ */
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-btn {
+    padding: 9px 16px;
+    border-radius: 11px;
+    border: 2px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-sub);
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--accent);
+    color: var(--text-main);
+    transform: translateY(-2px);
+  }
+
+  .filter-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    border-color: var(--primary);
+  }
+
+  [data-theme="dark"] .filter-btn.active { color: var(--bg-page); }
+
+  .filter-btn .count {
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 10.5px;
+    font-weight: 800;
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .filter-btn:not(.active) .count {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+  }
+
+  /* ============ Buttons ============ */
+  .btn {
+    padding: 13px 22px;
+    border-radius: 12px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    box-shadow: 0 6px 18px var(--shadow);
+  }
+
+  [data-theme="dark"] .btn-primary { color: var(--bg-page); }
+
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px var(--shadow);
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, #C0392B, #E74C3C);
+    color: #fff;
+  }
+
+  .btn-danger:hover:not(:disabled) { transform: translateY(-2px); }
+
+  .btn-warning {
+    background: linear-gradient(135deg, #E67E22, #F39C12);
+    color: #fff;
+  }
+
+  .btn-warning:hover:not(:disabled) { transform: translateY(-2px); }
+
+  .btn-info {
+    background: linear-gradient(135deg, #2980B9, #3498DB);
+    color: #fff;
+  }
+
+  .btn-info:hover:not(:disabled) { transform: translateY(-2px); }
+
+  .btn-success {
+    background: linear-gradient(135deg, #1E7A5A, #2ECC71);
+    color: #fff;
+  }
+
+  .btn-success:hover:not(:disabled) { transform: translateY(-2px); }
+
+  .btn-cancel {
+    background: var(--bg-input);
+    color: var(--text-main);
+    border: 1.5px solid var(--border) !important;
+  }
+
+  .btn-cancel:hover {
+    background: var(--bg-card);
+    transform: translateY(-2px);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  /* ============ Contests Grid ============ */
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+
+  .item-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px var(--shadow);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .item-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px var(--shadow);
+  }
+
+  .item-card.published { border-color: var(--success); }
+  .item-card.draft { border-color: var(--text-sub); }
+  .item-card.active { border-color: var(--warning); animation: pulseActive 2s ease-in-out infinite; }
+  .item-card.finished { border-color: var(--info); }
+
+  @keyframes pulseActive {
+    0%, 100% { box-shadow: 0 4px 14px var(--shadow); }
+    50% { box-shadow: 0 4px 24px rgba(230, 126, 34, 0.5); }
+  }
+
+  .item-status-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    color: #fff;
+  }
+
+  .item-status-badge.published { background: rgba(46, 204, 113, 0.95); }
+  .item-status-badge.draft { background: rgba(149, 165, 166, 0.95); }
+  .item-status-badge.active { background: rgba(230, 126, 34, 0.95); }
+  .item-status-badge.finished { background: rgba(41, 128, 185, 0.95); }
+
+  .item-image {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 52px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .item-image { color: var(--bg-page); }
+
+  .item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .item-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .item-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .item-desc {
+    font-size: 13px;
+    color: var(--text-sub);
+    font-weight: 500;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .item-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .item-stat {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+
+  .item-stat-value {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--text-main);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .item-stat-label {
+    font-size: 10.5px;
+    color: var(--text-sub);
+    font-weight: 600;
+  }
+
+  .item-time-box {
+    background: linear-gradient(135deg, rgba(230, 126, 34, 0.08), rgba(201, 169, 97, 0.05));
+    border: 1.5px solid var(--warning);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+  }
+
+  .item-time-box i {
+    color: var(--warning);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .item-time-box .time-info { flex: 1; min-width: 0; }
+
+  .item-time-box .time-label {
+    font-size: 11px;
+    color: var(--text-sub);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .item-time-box .time-value {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--warning);
+    font-family: 'Cairo', monospace;
+    direction: ltr;
+    display: inline-block;
+  }
+
+  .item-badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid;
+  }
+
+  .badge.contestants { color: var(--info); border-color: var(--info); background: rgba(41, 128, 185, 0.08); }
+  .badge.questions { color: var(--primary); border-color: var(--primary); background: rgba(11, 61, 46, 0.08); }
+  .badge.viewers-chat { color: var(--success); border-color: var(--success); background: rgba(30, 122, 90, 0.08); }
+  .badge.viewers-readonly { color: var(--text-sub); border-color: var(--border); background: var(--bg-input); }
+  .badge.winner { color: var(--accent); border-color: var(--accent); background: rgba(201, 169, 97, 0.08); }
+
+  [data-theme="dark"] .badge.questions { color: var(--accent); border-color: var(--accent); background: rgba(201, 169, 97, 0.12); }
+
+  .item-footer {
+    padding: 12px 16px;
+    background: var(--bg-input);
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .btn-icon-action {
+    padding: 10px 6px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-sub);
+    font-family: 'Cairo', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-icon-action i { font-size: 14px; }
+
+  .btn-icon-action:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    color: var(--text-main);
+  }
+
+  .btn-icon-action.enter { color: var(--primary); border-color: var(--primary); background: rgba(11, 61, 46, 0.05); }
+  .btn-icon-action.enter:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+  [data-theme="dark"] .btn-icon-action.enter { color: var(--accent); border-color: var(--accent); background: rgba(201, 169, 97, 0.08); }
+  [data-theme="dark"] .btn-icon-action.enter:hover { background: var(--accent); color: var(--bg-page); border-color: var(--accent); }
+
+  .btn-icon-action.publish:hover { background: var(--success); color: #fff; border-color: var(--success); }
+  .btn-icon-action.unpublish:hover { background: var(--warning); color: #fff; border-color: var(--warning); }
+  .btn-icon-action.edit:hover { background: var(--info); color: #fff; border-color: var(--info); }
+  .btn-icon-action.delete { color: var(--error); border-color: rgba(192, 57, 43, 0.3); }
+  .btn-icon-action.delete:hover { background: var(--error); color: #fff; border-color: var(--error); }
+
+  /* ============ Empty & Loading ============ */
+  .empty-state {
+    padding: 60px 24px;
+    text-align: center;
+    color: var(--text-sub);
+    background: var(--bg-card);
+    border-radius: 18px;
+    border: 2px dashed var(--border);
+    grid-column: 1 / -1;
+  }
+
+  .empty-state i {
+    font-size: 60px;
+    color: var(--accent);
+    opacity: 0.5;
+    margin-bottom: 16px;
+    display: block;
+    animation: floatIcon 3s ease-in-out infinite;
+  }
+
+  @keyframes floatIcon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .empty-state h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .empty-state p { font-size: 13.5px; font-weight: 500; line-height: 1.6; }
+
+  .loading-state {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--text-sub);
+    font-size: 14px;
+    font-weight: 600;
+    grid-column: 1 / -1;
+  }
+
+  .loading-state i {
+    font-size: 42px;
+    color: var(--accent);
+    animation: spin 1s linear infinite;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ============ Modal ============ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100000;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal-box {
+    background: var(--bg-card);
+    border-radius: 22px;
+    padding: 28px 24px;
+    max-width: 820px;
+    width: 100%;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+    border-top: 6px solid var(--accent);
+    animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 94vh;
+    overflow-y: auto;
+  }
+
+  .modal-box.small { max-width: 460px; text-align: center; }
+
+  @keyframes modalPop {
+    from { opacity: 0; transform: scale(0.85) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 2px dashed var(--border);
+    position: sticky;
+    top: -28px;
+    background: var(--bg-card);
+    padding-top: 8px;
+    z-index: 10;
+  }
+
+  .modal-header-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .modal-header-icon { color: var(--bg-page); }
+
+  .modal-header h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-main);
+    flex: 1;
+  }
+
+  .modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: none;
+    background: var(--bg-input);
+    color: var(--text-sub);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .modal-close:hover { background: var(--error); color: #fff; }
+
+  /* ============ Forms ============ */
+  .step-section {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+
+  .step-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14.5px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .step-number {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .step-number { color: var(--bg-page); }
+
+  .step-badge {
+    margin-right: auto;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-sub);
+    font-weight: 700;
+  }
+
+  .form-group { margin-bottom: 14px; }
+  .form-group:last-child { margin-bottom: 0; }
+
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 6px;
+  }
+
+  .form-label .required { color: var(--error); margin-right: 3px; }
+  .form-label .hint { font-size: 11px; color: var(--text-sub); font-weight: 500; margin-right: 6px; }
+
+  .form-input, .form-textarea, .form-select {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    transition: all 0.25s ease;
+    outline: none;
+    font-weight: 500;
+  }
+
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
+    border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1);
+  }
+
+  .form-textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
+
+  .char-counter {
+    text-align: left;
+    font-size: 11px;
+    color: var(--text-sub);
+    margin-top: 4px;
+    font-weight: 600;
+    direction: ltr;
+  }
+
+  /* ============ Switch ============ */
+  .switch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    gap: 14px;
+    transition: all 0.25s;
+    margin-bottom: 14px;
+  }
+
+  .switch-row.active { border-color: var(--accent); background: rgba(201, 169, 97, 0.06); }
+
+  .switch-info { flex: 1; text-align: right; }
+  .switch-info strong { display: block; font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 3px; }
+  .switch-info small { font-size: 11.5px; color: var(--text-sub); font-weight: 500; line-height: 1.5; }
+
+  .switch { position: relative; display: inline-block; width: 54px; height: 30px; flex-shrink: 0; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #cbd5d1;
+    transition: 0.3s;
+    border-radius: 30px;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background: #fff;
+    transition: 0.3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  .switch input:checked + .slider { background: var(--success); }
+  .switch input:checked + .slider:before { transform: translateX(-24px); }
+
+  /* ============ Image Uploader ============ */
+  .image-uploader {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px;
+    background: var(--bg-card);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .image-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 2px dashed var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+    color: var(--text-sub);
+    font-size: 32px;
+  }
+
+  .image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .image-controls { flex: 1; min-width: 220px; }
+
+  .image-tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--bg-input);
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+
+  .image-tab {
+    flex: 1;
+    padding: 9px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 9px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--text-sub);
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .image-tab.active {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 4px 12px var(--shadow);
+  }
+
+  [data-theme="dark"] .image-tab.active { color: var(--bg-page); }
+
+  .image-tab-content { display: none; }
+  .image-tab-content.active { display: block; }
+
+  .upload-btn {
+    width: 100%;
+    padding: 12px;
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .upload-btn:hover {
+    border-color: var(--primary);
+    background: var(--bg-card);
+  }
+
+  /* ============ Questions Builder ============ */
+  .questions-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 4px;
+    margin-bottom: 10px;
+  }
+
+  .questions-container::-webkit-scrollbar { width: 6px; }
+  .questions-container::-webkit-scrollbar-track { background: transparent; }
+  .questions-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .question-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .question-card.mcq { border-right: 5px solid var(--info); }
+  .question-card.essay { border-right: 5px solid var(--warning); }
+
+  .question-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border);
+    flex-wrap: wrap;
+  }
+
+  .question-number {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary);
+    background: rgba(11, 61, 46, 0.08);
+    padding: 4px 10px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  [data-theme="dark"] .question-number { color: var(--accent); background: rgba(201, 169, 97, 0.12); }
+
+  .question-type-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    color: var(--text-sub);
+  }
+
+  .question-type-badge.mcq { color: var(--info); border-color: var(--info); }
+  .question-type-badge.essay { color: var(--warning); border-color: var(--warning); }
+
+  .q-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(192, 57, 43, 0.1);
+    color: var(--error);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+
+  .q-btn:hover { background: var(--error); color: #fff; }
+
+  .q-field { margin-bottom: 12px; }
+  .q-field:last-child { margin-bottom: 0; }
+
+  .q-field-label {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--text-sub);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .q-input {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    font-family: 'Cairo', sans-serif;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    outline: none;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+
+  .q-input:focus {
+    border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 3px rgba(11, 61, 46, 0.08);
+  }
+
+  .q-input.textarea { resize: vertical; min-height: 60px; line-height: 1.6; }
+
+  .q-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .option-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: var(--bg-input);
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    transition: all 0.2s;
+  }
+
+  .option-row.correct {
+    border-color: var(--success);
+    background: rgba(30, 122, 90, 0.06);
+  }
+
+  .option-correct-check {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--bg-card);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    font-size: 12px;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .option-row.correct .option-correct-check {
+    background: var(--success);
+    border-color: var(--success);
+    color: #fff;
+  }
+
+  .option-input {
+    flex: 1;
+    padding: 6px 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    outline: none;
+  }
+
+  .remove-option {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: var(--text-sub);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .remove-option:hover { color: var(--error); background: rgba(192, 57, 43, 0.1); }
+
+  .add-option-btn {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1.5px dashed var(--border);
+    background: transparent;
+    color: var(--text-sub);
+    font-family: 'Cairo', sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+
+  .add-option-btn:hover { border-color: var(--accent); color: var(--text-main); background: var(--bg-input); }
+
+  .add-question-btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .add-q-btn {
+    padding: 12px;
+    border-radius: 11px;
+    border: 2px dashed var(--border);
+    background: var(--bg-input);
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+
+  .add-q-btn:hover {
+    border-color: var(--accent);
+    background: var(--bg-card);
+    transform: translateY(-2px);
+  }
+
+  .stats-bar-mini {
+    display: flex;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg-input);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .stat-mini {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .stat-mini i { color: var(--accent); font-size: 12px; }
+  .stat-mini strong { color: var(--primary); font-weight: 900; }
+  [data-theme="dark"] .stat-mini strong { color: var(--accent); }
+
+  /* ============ Modal Actions ============ */
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 2px dashed var(--border);
+    flex-wrap: wrap;
+  }
+
+  .modal-actions .btn { flex: 1; min-width: 120px; padding: 14px; }
+
+  /* ============ Error / Info ============ */
+  .modal-error {
+    background: rgba(192, 57, 43, 0.1);
+    color: var(--error);
+    border: 1px solid rgba(192, 57, 43, 0.3);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: none;
+    line-height: 1.6;
+  }
+
+  .modal-error.show { display: block; }
+
+  /* ============ Confirm Modal ============ */
+  .confirm-icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 18px;
+    box-shadow: 0 10px 25px var(--shadow);
+  }
+
+  [data-theme="dark"] .confirm-icon { color: var(--bg-page); }
+
+  .confirm-icon.danger { background: linear-gradient(135deg, #C0392B, #E74C3C); }
+  .confirm-icon.warning { background: linear-gradient(135deg, #E67E22, #F39C12); }
+  .confirm-icon.success { background: linear-gradient(135deg, #1E7A5A, #2ECC71); }
+
+  .confirm-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .confirm-message {
+    font-size: 14px;
+    color: var(--text-sub);
+    font-weight: 600;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    padding: 0 10px;
+    text-align: center;
+  }
+
+  /* ============ Chat Room Modal ============ */
+  .chat-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 200000;
+  }
+
+  .chat-modal-overlay.show { display: flex; }
+
+  .chat-modal-content {
+    background: var(--bg-card);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 1400px;
+    height: 94vh;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7);
+    animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chat-header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-shrink: 0;
+  }
+
+  .chat-header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .chat-header-title {
+    font-size: 17px;
+    font-weight: 900;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .chat-header-sub {
+    font-size: 11.5px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  .chat-header-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .chat-icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .chat-icon-btn:hover { background: rgba(255, 255, 255, 0.3); }
+  .chat-icon-btn.close:hover { background: var(--error); }
+
+  .chat-body {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .chat-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--bg-page);
+    scroll-behavior: smooth;
+  }
+
+  .chat-messages::-webkit-scrollbar { width: 8px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .chat-messages::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  /* ============ Messages ============ */
+  .msg {
+    display: flex;
+    gap: 10px;
+    max-width: 75%;
+    animation: msgIn 0.3s ease;
+  }
+
+  @keyframes msgIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.user { align-self: flex-start; }
+  .msg.admin { align-self: center; max-width: 85%; }
+  .msg.system { align-self: center; max-width: 90%; }
+
+  .msg-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 2px solid var(--accent);
+  }
+
+  .msg.user .msg-avatar {
+    background: linear-gradient(135deg, #0B3D2E, #1E7A5A);
+    color: #fff;
+  }
+
+  .msg-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .msg-content {
+    background: var(--bg-card);
+    border-radius: 14px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 6px var(--shadow);
+    min-width: 0;
+    position: relative;
+    flex: 1;
+  }
+
+  .msg.user .msg-content { border-top-right-radius: 4px; }
+
+  /* === رسالة الآدمن — تصميم مميز === */
+  .msg.admin .msg-content {
+    background: linear-gradient(135deg, #FBF7E9 0%, #F5EBC8 100%);
+    border: 2.5px solid var(--accent);
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(201, 169, 97, 0.35);
+    padding: 12px 18px;
+    position: relative;
+  }
+
+  [data-theme="dark"] .msg.admin .msg-content {
+    background: linear-gradient(135deg, #1E2C24 0%, #2A3D30 100%);
+    border-color: var(--accent);
+  }
+
+  .msg.admin .msg-content::before {
+    content: '👑';
+    position: absolute;
+    top: -12px;
+    right: 18px;
+    font-size: 20px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  }
+
+  .msg-sender-name {
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .msg.admin .msg-sender-name {
+    color: #8B6914;
+    font-size: 12.5px;
+  }
+
+  [data-theme="dark"] .msg.admin .msg-sender-name { color: var(--accent-light); }
+
+  .msg-text {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.6;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+
+  .msg.admin .msg-text {
+    font-size: 15.5px;
+    font-weight: 600;
+    color: #5A4A1E;
+  }
+
+  [data-theme="dark"] .msg.admin .msg-text { color: #F5EBC8; }
+
+  .msg-meta {
+    font-size: 10.5px;
+    opacity: 0.7;
+    margin-top: 5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: flex-end;
+  }
+
+  /* === رسالة السؤال === */
+  .msg.question {
+    align-self: center;
+    max-width: 90%;
+  }
+
+  .msg.question .msg-content {
+    background: linear-gradient(135deg, rgba(41, 128, 185, 0.08), rgba(52, 152, 219, 0.03));
+    border: 2.5px solid var(--info);
+    border-radius: 16px;
+    padding: 14px 18px;
+    position: relative;
+    width: 100%;
+  }
+
+  .msg.question .msg-content::before {
+    content: '📝';
+    position: absolute;
+    top: -14px;
+    right: 18px;
+    font-size: 22px;
+    background: var(--bg-card);
+    padding: 0 6px;
+    border-radius: 8px;
+  }
+
+  .question-number-badge {
+    display: inline-block;
+    background: var(--info);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 900;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+
+  .question-type-badge-chat {
+    display: inline-block;
+    background: var(--bg-input);
+    color: var(--text-sub);
+    font-size: 10.5px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+    margin-right: 6px;
+  }
+
+  .question-title-chat {
+    font-size: 15.5px;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .question-options-chat {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .question-option-chat {
+    padding: 8px 12px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .question-option-chat.correct {
+    border-color: var(--success);
+    background: rgba(30, 122, 90, 0.06);
+    color: var(--success);
+  }
+
+  .question-option-chat .option-letter {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--bg-input);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--text-sub);
+    flex-shrink: 0;
+  }
+
+  .question-option-chat.correct .option-letter {
+    background: var(--success);
+    color: #fff;
+  }
+
+  .question-actions-chat {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+  }
+
+  .question-action-btn {
+    flex: 1;
+    padding: 7px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-sub);
+    font-family: 'Cairo', sans-serif;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.2s;
+  }
+
+  .question-action-btn:hover { transform: translateY(-1px); }
+  .question-action-btn.edit:hover { background: var(--info); color: #fff; border-color: var(--info); }
+  .question-action-btn.delete:hover { background: var(--error); color: #fff; border-color: var(--error); }
+
+  /* === رسالة النظام === */
+  .msg.system {
+    align-self: center;
+    max-width: 80%;
+  }
+
+  .msg.system .msg-content {
+    background: var(--bg-input);
+    border: 1px dashed var(--border);
+    border-radius: 20px;
+    padding: 8px 16px;
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--text-sub);
+    font-weight: 600;
+    box-shadow: none;
+  }
+
+  .msg.system .msg-text {
+    font-size: 12.5px;
+    color: var(--text-sub);
+  }
+
+  /* === رسالة طلب الانضمام === */
+  .msg.join-request .msg-content {
+    background: linear-gradient(135deg, rgba(230, 126, 34, 0.1), rgba(243, 156, 18, 0.04));
+    border: 2.5px solid var(--warning);
+    border-radius: 16px;
+    padding: 14px 18px;
+    position: relative;
+    width: 100%;
+  }
+
+  .msg.join-request {
+    align-self: center;
+    max-width: 90%;
+    width: 100%;
+  }
+
+  .msg.join-request .msg-content::before {
+    content: '🙋';
+    position: absolute;
+    top: -14px;
+    right: 18px;
+    font-size: 22px;
+    background: var(--bg-card);
+    padding: 0 6px;
+    border-radius: 8px;
+  }
+
+  .join-request-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .join-request-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+  }
+
+  .join-action-btn {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+
+  .join-action-btn.accept {
+    background: linear-gradient(135deg, #1E7A5A, #2ECC71);
+    color: #fff;
+  }
+
+  .join-action-btn.accept:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(30, 122, 90, 0.35); }
+
+  .join-action-btn.reject {
+    background: linear-gradient(135deg, #C0392B, #E74C3C);
+    color: #fff;
+  }
+
+  .join-action-btn.reject:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(192, 57, 43, 0.35); }
+
+  .join-action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  /* ============ Chat Input ============ */
+  .chat-input-area {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    padding: 12px 18px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+
+  .chat-input-tools {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .chat-tool-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .chat-tool-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+
+  [data-theme="dark"] .chat-tool-btn:hover { color: var(--bg-page); }
+
+  .chat-tool-btn.question {
+    background: linear-gradient(135deg, var(--info), #3498DB);
+    color: #fff;
+    border-color: var(--info);
+  }
+
+  .chat-tool-btn.question:hover {
+    background: var(--info);
+    transform: translateY(-2px);
+  }
+
+  .chat-input {
+    flex: 1;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    outline: none;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    resize: none;
+    max-height: 120px;
+    min-height: 44px;
+    line-height: 1.5;
+  }
+
+  .chat-input:focus {
+    border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1);
+  }
+
+  .chat-input::placeholder { color: #A8B5B1; }
+
+  .chat-send-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    border: none;
+    font-size: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px var(--shadow);
+  }
+
+  [data-theme="dark"] .chat-send-btn { color: var(--bg-page); }
+
+  .chat-send-btn:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 20px var(--shadow);
+  }
+
+  .chat-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ============ Chat Sidebar ============ */
+  .chat-sidebar {
+    width: 340px;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+
+  .chat-sidebar-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-input);
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .chat-sidebar-header .count-badge {
+    padding: 2px 10px;
+    border-radius: 20px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  [data-theme="dark"] .chat-sidebar-header .count-badge { color: var(--bg-page); }
+
+  .chat-sidebar-section {
+    padding: 12px;
+  }
+
+  .chat-sidebar-section-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-sub);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .chat-sidebar-section-title i { color: var(--accent); }
+
+  .contestant-item {
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+  }
+
+  .contestant-item:hover {
+    border-color: var(--accent);
+    transform: translateX(-4px);
+  }
+
+  .contestant-item.finished {
+    border-color: var(--success);
+    background: rgba(30, 122, 90, 0.06);
+  }
+
+  .contestant-item.winner {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(201, 169, 97, 0.15), rgba(224, 200, 136, 0.05));
+    box-shadow: 0 4px 14px rgba(201, 169, 97, 0.3);
+  }
+
+  .contestant-item.viewer-item {
+    border-color: var(--info);
+    background: rgba(41, 128, 185, 0.06);
+    opacity: 0.85;
+  }
+
+  .contestant-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 2px solid var(--accent);
+    position: relative;
+  }
+
+  [data-theme="dark"] .contestant-avatar { color: var(--bg-page); }
+
+  .contestant-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .contestant-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .contestant-name {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--text-main);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 2px;
+  }
+
+  .contestant-status {
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .contestant-status.active { color: var(--warning); }
+  .contestant-status.finished { color: var(--success); }
+  .contestant-status.winner { color: var(--accent); }
+  .contestant-status.viewer { color: var(--info); }
+
+  .kick-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(192, 57, 43, 0.1);
+    color: var(--error);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .kick-btn:hover { background: var(--error); color: #fff; }
+
+  .sidebar-action-btn {
+    width: 100%;
+    padding: 11px;
+    border-radius: 11px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+    margin-top: 6px;
+  }
+
+  .sidebar-action-btn.warning {
+    background: linear-gradient(135deg, #E67E22, #F39C12);
+    color: #fff;
+  }
+
+  .sidebar-action-btn.warning:hover { transform: translateY(-2px); }
+
+  .sidebar-action-btn.success {
+    background: linear-gradient(135deg, #1E7A5A, #2ECC71);
+    color: #fff;
+  }
+
+  .sidebar-action-btn.success:hover { transform: translateY(-2px); }
+
+  .sidebar-action-btn.info {
+    background: linear-gradient(135deg, #2980B9, #3498DB);
+    color: #fff;
+  }
+
+  .sidebar-action-btn.info:hover { transform: translateY(-2px); }
+
+  /* ============ Leaderboard ============ */
+  .leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .leaderboard-item {
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .leaderboard-item:hover {
+    border-color: var(--accent);
+    transform: translateX(-3px);
+  }
+
+  .leaderboard-item.rank-1 {
+    border-color: #C9A961;
+    background: linear-gradient(135deg, rgba(201, 169, 97, 0.15), rgba(224, 200, 136, 0.05));
+    box-shadow: 0 4px 14px rgba(201, 169, 97, 0.3);
+  }
+
+  .leaderboard-item.rank-2 {
+    border-color: #B0B0B0;
+    background: linear-gradient(135deg, rgba(176, 176, 176, 0.12), rgba(200, 200, 200, 0.04));
+  }
+
+  .leaderboard-item.rank-3 {
+    border-color: #CD7F32;
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.12), rgba(220, 150, 70, 0.04));
+  }
+
+  .leaderboard-rank {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--text-sub);
+    flex-shrink: 0;
+  }
+
+  .leaderboard-item.rank-1 .leaderboard-rank {
+    background: linear-gradient(135deg, #C9A961, #E0C888);
+    color: #fff;
+    border-color: #C9A961;
+    font-size: 18px;
+  }
+
+  .leaderboard-item.rank-2 .leaderboard-rank {
+    background: linear-gradient(135deg, #B0B0B0, #D0D0D0);
+    color: #fff;
+    border-color: #B0B0B0;
+    font-size: 18px;
+  }
+
+  .leaderboard-item.rank-3 .leaderboard-rank {
+    background: linear-gradient(135deg, #CD7F32, #E8A85C);
+    color: #fff;
+    border-color: #CD7F32;
+    font-size: 18px;
+  }
+
+  .leaderboard-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 2px solid var(--accent);
+  }
+
+  [data-theme="dark"] .leaderboard-avatar { color: var(--bg-page); }
+
+  .leaderboard-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .leaderboard-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .leaderboard-name {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-main);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 3px;
+  }
+
+  .leaderboard-stats {
+    display: flex;
+    gap: 10px;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--text-sub);
+    flex-wrap: wrap;
+  }
+
+  .leaderboard-stats span {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .leaderboard-stats i {
+    color: var(--accent);
+    font-size: 10px;
+  }
+
+  /* ============ Question Modal ============ */
+  .question-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 300000;
+    overflow-y: auto;
+  }
+
+  .question-modal-overlay.show { display: flex; }
+
+  .question-modal-box {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 24px;
+    max-width: 640px;
+    width: 100%;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
+    border-top: 6px solid var(--info);
+    animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 94vh;
+    overflow-y: auto;
+  }
+
+  /* ============ Toast ============ */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background: var(--bg-card);
+    color: var(--text-main);
+    padding: 14px 24px;
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--border);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 999999;
+    transition: transform 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+    max-width: calc(100vw - 32px);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast.success { border-color: var(--success); }
+  .toast.success i { color: var(--success); }
+  .toast.error { border-color: var(--error); }
+  .toast.error i { color: var(--error); }
+  .toast.warning { border-color: var(--warning); }
+  .toast.warning i { color: var(--warning); }
+  .toast.info { border-color: var(--info); }
+  .toast.info i { color: var(--info); }
+
+  /* ============ Drawer ============ */
+  .drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 9998;
+  }
+
+  .drawer-overlay.show { opacity: 1; visibility: visible; }
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 88%;
+    max-width: 340px;
+    height: 100vh;
+    height: 100dvh;
+    background: var(--bg-card);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
+    transform: translateX(105%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-left: 1px solid var(--border);
+  }
+
+  .drawer.open { transform: translateX(0); }
+
+  .drawer-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 22px 20px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .drawer-header-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .drawer-logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: contain;
+    background: rgba(255,255,255,0.1);
+    padding: 4px;
+    border: 2px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .drawer-brand { flex: 1; min-width: 0; }
+
+  .drawer-brand-name {
+    font-size: 18px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .drawer-brand-name .divider { color: var(--accent); font-weight: 300; }
+
+  .drawer-brand-sub {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .drawer-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .drawer-close:hover { background: rgba(255, 255, 255, 0.3); transform: rotate(90deg); }
+
+  .drawer-content { flex: 1; overflow-y: auto; padding: 20px 16px; }
+  .drawer-section { margin-bottom: 22px; }
+
+  .drawer-section-title {
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--text-sub);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    padding-right: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .drawer-section-title i { color: var(--accent); font-size: 12px; }
+
+  .drawer-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    width: 100%;
+    text-align: right;
+  }
+
+  .drawer-btn:hover, .drawer-btn:active {
+    background: var(--bg-card);
+    border-color: var(--accent);
+    transform: translateX(-4px);
+  }
+
+  .drawer-btn-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .drawer-btn-icon { color: var(--bg-page); }
+
+  .drawer-btn-label { flex: 1; }
+
+  .drawer-btn.logout-btn {
+    color: var(--error);
+    border-color: rgba(192, 57, 43, 0.3);
+    background: rgba(192, 57, 43, 0.05);
+  }
+
+  .drawer-btn.logout-btn .drawer-btn-icon { background: linear-gradient(135deg, #C0392B, #E74C3C); }
+  .drawer-btn.logout-btn:hover { background: var(--error); color: #fff; border-color: var(--error); }
+
+  /* ============ Responsive ============ */
+  @media (max-width: 1100px) {
+    .chat-sidebar { width: 300px; }
+  }
+
+  @media (max-width: 800px) {
+    .chat-sidebar {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 85%;
+      max-width: 340px;
+      z-index: 5;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .chat-sidebar.mobile-open { transform: translateX(0); }
+
+    .chat-modal-content {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chat-header-sub { display: none; }
+    .chat-header-title { font-size: 15px; }
+
+    .msg { max-width: 88%; }
+    .msg.admin { max-width: 92%; }
+    .msg.question { max-width: 95%; }
+  }
+
+  @media (max-width: 900px) {
+    .topbar-inner { padding: 12px 16px; }
+    .back-btn { width: 40px; height: 40px; font-size: 16px; }
+    .topbar-title i.header-icon { font-size: 19px; }
+    .topbar-title-text h1 { font-size: 16px; }
+    .icon-btn { width: 38px; height: 38px; font-size: 15px; }
+    .menu-btn { display: flex; }
+    .topbar-actions .icon-btn { display: none; }
+    .topbar-actions .menu-btn { display: flex; }
+    .container { padding: 16px 12px 100px; }
+    .items-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    .stat-card { padding: 12px 14px; }
+    .stat-icon { width: 42px; height: 42px; font-size: 18px; }
+    .stat-number { font-size: 20px; }
+    .modal-box { padding: 20px 16px; border-radius: 18px; }
+    .chat-modal-content { padding: 0; border-radius: 0; height: 100vh; height: 100dvh; max-height: none; }
+    .chat-modal-overlay { padding: 0; }
+    .chat-icon-btn { width: 34px; height: 34px; font-size: 13px; }
+  }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .stat-number { font-size: 18px; }
+    .stat-label { font-size: 10.5px; }
+    .items-grid { grid-template-columns: 1fr; }
+    .item-footer { grid-template-columns: repeat(3, 1fr); }
+    .btn-icon-action { font-size: 10px; padding: 8px 4px; }
+    .q-row-2 { grid-template-columns: 1fr; }
+    .add-question-btns { grid-template-columns: 1fr; }
+    .modal-actions { flex-direction: column; }
+    .modal-actions .btn { min-width: 100%; }
+    .image-uploader { flex-direction: column; align-items: stretch; }
+    .image-preview { width: 100%; height: 140px; }
+  }
+
+  @media (min-width: 901px) {
+    .menu-btn { display: none !important; }
+    .drawer, .drawer-overlay { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ Topbar ============ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-brand">
+      <a href="index.html" class="back-btn" title="الرجوع">
+        <i class="fas fa-arrow-right"></i>
+      </a>
+      <div class="topbar-title">
+        <i class="fas fa-trophy header-icon"></i>
+        <div class="topbar-title-text">
+          <h1>إدارة المسابقات</h1>
+          <small>CONTESTS MANAGEMENT</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <button class="icon-btn" id="themeToggle" title="الوضع">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+      <button class="icon-btn logout" id="logoutBtn" title="تسجيل الخروج">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+      <button class="menu-btn" id="menuBtn" aria-label="القائمة">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ Container ============ -->
+<div class="container">
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+      <div class="stat-info">
+        <div class="stat-number" id="statTotal">0</div>
+        <div class="stat-label">إجمالي المسابقات</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green"><i class="fas fa-eye"></i></div>
+      <div class="stat-info">
+        <div class="stat-number" id="statPublished">0</div>
+        <div class="stat-label">منشورة</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon orange"><i class="fas fa-play-circle"></i></div>
+      <div class="stat-info">
+        <div class="stat-number" id="statActive">0</div>
+        <div class="stat-label">جارٍ الآن</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon gold"><i class="fas fa-medal"></i></div>
+      <div class="stat-info">
+        <div class="stat-number" id="statFinished">0</div>
+        <div class="stat-label">انتهت</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-wrapper">
+      <i class="fas fa-search"></i>
+      <input type="text" class="search-input" id="searchContests" placeholder="ابحث بالاسم أو الوصف...">
+      <button class="search-clear" id="clearSearch" aria-label="مسح">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <button class="btn btn-primary" id="btnAddContest">
+      <i class="fas fa-plus"></i>
+      <span>مسابقة جديدة</span>
+    </button>
+  </div>
+
+  <div class="filter-row">
+    <button class="filter-btn active" data-filter="all">
+      <i class="fas fa-list"></i><span>الكل</span>
+      <span class="count" id="filterAll">0</span>
+    </button>
+    <button class="filter-btn" data-filter="published">
+      <i class="fas fa-eye"></i><span>منشورة</span>
+      <span class="count" id="filterPublished">0</span>
+    </button>
+    <button class="filter-btn" data-filter="draft">
+      <i class="fas fa-edit"></i><span>مسودة</span>
+      <span class="count" id="filterDraft">0</span>
+    </button>
+    <button class="filter-btn" data-filter="active">
+      <i class="fas fa-play-circle"></i><span>جارٍ الآن</span>
+      <span class="count" id="filterActive">0</span>
+    </button>
+    <button class="filter-btn" data-filter="finished">
+      <i class="fas fa-medal"></i><span>انتهت</span>
+      <span class="count" id="filterFinished">0</span>
+    </button>
+  </div>
+
+  <div class="items-grid" id="contestsGrid">
+    <div class="loading-state">
+      <i class="fas fa-spinner"></i>
+      <div>جاري تحميل المسابقات...</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ MODAL: Create / Edit Contest ============ -->
+<div class="modal-overlay" id="contestModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-header-icon">
+        <i class="fas fa-trophy" id="modalIcon"></i>
+      </div>
+      <h2 id="modalTitle">إنشاء مسابقة جديدة</h2>
+      <button class="modal-close" id="modalClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-error" id="modalError"></div>
+
+    <div class="step-section">
+      <div class="step-title">
+        <span class="step-number">1</span>
+        <span>معلومات المسابقة</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">اسم المسابقة <span class="required">*</span></label>
+        <input type="text" class="form-input" id="contestName" placeholder="مثال: مسابقة الرياضيات الكبرى" maxlength="100">
+        <div class="char-counter"><span id="contestNameCount">0</span> / 100</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">وصف المسابقة</label>
+        <textarea class="form-textarea" id="contestDesc" placeholder="وصف مختصر..." maxlength="500"></textarea>
+        <div class="char-counter"><span id="contestDescCount">0</span> / 500</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          <i class="fas fa-calendar-plus" style="color: var(--success); font-size: 12px;"></i>
+          موعد بدء المسابقة <span class="required">*</span>
+        </label>
+        <div class="q-row-2">
+          <input type="date" class="form-input" id="contestStartDate">
+          <input type="time" class="form-input" id="contestStartTime">
+        </div>
+        <small style="font-size:11px;color:var(--text-sub);display:block;margin-top:6px;">
+          📅 المسابقة ستظهر للمستخدمين عند هذا الوقت
+        </small>
+      </div>
+    </div>
+
+    <div class="step-section">
+      <div class="step-title">
+        <span class="step-number">2</span>
+        <span>صورة المسابقة</span>
+        <span class="step-badge">اختياري</span>
+      </div>
+
+      <div class="image-uploader">
+        <div class="image-preview" id="imagePreview">
+          <i class="fas fa-image"></i>
+        </div>
+
+        <div class="image-controls">
+          <div class="image-tabs">
+            <button type="button" class="image-tab active" data-img-tab="url">
+              <i class="fas fa-link"></i>
+              رابط
+            </button>
+            <button type="button" class="image-tab" data-img-tab="upload">
+              <i class="fas fa-cloud-upload-alt"></i>
+              رفع صورة
+            </button>
+          </div>
+
+          <div class="image-tab-content active" id="imgTabUrl">
+            <input type="url" class="form-input" id="imageUrl" placeholder="https://example.com/image.jpg" style="direction:ltr;text-align:left;">
+          </div>
+
+          <div class="image-tab-content" id="imgTabUpload">
+            <label class="upload-btn" for="imageFile">
+              <i class="fas fa-cloud-upload-alt"></i>
+              اضغط لاختيار صورة من جهازك
+            </label>
+            <input type="file" id="imageFile" accept="image/*" style="display:none;">
+            <p id="imageUploadStatus" style="font-size:12px;color:var(--success);font-weight:700;margin-top:8px;display:none;"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-section">
+      <div class="step-title">
+        <span class="step-number">3</span>
+        <span>إعدادات المسابقة</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          <i class="fas fa-users" style="color: var(--info); font-size: 12px;"></i>
+          عدد المتسابقين المسموح <span class="required">*</span>
+        </label>
+        <div class="image-tabs" style="margin-bottom: 10px;">
+          <button type="button" class="image-tab active" data-contestants="1">
+            <i class="fas fa-user"></i>
+            فردي (1)
+          </button>
+          <button type="button" class="image-tab" data-contestants="2">
+            <i class="fas fa-user-group"></i>
+            ثنائي (2)
+          </button>
+          <button type="button" class="image-tab" data-contestants="custom">
+            <i class="fas fa-users"></i>
+            يدوي
+          </button>
+        </div>
+        <div id="customContestantsWrapper" style="display:none;">
+          <input type="number" class="form-input" id="customContestantsCount" min="1" max="50" value="5" placeholder="عدد المتسابقين (1-50)">
+        </div>
+      </div>
+
+      <div class="switch-row active" id="viewersChatRow">
+        <div class="switch-info">
+          <strong>💬 السماح للمشاهدين بالكتابة</strong>
+          <small>عند التفعيل، يمكن للمشاهدين إرسال رسائل في الشات (بدون حل الأسئلة)</small>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="allowViewersChat">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="switch-row active" id="notifyRow">
+        <div class="switch-info">
+          <strong>🔔 إشعار فوري للمستخدمين عند النشر</strong>
+          <small>سيتم إرسال إشعار لكل المستخدمين فور نشر المسابقة</small>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="notifyOnPublish" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="step-section">
+      <div class="step-title">
+        <span class="step-number">4</span>
+        <span>الأسئلة</span>
+        <span class="step-badge" id="questionsCount">0 سؤال</span>
+      </div>
+
+      <div class="stats-bar-mini" id="qStats" style="display:none;">
+        <div class="stat-mini"><i class="fas fa-list-ol"></i> إجمالي: <strong id="qTotal">0</strong></div>
+        <div class="stat-mini"><i class="fas fa-circle-check"></i> MCQ: <strong id="qMcq">0</strong></div>
+        <div class="stat-mini"><i class="fas fa-pen-fancy"></i> مقالي: <strong id="qEssay">0</strong></div>
+        <div class="stat-mini"><i class="fas fa-star"></i> مجموع الدرجات: <strong id="qTotalScore">0</strong></div>
+      </div>
+
+      <div class="questions-container" id="questionsContainer">
+        <div class="empty-state" style="padding: 30px 20px; border: none;">
+          <i class="fas fa-list-check" style="font-size: 36px; margin-bottom: 10px;"></i>
+          <p style="font-size: 13px;">لا توجد أسئلة بعد — أضف سؤالاً</p>
+        </div>
+      </div>
+
+      <div class="add-question-btns">
+        <button type="button" class="add-q-btn" id="btnAddMcq">
+          <i class="fas fa-plus-circle"></i>
+          <span>سؤال اختيار متعدد</span>
+        </button>
+        <button type="button" class="add-q-btn" id="btnAddEssay">
+          <i class="fas fa-pen-fancy"></i>
+          <span>سؤال مقالي</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="step-section">
+      <div class="step-title">
+        <span class="step-number">5</span>
+        <span>النشر</span>
+      </div>
+
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label">حالة النشر</label>
+        <select class="form-select" id="contestStatus">
+          <option value="published">✅ منشورة (تظهر للمستخدمين)</option>
+          <option value="draft">📝 مسودة (لا تظهر)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="modalCancel">
+        <i class="fas fa-times"></i>
+        <span>إلغاء</span>
+      </button>
+      <button class="btn btn-primary" id="modalSave">
+        <i class="fas fa-check"></i>
+        <span>حفظ</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Confirm ============ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box small">
+    <div class="confirm-icon" id="confirmIcon">
+      <i class="fas fa-question-circle"></i>
+    </div>
+    <h2 class="confirm-title" id="confirmTitle">تأكيد</h2>
+    <p class="confirm-message" id="confirmMessage">—</p>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="confirmCancel">
+        <i class="fas fa-times"></i>
+        <span>إلغاء</span>
+      </button>
+      <button class="btn btn-primary" id="confirmOk">
+        <i class="fas fa-check"></i>
+        <span>تأكيد</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CHAT ROOM MODAL ============ -->
+<div class="chat-modal-overlay" id="chatModal">
+  <div class="chat-modal-content">
+
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <button class="chat-icon-btn" id="chatBackBtn" title="رجوع">
+          <i class="fas fa-arrow-right"></i>
+        </button>
+        <div style="min-width: 0; flex: 1;">
+          <div class="chat-header-title" id="chatTitle">—</div>
+          <div class="chat-header-sub">
+            <span id="chatSub">—</span>
+            <span id="chatCountdown" style="margin-right: 10px;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-header-actions">
+        <button class="chat-icon-btn" id="chatToggleViewers" title="تبديل السماح للمشاهدين بالكتابة">
+          <i class="fas fa-user-slash" id="chatViewersIcon"></i>
+        </button>
+        <button class="chat-icon-btn" id="chatToggleSidebar" title="قائمة المتسابقين">
+          <i class="fas fa-users"></i>
+        </button>
+        <button class="chat-icon-btn close" id="chatCloseBtn" title="إغلاق">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="chat-body">
+
+      <div class="chat-main">
+        <div class="chat-messages" id="chatMessages">
+          <div class="loading-state">
+            <i class="fas fa-spinner"></i>
+            <div>جاري تحميل المحادثة...</div>
+          </div>
+        </div>
+
+        <div class="chat-input-area">
+          <div class="chat-input-tools">
+            <button class="chat-tool-btn question" id="btnAskQuestion" title="إضافة سؤال">
+              <i class="fas fa-question-circle"></i>
+            </button>
+          </div>
+          <textarea class="chat-input" id="chatInput" placeholder="اكتب رسالتك..." rows="1"></textarea>
+          <button class="chat-send-btn" id="chatSendBtn" title="إرسال">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+
+      <aside class="chat-sidebar" id="chatSidebar">
+        <div class="chat-sidebar-header">
+          <span><i class="fas fa-users" style="color:var(--accent);"></i> المتسابقون</span>
+          <span class="count-badge" id="contestantsCount">0</span>
+        </div>
+
+        <div class="chat-sidebar-section">
+          <div class="chat-sidebar-section-title">
+            <i class="fas fa-trophy"></i>
+            <span>المتسابقون</span>
+          </div>
+          <div id="contestantsList"></div>
+          <button class="sidebar-action-btn warning" id="btnKickAll">
+            <i class="fas fa-user-slash"></i>
+            <span>طرد كل المتسابقين</span>
+          </button>
+        </div>
+
+        <div class="chat-sidebar-section" style="border-top: 1px solid var(--border);">
+          <div class="chat-sidebar-section-title">
+            <i class="fas fa-chart-simple"></i>
+            <span>قائمة الصدارة</span>
+          </div>
+          <div id="leaderboardList" class="leaderboard-list"></div>
+        </div>
+
+        <div class="chat-sidebar-section" style="border-top: 1px solid var(--border);">
+          <div class="chat-sidebar-section-title">
+            <i class="fas fa-medal"></i>
+            <span>الفائز</span>
+          </div>
+          <div id="winnerBox"></div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Ask Question ============ -->
+<div class="question-modal-overlay" id="questionModal">
+  <div class="question-modal-box">
+    <div class="modal-header">
+      <div class="modal-header-icon" style="background: linear-gradient(135deg, #2980B9, #3498DB);">
+        <i class="fas fa-question-circle"></i>
+      </div>
+      <h2 id="qModalTitle">إضافة سؤال جديد</h2>
+      <button class="modal-close" id="qModalClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-error" id="qModalError"></div>
+
+    <div class="form-group">
+      <label class="form-label">نوع السؤال</label>
+      <div class="image-tabs">
+        <button type="button" class="image-tab active" data-q-type="mcq">
+          <i class="fas fa-circle-check"></i>
+          اختيار متعدد
+        </button>
+        <button type="button" class="image-tab" data-q-type="essay">
+          <i class="fas fa-pen-fancy"></i>
+          مقالي
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">نص السؤال <span class="required">*</span></label>
+      <textarea class="form-textarea" id="qTitle" placeholder="اكتب السؤال..." maxlength="500"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        الدرجة
+        <span class="hint">افتراضي: 1</span>
+      </label>
+      <input type="number" class="form-input" id="qScore" min="1" value="1">
+    </div>
+
+    <div id="qMcqSection">
+      <div class="form-group">
+        <label class="form-label">
+          الإجابات
+          <span class="hint">اضغط الدائرة لتحديد الإجابة الصحيحة</span>
+        </label>
+        <div class="options-list" id="qOptionsList"></div>
+        <button type="button" class="add-option-btn" id="btnAddOption">
+          <i class="fas fa-plus"></i>
+          إضافة إجابة
+        </button>
+      </div>
+    </div>
+
+    <div id="qEssaySection" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">
+          الإجابة النموذجية
+          <span class="hint">اختياري</span>
+        </label>
+        <textarea class="form-textarea" id="qEssayAnswer" placeholder="الإجابة النموذجية..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        الشرح
+        <span class="hint">اختياري</span>
+      </label>
+      <textarea class="form-textarea" id="qExplanation" placeholder="شرح يظهر للطالب..." style="min-height: 60px;"></textarea>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="qModalCancel">
+        <i class="fas fa-times"></i>
+        <span>إلغاء</span>
+      </button>
+      <button class="btn btn-info" id="qModalSave">
+        <i class="fas fa-paper-plane"></i>
+        <span>نشر السؤال في الشات</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Toast ============ -->
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle" id="toastIcon"></i>
+  <span id="toastText"></span>
+</div>
+
+<!-- ============ Drawer ============ -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<aside class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="drawer-header-content">
+      <img src="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png" 
+           alt="Logo" class="drawer-logo" id="drawerLogo">
+      <div class="drawer-brand">
+        <div class="drawer-brand-name">
+          <span id="drawerNameAr">ميزان</span>
+          <span class="divider">|</span>
+          <span id="drawerNameEn">MEEZAN</span>
+        </div>
+        <div class="drawer-brand-sub" id="drawerSubtitle">إدارة المسابقات</div>
+      </div>
+      <button class="drawer-close" id="drawerClose" aria-label="إغلاق">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="drawer-content">
+    <div class="drawer-section">
+      <div class="drawer-section-title">
+        <i class="fas fa-th-large"></i>
+        <span>الأقسام</span>
+      </div>
+      <a href="index.html" class="drawer-btn">
+        <span class="drawer-btn-icon"><i class="fas fa-home"></i></span>
+        <span class="drawer-btn-label">الرئيسية</span>
+      </a>
+      <button class="drawer-btn" id="drawerThemeBtn">
+        <span class="drawer-btn-icon"><i class="fas fa-moon" id="drawerThemeIcon"></i></span>
+        <span class="drawer-btn-label" id="drawerThemeText">الوضع الليلي</span>
+      </button>
+      <a href="index1.html" class="drawer-btn">
+        <span class="drawer-btn-icon"><i class="fas fa-cog"></i></span>
+        <span class="drawer-btn-label">الإعدادات</span>
+      </a>
+      <button class="drawer-btn logout-btn" id="drawerLogoutBtn">
+        <span class="drawer-btn-icon"><i class="fas fa-sign-out-alt"></i></span>
+        <span class="drawer-btn-label">تسجيل الخروج</span>
+      </button>
+    </div>
+  </div>
+</aside>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+  getFirestore, doc, onSnapshot, setDoc, getDoc, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAmkCOrSaklhUiDdDfZCpSDQNmMYP-Gdw0",
+  authDomain: "qanon-c716d.firebaseapp.com",
+  projectId: "qanon-c716d",
+  storageBucket: "qanon-c716d.firebasestorage.app",
+  messagingSenderId: "757756130875",
+  appId: "1:757756130875:web:63c53534c6843e2a29ce1e",
+  measurementId: "G-8FZGTC779Y"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const $ = (id) => document.getElementById(id);
+
+// ============================================================
+// 🔒 الحماية
+// ============================================================
+if (sessionStorage.getItem('meezan_logged_in') !== 'true') {
+  window.location.replace('login.html');
+}
+
+const adminId = sessionStorage.getItem('meezan_user_id') || 'admin';
+const adminName = sessionStorage.getItem('meezan_username') || 'المشرف';
+
+history.pushState(null, '', location.href);
+window.addEventListener('popstate', () => {
+  if (sessionStorage.getItem('meezan_logged_in') === 'true') {
+    history.pushState(null, '', location.href);
+  } else {
+    window.location.replace('login.html');
+  }
+});
+
+// ============================================================
+// 🧹 Helpers
+// ============================================================
+function cleanInput(value) {
+  if (typeof value !== 'string') return '';
+  return value
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .replace(/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/g, ' ')
+    .replace(/^\s+|\s+$/g, '')
+    .trim();
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = String(text);
+  return div.innerHTML;
+}
+
+function formatTimeOnly(iso) {
+  if (!iso) return '';
+  try {
+    const d = new Date(iso);
+    return d.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+  } catch (e) { return ''; }
+}
+
+function formatDateTime(iso) {
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString('ar-EG', {
+      year: 'numeric', month: 'long', day: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+  } catch (e) { return '—'; }
+}
+
+function formatCountdown(ms) {
+  if (ms <= 0) return '00:00:00';
+  const totalSeconds = Math.floor(ms / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  if (days > 0) {
+    return `${days} يوم ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+function formatDuration(seconds) {
+  if (seconds < 60) return `${seconds} ث`;
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${String(s).padStart(2, '0')} د`;
+}
+
+// ============================================================
+// 📊 الحالة العامة
+// ============================================================
+let allContests = [];
+let filteredContests = [];
+let currentFilter = 'all';
+let searchQuery = '';
+let editingContestId = null;
+
+let currentQuestions = [];
+let uploadedImageBase64 = '';
+let currentImageTab = 'url';
+
+// Chat state
+let currentChatContestId = null;
+let currentChatContest = null;
+let unsubscribeChat = null;
+let unsubscribeContestants = null;
+let countdownInterval = null;
+let chatQuestionModalType = 'mcq';
+let chatQuestionOptions = [];
+let editingQuestionId = null;
+
+let currentContestants = [];
+let currentViewers = [];
+let currentWinner = null;
+let currentRoomData = null;
+let currentJoinRequests = [];
+
+// ============================================================
+// 🌙 الوضع
+// ============================================================
+const savedTheme = localStorage.getItem('meezan_theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+updateThemeIcon(savedTheme);
+updateDrawerTheme(savedTheme);
+
+$('themeToggle').addEventListener('click', toggleTheme);
+$('drawerThemeBtn').addEventListener('click', toggleTheme);
+
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('meezan_theme', next);
+  updateThemeIcon(next);
+  updateDrawerTheme(next);
+}
+
+function updateThemeIcon(t) {
+  $('themeIcon').className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+function updateDrawerTheme(t) {
+  const icon = $('drawerThemeIcon');
+  const text = $('drawerThemeText');
+  if (!icon || !text) return;
+  if (t === 'dark') {
+    icon.className = 'fas fa-sun';
+    text.textContent = 'الوضع النهاري';
+  } else {
+    icon.className = 'fas fa-moon';
+    text.textContent = 'الوضع الليلي';
+  }
+}
+
+// ============================================================
+// 💬 Toast
+// ============================================================
+let toastTimeout;
+function showToast(text, type = 'success') {
+  const toast = $('toast');
+  const icon = $('toastIcon');
+  $('toastText').textContent = text;
+  toast.className = 'toast show ' + type;
+  const icons = {
+    success: 'fa-check-circle',
+    error: 'fa-times-circle',
+    warning: 'fa-exclamation-triangle',
+    info: 'fa-info-circle'
+  };
+  icon.className = `fas ${icons[type] || icons.success}`;
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
+// ============================================================
+// 🔔 Confirm Modal
+// ============================================================
+let confirmResolve = null;
+function showConfirm(options = {}) {
+  return new Promise((resolve) => {
+    const {
+      title = 'تأكيد',
+      message = 'هل أنت متأكد؟',
+      icon = 'fa-question-circle',
+      iconType = 'default',
+      okText = 'تأكيد',
+      okClass = 'btn-primary'
+    } = options;
+
+    $('confirmIcon').className = 'confirm-icon';
+    if (iconType === 'danger') $('confirmIcon').classList.add('danger');
+    else if (iconType === 'warning') $('confirmIcon').classList.add('warning');
+    else if (iconType === 'success') $('confirmIcon').classList.add('success');
+
+    $('confirmIcon').innerHTML = `<i class="fas ${icon}"></i>`;
+    $('confirmTitle').textContent = title;
+    $('confirmMessage').innerHTML = message;
+    $('confirmOk').className = 'btn ' + okClass;
+    $('confirmOk').innerHTML = `<i class="fas fa-check"></i> <span>${okText}</span>`;
+
+    confirmResolve = resolve;
+    $('confirmModal').classList.add('show');
+  });
+}
+
+function closeConfirm(result) {
+  $('confirmModal').classList.remove('show');
+  if (confirmResolve) {
+    confirmResolve(result);
+    confirmResolve = null;
+  }
+}
+
+$('confirmOk').addEventListener('click', () => closeConfirm(true));
+$('confirmCancel').addEventListener('click', () => closeConfirm(false));
+$('confirmModal').addEventListener('click', (e) => {
+  if (e.target === $('confirmModal')) closeConfirm(false);
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if ($('confirmModal').classList.contains('show')) closeConfirm(false);
+    if ($('questionModal').classList.contains('show')) closeQuestionModal();
+    if ($('contestModal').classList.contains('show')) closeContestModal();
+  }
+});
+
+// ============================================================
+// 🔢 IDs التصاعدية
+// ============================================================
+async function getNextContestId() {
+  const ref = doc(db, 'counters', 'main');
+  try {
+    const snap = await getDoc(ref);
+    let counters = { contests: 0 };
+    if (snap.exists()) counters = { ...counters, ...snap.data() };
+    counters.contests = (counters.contests || 0) + 1;
+    await setDoc(ref, counters, { merge: true });
+    return counters.contests;
+  } catch (e) {
+    console.error('counter error:', e);
+    return Date.now();
+  }
+}
+
+// ============================================================
+// 📊 Stats + Filters
+// ============================================================
+function updateStats() {
+  const total = allContests.length;
+  const published = allContests.filter(c => c.status === 'published').length;
+  const active = allContests.filter(c => getContestStatus(c) === 'active').length;
+  const finished = allContests.filter(c => c.roomStatus === 'finished').length;
+
+  $('statTotal').textContent = total;
+  $('statPublished').textContent = published;
+  $('statActive').textContent = active;
+  $('statFinished').textContent = finished;
+}
+
+function getContestStatus(contest) {
+  if (contest.roomStatus === 'finished') return 'finished';
+  if (contest.status !== 'published') return 'draft';
+
+  const now = new Date();
+  const startAt = contest.startAt ? new Date(contest.startAt) : null;
+
+  if (startAt && startAt > now) return 'published';
+  return 'active';
+}
+
+function getStatusLabel(status) {
+  const map = {
+    'published': { label: 'منشورة', icon: 'fa-eye', class: 'published' },
+    'draft': { label: 'مسودة', icon: 'fa-edit', class: 'draft' },
+    'active': { label: 'جارٍ الآن', icon: 'fa-play-circle', class: 'active' },
+    'finished': { label: 'انتهت', icon: 'fa-medal', class: 'finished' }
+  };
+  return map[status] || map.published;
+}
+
+function applyFilters() {
+  const q = cleanInput(searchQuery).toLowerCase();
+  let base = [...allContests];
+
+  if (currentFilter === 'published') base = base.filter(c => getContestStatus(c) === 'published');
+  else if (currentFilter === 'draft') base = base.filter(c => c.status === 'draft');
+  else if (currentFilter === 'active') base = base.filter(c => getContestStatus(c) === 'active');
+  else if (currentFilter === 'finished') base = base.filter(c => c.roomStatus === 'finished');
+
+  if (q) {
+    base = base.filter(c =>
+      (c.name || '').toLowerCase().includes(q) ||
+      (c.description || '').toLowerCase().includes(q)
+    );
+  }
+
+  base.sort((a, b) => (b.id || 0) - (a.id || 0));
+  filteredContests = base;
+  renderContests();
+  updateFilterCounts();
+}
+
+function updateFilterCounts() {
+  $('filterAll').textContent = allContests.length;
+  $('filterPublished').textContent = allContests.filter(c => getContestStatus(c) === 'published').length;
+  $('filterDraft').textContent = allContests.filter(c => c.status === 'draft').length;
+  $('filterActive').textContent = allContests.filter(c => getContestStatus(c) === 'active').length;
+  $('filterFinished').textContent = allContests.filter(c => c.roomStatus === 'finished').length;
+}
+
+// ============================================================
+// 🎨 Render Contests
+// ============================================================
+function renderContests() {
+  const grid = $('contestsGrid');
+  grid.innerHTML = '';
+
+  if (filteredContests.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-trophy"></i>
+        <h3>${allContests.length === 0 ? 'لا توجد مسابقات بعد' : 'لا توجد نتائج'}</h3>
+        <p>${allContests.length === 0 ? 'ابدأ بإنشاء مسابقة جديدة' : 'جرّب البحث بكلمة أخرى'}</p>
+      </div>
+    `;
+    return;
+  }
+
+  filteredContests.forEach(contest => {
+    grid.appendChild(createContestCard(contest));
+  });
+}
+
+function createContestCard(contest) {
+  const card = document.createElement('div');
+  card.className = 'item-card';
+  const status = getContestStatus(contest);
+  const statusInfo = getStatusLabel(status);
+
+  card.classList.add(statusInfo.class);
+
+  const questionsCount = (contest.questions || []).length;
+  const contestantsCount = contest.contestantsCount || 0;
+  const maxContestants = contest.maxContestants || 1;
+
+  const isPublished = contest.status === 'published';
+
+  let imageHtml = '<i class="fas fa-trophy"></i>';
+  if (contest.imageUrl) {
+    imageHtml = `<img src="${escapeHtml(contest.imageUrl)}" alt="" loading="lazy" onerror="this.parentNode.innerHTML='<i class=\\'fas fa-trophy\\'></i>'">`;
+  }
+
+  let timeBoxHTML = '';
+  const now = new Date();
+  const startAt = contest.startAt ? new Date(contest.startAt) : null;
+
+  if (startAt && startAt > now && contest.status === 'published') {
+    const diff = startAt - now;
+    timeBoxHTML = `
+      <div class="item-time-box" data-countdown="${contest.id}">
+        <i class="fas fa-hourglass-start"></i>
+        <div class="time-info">
+          <span class="time-label">تبدأ بعد</span>
+          <span class="time-value" id="countdown-${contest.id}">${formatCountdown(diff)}</span>
+        </div>
+      </div>
+    `;
+  } else if (contest.roomStatus === 'finished') {
+    timeBoxHTML = `
+      <div class="item-time-box" style="border-color: var(--info); background: rgba(41, 128, 185, 0.06);">
+        <i class="fas fa-flag-checkered" style="color: var(--info);"></i>
+        <div class="time-info">
+          <span class="time-label">الحالة</span>
+          <span class="time-value" style="color: var(--info);">انتهت المسابقة</span>
+        </div>
+      </div>
+    `;
+  }
+
+  const viewersChatBadge = contest.allowViewersChat
+    ? `<span class="badge viewers-chat"><i class="fas fa-comments"></i> المشاهدون يكتبون</span>`
+    : `<span class="badge viewers-readonly"><i class="fas fa-eye"></i> المشاهدون يقرؤون فقط</span>`;
+
+  const winnerBadge = contest.winner
+    ? `<span class="badge winner"><i class="fas fa-crown"></i> الفائز: ${escapeHtml(contest.winner.name || '')}</span>`
+    : '';
+
+  card.innerHTML = `
+    <div class="item-status-badge ${statusInfo.class}">
+      <i class="fas ${statusInfo.icon}"></i>
+      <span>${statusInfo.label}</span>
+    </div>
+
+    <div class="item-image">${imageHtml}</div>
+
+    <div class="item-body">
+      <div class="item-title">${escapeHtml(contest.name)}</div>
+      ${contest.description ? `<div class="item-desc">${escapeHtml(contest.description)}</div>` : ''}
+
+      <div class="item-stats">
+        <div class="item-stat">
+          <div class="item-stat-value" style="color: var(--primary);">${contestantsCount}</div>
+          <div class="item-stat-label">متسابق</div>
+        </div>
+        <div class="item-stat">
+          <div class="item-stat-value" style="color: var(--info);">${maxContestants}</div>
+          <div class="item-stat-label">الحد الأقصى</div>
+        </div>
+        <div class="item-stat">
+          <div class="item-stat-value" style="color: var(--accent);">${questionsCount}</div>
+          <div class="item-stat-label">سؤال</div>
+        </div>
+      </div>
+
+      ${timeBoxHTML}
+
+      <div class="item-badges">
+        <span class="badge questions"><i class="fas fa-list-check"></i> ${questionsCount} سؤال</span>
+        ${viewersChatBadge}
+        ${winnerBadge}
+      </div>
+    </div>
+
+    <div class="item-footer" style="grid-template-columns: 1fr 1fr;">
+      <button class="btn-icon-action enter" data-action="enter">
+        <i class="fas fa-sign-in-alt"></i>
+        <span>ادخل الغرفة</span>
+      </button>
+      <button class="btn-icon-action ${isPublished ? 'unpublish' : 'publish'}" data-action="toggle-publish">
+        <i class="fas ${isPublished ? 'fa-eye-slash' : 'fa-eye'}"></i>
+        <span>${isPublished ? 'إلغاء النشر' : 'نشر'}</span>
+      </button>
+    </div>
+    <div class="item-footer" style="grid-template-columns: 1fr 1fr; border-top: 1px dashed var(--border);">
+      <button class="btn-icon-action edit" data-action="edit">
+        <i class="fas fa-pen"></i>
+        <span>تعديل</span>
+      </button>
+      <button class="btn-icon-action delete" data-action="delete">
+        <i class="fas fa-trash-can"></i>
+        <span>حذف</span>
+      </button>
+    </div>
+  `;
+
+  card.querySelectorAll('[data-action]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      handleContestAction(btn.dataset.action, contest.id);
+    });
+  });
+
+  return card;
+}
+
+// ============================================================
+// ⏰ Live Countdown
+// ============================================================
+setInterval(() => {
+  const now = new Date();
+  document.querySelectorAll('[data-countdown]').forEach(el => {
+    const contestId = parseInt(el.dataset.countdown);
+    const contest = allContests.find(c => c.id === contestId);
+    if (!contest || !contest.startAt) return;
+
+    const startAt = new Date(contest.startAt);
+    const diff = startAt - now;
+    const el2 = $('countdown-' + contestId);
+    if (!el2) return;
+
+    if (diff <= 0) {
+      el2.textContent = 'بدأت الآن';
+    } else {
+      el2.textContent = formatCountdown(diff);
+    }
+  });
+}, 1000);
+
+// ============================================================
+// 🎯 Contest Actions
+// ============================================================
+async function handleContestAction(action, id) {
+  const contest = allContests.find(c => c.id === id);
+  if (!contest) return;
+
+  switch (action) {
+    case 'enter':
+      openChatRoom(contest);
+      break;
+    case 'toggle-publish':
+      await toggleContestPublish(contest);
+      break;
+    case 'edit':
+      openContestModal(contest);
+      break;
+    case 'delete':
+      await deleteContest(contest);
+      break;
+  }
+}
+
+async function toggleContestPublish(contest) {
+  const newStatus = contest.status === 'published' ? 'draft' : 'published';
+  const wasPublished = contest.status === 'published';
+
+  const updated = allContests.map(c =>
+    c.id === contest.id ? { ...c, status: newStatus, updatedAt: new Date().toISOString() } : c
+  );
+
+  try {
+    await setDoc(doc(db, 'contests', 'all'), {
+      items: updated,
+      updatedAt: serverTimestamp()
+    });
+
+    if (newStatus === 'published' && !wasPublished) {
+      await notifyContestPublished({ ...contest, status: 'published' });
+    }
+
+    showToast(newStatus === 'published' ? '✅ تم نشر المسابقة' : '📝 تم إلغاء النشر', 'success');
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+async function deleteContest(contest) {
+  const c = await showConfirm({
+    title: 'حذف المسابقة',
+    message: `هل تريد حذف "<strong>${escapeHtml(contest.name)}</strong>"؟<br><br>سيتم حذف غرفة المسابقة وكل الرسائل.`,
+    icon: 'fa-trash',
+    iconType: 'danger',
+    okText: 'حذف',
+    okClass: 'btn-danger'
+  });
+  if (!c) return;
+
+  try {
+    const updated = allContests.filter(c => c.id !== contest.id);
+    await setDoc(doc(db, 'contests', 'all'), {
+      items: updated,
+      updatedAt: serverTimestamp()
+    });
+
+    try {
+      await setDoc(doc(db, 'contest_rooms', String(contest.id)), {
+        deleted: true,
+        deletedAt: serverTimestamp()
+      }, { merge: true });
+    } catch (e) {}
+
+    showToast('✅ تم حذف المسابقة', 'success');
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+// ============================================================
+// 📢 Notify Contest Published
+// ============================================================
+async function notifyContestPublished(contest) {
+  try {
+    const studentsSnap = await getDoc(doc(db, 'users', 'all'));
+    if (!studentsSnap.exists()) return;
+
+    const students = studentsSnap.data().items || [];
+    if (students.length === 0) return;
+
+    const notifId = 'notif_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+    const link = `${location.origin}/contest.html?id=${contest.id}`;
+    const startFormatted = contest.startAt ? formatDateTime(contest.startAt) : 'الآن';
+
+    const notification = {
+      id: notifId,
+      title: '🎯 مسابقة جديدة: ' + contest.name,
+      body: `تم إضافة مسابقة جديدة!\n\n🏆 ${contest.name}\n⏰ تبدأ: ${startFormatted}\n👥 الحد الأقصى: ${contest.maxContestants} متسابق\n\n🔗 ادخل الآن: ${link}`,
+      type: 'link',
+      url: link,
+      senderId: adminId,
+      senderName: adminName,
+      createdAt: new Date().toISOString(),
+      target: 'all',
+      targetLabel: 'الجميع',
+      recipients: students.map(s => s.id),
+      recipientsCount: students.length
+    };
+
+    await setDoc(doc(db, 'notifications', notifId), notification);
+
+    for (const student of students) {
+      try {
+        const userRef = doc(db, 'user_notifications', student.id);
+        const uSnap = await getDoc(userRef);
+        let notifIds = [];
+        let readIds = [];
+        if (uSnap.exists()) {
+          notifIds = uSnap.data().notifIds || [];
+          readIds = uSnap.data().readIds || [];
+        }
+        if (!notifIds.includes(notifId)) {
+          notifIds.unshift(notifId);
+          if (notifIds.length > 100) notifIds = notifIds.slice(0, 100);
+        }
+        await setDoc(userRef, {
+          userId: student.id,
+          notifIds,
+          readIds,
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+      } catch (e) {}
+    }
+
+    await setDoc(doc(db, 'settings', 'lastNotification'), {
+      id: notifId,
+      title: notification.title,
+      body: notification.body,
+      type: 'link',
+      url: link,
+      createdAt: notification.createdAt,
+      senderName: adminName
+    });
+
+    console.log(`✅ Sent contest notification to ${students.length} users`);
+  } catch (e) {
+    console.error('notify error:', e);
+  }
+}
+
+// ============================================================
+// 📝 Contest Modal
+// ============================================================
+function openContestModal(contest = null) {
+  editingContestId = contest ? contest.id : null;
+  $('modalTitle').textContent = contest ? 'تعديل المسابقة' : 'إنشاء مسابقة جديدة';
+  $('modalIcon').className = contest ? 'fas fa-pen' : 'fas fa-trophy';
+
+  $('contestName').value = contest ? (contest.name || '') : '';
+  $('contestDesc').value = contest ? (contest.description || '') : '';
+  $('contestNameCount').textContent = $('contestName').value.length;
+  $('contestDescCount').textContent = $('contestDesc').value.length;
+
+  if (contest && contest.startAt) {
+    const d = new Date(contest.startAt);
+    $('contestStartDate').value = d.toISOString().split('T')[0];
+    $('contestStartTime').value = d.toTimeString().slice(0, 5);
+  } else {
+    const tomorrow = new Date(Date.now() + 3600000);
+    $('contestStartDate').value = tomorrow.toISOString().split('T')[0];
+    $('contestStartTime').value = tomorrow.toTimeString().slice(0, 5);
+  }
+
+  uploadedImageBase64 = '';
+  currentImageTab = 'url';
+  $('imageUrl').value = contest && contest.imageUrl && !contest.imageUrl.startsWith('data:') ? contest.imageUrl : '';
+  $('imageFile').value = '';
+  $('imageUploadStatus').style.display = 'none';
+
+  document.querySelectorAll('[data-img-tab]').forEach(b => {
+    b.classList.toggle('active', b.dataset.imgTab === 'url');
+  });
+  document.querySelectorAll('.image-tab-content').forEach(c => c.classList.remove('active'));
+  $('imgTabUrl').classList.add('active');
+  updateImagePreview(contest?.imageUrl || '', null);
+
+  const maxContestants = contest?.maxContestants || 1;
+  document.querySelectorAll('[data-contestants]').forEach(b => {
+    b.classList.remove('active');
+    const val = b.dataset.contestants;
+    if (val === '1' && maxContestants === 1) b.classList.add('active');
+    else if (val === '2' && maxContestants === 2) b.classList.add('active');
+    else if (val === 'custom' && maxContestants !== 1 && maxContestants !== 2) b.classList.add('active');
+  });
+
+  if (maxContestants !== 1 && maxContestants !== 2) {
+    $('customContestantsWrapper').style.display = 'block';
+    $('customContestantsCount').value = maxContestants;
+  } else {
+    $('customContestantsWrapper').style.display = 'none';
+  }
+
+  $('allowViewersChat').checked = contest?.allowViewersChat === true;
+  $('notifyOnPublish').checked = true;
+
+  currentQuestions = contest && contest.questions ? JSON.parse(JSON.stringify(contest.questions)) : [];
+  renderQuestions();
+
+  $('contestStatus').value = contest ? (contest.status || 'published') : 'published';
+
+  $('modalError').classList.remove('show');
+  $('contestModal').classList.add('show');
+  setTimeout(() => $('contestName').focus(), 100);
+}
+
+function closeContestModal() {
+  $('contestModal').classList.remove('show');
+  editingContestId = null;
+  currentQuestions = [];
+  uploadedImageBase64 = '';
+}
+
+$('btnAddContest').addEventListener('click', () => openContestModal());
+$('modalClose').addEventListener('click', closeContestModal);
+$('modalCancel').addEventListener('click', closeContestModal);
+$('contestModal').addEventListener('click', (e) => {
+  if (e.target === $('contestModal')) closeContestModal();
+});
+
+$('contestName').addEventListener('input', (e) => {
+  $('contestNameCount').textContent = e.target.value.length;
+});
+
+$('contestDesc').addEventListener('input', (e) => {
+  $('contestDescCount').textContent = e.target.value.length;
+});
+
+document.querySelectorAll('[data-img-tab]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentImageTab = btn.dataset.imgTab;
+    document.querySelectorAll('[data-img-tab]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.image-tab-content').forEach(c => c.classList.remove('active'));
+    $(`imgTab${currentImageTab === 'url' ? 'Url' : 'Upload'}`).classList.add('active');
+  });
+});
+
+$('imageUrl').addEventListener('input', (e) => {
+  updateImagePreview(cleanInput(e.target.value), null);
+});
+
+$('imageFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 1024 * 1024) return showToast('حجم الصورة أكبر من 1MB', 'error');
+
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    uploadedImageBase64 = ev.target.result;
+    $('imageUploadStatus').textContent = `✅ تم تحميل: ${file.name}`;
+    $('imageUploadStatus').style.display = 'block';
+    updateImagePreview('', uploadedImageBase64);
+  };
+  reader.readAsDataURL(file);
+});
+
+function updateImagePreview(url, base64) {
+  const preview = $('imagePreview');
+  const src = base64 || url;
+  if (src) {
+    preview.innerHTML = `<img src="${src}" alt="Preview" onerror="this.parentNode.innerHTML='<i class=\\'fas fa-image\\'></i>'">`;
+  } else {
+    preview.innerHTML = '<i class="fas fa-image"></i>';
+  }
+}
+
+document.querySelectorAll('[data-contestants]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-contestants]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (btn.dataset.contestants === 'custom') {
+      $('customContestantsWrapper').style.display = 'block';
+    } else {
+      $('customContestantsWrapper').style.display = 'none';
+    }
+  });
+});
+
+$('allowViewersChat').addEventListener('change', (e) => {
+  $('viewersChatRow').classList.toggle('active', e.target.checked);
+});
+
+// ============================================================
+// ❓ Questions Builder
+// ============================================================
+function generateQuestionId() {
+  return 'q_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+}
+
+function renderQuestions() {
+  const container = $('questionsContainer');
+  container.innerHTML = '';
+
+  if (currentQuestions.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state" style="padding: 30px 20px; border: none;">
+        <i class="fas fa-list-check" style="font-size: 36px; margin-bottom: 10px;"></i>
+        <p style="font-size: 13px;">لا توجد أسئلة بعد — أضف سؤالاً</p>
+      </div>
+    `;
+    $('qStats').style.display = 'none';
+    $('questionsCount').textContent = '0 سؤال';
+    return;
+  }
+
+  currentQuestions.forEach((q, idx) => {
+    container.appendChild(createQuestionCard(q, idx));
+  });
+
+  const mcqCount = currentQuestions.filter(q => q.type === 'mcq').length;
+  const essayCount = currentQuestions.filter(q => q.type === 'essay').length;
+  const totalScore = currentQuestions.reduce((sum, q) => sum + (q.score || 1), 0);
+
+  $('qStats').style.display = 'flex';
+  $('qTotal').textContent = currentQuestions.length;
+  $('qMcq').textContent = mcqCount;
+  $('qEssay').textContent = essayCount;
+  $('qTotalScore').textContent = totalScore;
+  $('questionsCount').textContent = `${currentQuestions.length} سؤال`;
+}
+
+function createQuestionCard(q, idx) {
+  const card = document.createElement('div');
+  card.className = `question-card ${q.type}`;
+
+  const typeLabel = q.type === 'mcq' ? 'اختيار متعدد' : 'مقالي';
+
+  let optionsHTML = '';
+  if (q.type === 'mcq') {
+    optionsHTML = `
+      <div class="q-field">
+        <div class="q-field-label">
+          <span>الإجابات</span>
+          <span>اضغط الدائرة لتحديد الإجابة الصحيحة</span>
+        </div>
+        <div class="options-list">
+          ${q.options.map((opt, i) => `
+            <div class="option-row ${opt.correct ? 'correct' : ''}" data-option-row data-option-idx="${i}">
+              <div class="option-correct-check" data-toggle-correct>
+                <i class="fas fa-check"></i>
+              </div>
+              <input type="text" class="option-input" data-option-input value="${escapeHtml(opt.text || '')}" placeholder="اكتب الإجابة...">
+              <button type="button" class="remove-option" data-remove-opt>
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          `).join('')}
+        </div>
+        <button type="button" class="add-option-btn" data-add-option>
+          <i class="fas fa-plus"></i> إضافة إجابة
+        </button>
+      </div>
+    `;
+  } else {
+    optionsHTML = `
+      <div class="q-field">
+        <div class="q-field-label">
+          <span>الإجابة النموذجية (اختياري)</span>
+        </div>
+        <textarea class="q-input textarea" data-essay-answer placeholder="اكتب الإجابة النموذجية...">${escapeHtml(q.correctEssayAnswer || '')}</textarea>
+      </div>
+    `;
+  }
+
+  card.innerHTML = `
+    <div class="question-header">
+      <span class="question-number">
+        <i class="fas fa-hashtag"></i> سؤال ${idx + 1}
+      </span>
+      <span class="question-type-badge ${q.type}">${typeLabel}</span>
+      <button type="button" class="q-btn" data-remove-q title="حذف">
+        <i class="fas fa-trash-can"></i>
+      </button>
+    </div>
+
+    <div class="q-field">
+      <div class="q-field-label">
+        <span>اسم السؤال *</span>
+      </div>
+      <textarea class="q-input textarea" data-q-title placeholder="اكتب السؤال...">${escapeHtml(q.title || '')}</textarea>
+    </div>
+
+    <div class="q-row-2">
+      <div class="q-field">
+        <div class="q-field-label"><span>الدرجة</span></div>
+        <input type="number" class="q-input" data-q-score min="1" value="${q.score || 1}">
+      </div>
+      <div class="q-field">
+        <div class="q-field-label"><span>النوع</span></div>
+        <select class="q-input" data-q-type>
+          <option value="mcq" ${q.type === 'mcq' ? 'selected' : ''}>اختيار متعدد</option>
+          <option value="essay" ${q.type === 'essay' ? 'selected' : ''}>مقالي</option>
+        </select>
+      </div>
+    </div>
+
+    ${optionsHTML}
+
+    <div class="q-field">
+      <div class="q-field-label"><span>الشرح (اختياري)</span></div>
+      <textarea class="q-input textarea" data-q-explanation placeholder="شرح يظهر للطالب...">${escapeHtml(q.explanation || '')}</textarea>
+    </div>
+  `;
+
+  card.querySelector('[data-remove-q]').addEventListener('click', () => {
+    currentQuestions = currentQuestions.filter(x => x.id !== q.id);
+    renderQuestions();
+  });
+
+  card.querySelector('[data-q-title]').addEventListener('input', (e) => {
+    const q2 = currentQuestions.find(x => x.id === q.id);
+    if (q2) q2.title = e.target.value;
+  });
+
+  card.querySelector('[data-q-score]').addEventListener('input', (e) => {
+    const q2 = currentQuestions.find(x => x.id === q.id);
+    if (q2) q2.score = parseInt(e.target.value) || 1;
+  });
+
+  card.querySelector('[data-q-type]').addEventListener('change', (e) => {
+    const q2 = currentQuestions.find(x => x.id === q.id);
+    if (q2) {
+      q2.type = e.target.value;
+      if (q2.type === 'mcq' && (!q2.options || q2.options.length === 0)) {
+        q2.options = [
+          { text: '', correct: false },
+          { text: '', correct: false }
+        ];
+      }
+      renderQuestions();
+    }
+  });
+
+  card.querySelector('[data-q-explanation]').addEventListener('input', (e) => {
+    const q2 = currentQuestions.find(x => x.id === q.id);
+    if (q2) q2.explanation = e.target.value;
+  });
+
+  if (q.type === 'mcq') {
+    card.querySelectorAll('[data-option-row]').forEach(row => {
+      const optIdx = parseInt(row.dataset.optionIdx);
+
+      row.querySelector('[data-toggle-correct]').addEventListener('click', () => {
+        const q2 = currentQuestions.find(x => x.id === q.id);
+        if (q2) {
+          q2.options[optIdx].correct = !q2.options[optIdx].correct;
+          renderQuestions();
+        }
+      });
+
+      row.querySelector('[data-option-input]').addEventListener('input', (e) => {
+        const q2 = currentQuestions.find(x => x.id === q.id);
+        if (q2) q2.options[optIdx].text = e.target.value;
+      });
+
+      row.querySelector('[data-remove-opt]').addEventListener('click', () => {
+        const q2 = currentQuestions.find(x => x.id === q.id);
+        if (q2 && q2.options.length > 2) {
+          q2.options.splice(optIdx, 1);
+          renderQuestions();
+        }
+      });
+    });
+
+    card.querySelector('[data-add-option]').addEventListener('click', () => {
+      const q2 = currentQuestions.find(x => x.id === q.id);
+      if (q2) {
+        q2.options.push({ text: '', correct: false });
+        renderQuestions();
+      }
+    });
+  } else {
+    card.querySelector('[data-essay-answer]')?.addEventListener('input', (e) => {
+      const q2 = currentQuestions.find(x => x.id === q.id);
+      if (q2) q2.correctEssayAnswer = e.target.value;
+    });
+  }
+
+  return card;
+}
+
+function addMcqQuestion() {
+  currentQuestions.push({
+    id: generateQuestionId(),
+    type: 'mcq',
+    title: '',
+    score: 1,
+    options: [
+      { text: '', correct: false },
+      { text: '', correct: false }
+    ],
+    explanation: ''
+  });
+  renderQuestions();
+}
+
+function addEssayQuestion() {
+  currentQuestions.push({
+    id: generateQuestionId(),
+    type: 'essay',
+    title: '',
+    score: 1,
+    correctEssayAnswer: '',
+    explanation: ''
+  });
+  renderQuestions();
+}
+
+$('btnAddMcq').addEventListener('click', addMcqQuestion);
+$('btnAddEssay').addEventListener('click', addEssayQuestion);
+
+// ============================================================
+// 💾 Save Contest
+// ============================================================
+$('modalSave').addEventListener('click', async () => {
+  const errEl = $('modalError');
+  errEl.classList.remove('show');
+
+  const name = cleanInput($('contestName').value);
+  const description = cleanInput($('contestDesc').value);
+  const startDate = $('contestStartDate').value;
+  const startTime = $('contestStartTime').value;
+  const imageUrl = currentImageTab === 'url' ? cleanInput($('imageUrl').value) : uploadedImageBase64;
+  const allowViewersChat = $('allowViewersChat').checked;
+  const notifyOnPublish = $('notifyOnPublish').checked;
+  const status = $('contestStatus').value;
+
+  let maxContestants = 1;
+  const activeContestantsBtn = document.querySelector('[data-contestants].active');
+  if (activeContestantsBtn) {
+    const val = activeContestantsBtn.dataset.contestants;
+    if (val === 'custom') {
+      maxContestants = parseInt($('customContestantsCount').value) || 5;
+    } else {
+      maxContestants = parseInt(val) || 1;
+    }
+  }
+
+  if (!name) return showErr('الرجاء إدخال اسم المسابقة');
+  if (name.length < 3) return showErr('اسم المسابقة قصير جداً');
+  if (!startDate || !startTime) return showErr('الرجاء تحديد موعد بدء المسابقة');
+  if (maxContestants < 1 || maxContestants > 50) return showErr('عدد المتسابقين يجب أن يكون من 1 إلى 50');
+
+  for (let i = 0; i < currentQuestions.length; i++) {
+    const q = currentQuestions[i];
+    if (!cleanInput(q.title)) return showErr(`السؤال #${i + 1}: العنوان مطلوب`);
+    if (q.type === 'mcq') {
+      if (!q.options || q.options.length < 2) return showErr(`السؤال #${i + 1}: يجب أن يكون هناك إجابتان على الأقل`);
+      if (!q.options.some(o => o.correct)) return showErr(`السؤال #${i + 1}: حدد إجابة صحيحة واحدة على الأقل`);
+      if (q.options.some(o => !cleanInput(o.text))) return showErr(`السؤال #${i + 1}: كل الإجابات يجب أن تكون مكتوبة`);
+    }
+  }
+
+  const startAt = new Date(`${startDate}T${startTime}:00`).toISOString();
+
+  const btn = $('modalSave');
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+  try {
+    const now = new Date().toISOString();
+    const wasPublished = editingContestId
+      ? allContests.find(c => c.id === editingContestId)?.status === 'published'
+      : false;
+
+    let contestData = null;
+
+    if (editingContestId) {
+      const updated = allContests.map(c => {
+        if (c.id === editingContestId) {
+          const data = {
+            ...c,
+            name, description,
+            startAt,
+            imageUrl,
+            maxContestants,
+            allowViewersChat,
+            questions: currentQuestions,
+            status,
+            updatedAt: now
+          };
+          contestData = data;
+          return data;
+        }
+        return c;
+      });
+      await setDoc(doc(db, 'contests', 'all'), { items: updated, updatedAt: serverTimestamp() });
+      showToast('✅ تم تعديل المسابقة', 'success');
+
+      if (status === 'published' && !wasPublished && notifyOnPublish) {
+        await notifyContestPublished(contestData);
+      }
+    } else {
+      const id = await getNextContestId();
+      const newContest = {
+        id, name, description,
+        startAt,
+        imageUrl,
+        maxContestants,
+        allowViewersChat,
+        questions: currentQuestions,
+        status,
+        contestantsCount: 0,
+        contestantIds: [],
+        contestants: [],
+        kickedUsers: [],
+        roomStatus: 'waiting',
+        winner: null,
+        createdAt: now,
+        updatedAt: now,
+        createdBy: adminId
+      };
+      contestData = newContest;
+
+      const updated = [...allContests, newContest];
+      await setDoc(doc(db, 'contests', 'all'), { items: updated, updatedAt: serverTimestamp() });
+      showToast('✅ تم إنشاء المسابقة', 'success');
+
+      if (status === 'published' && notifyOnPublish) {
+        await notifyContestPublished(newContest);
+      }
+    }
+
+    closeContestModal();
+  } catch (e) {
+    console.error(e);
+    showErr('حدث خطأ: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+});
+
+function showErr(msg) {
+  const errEl = $('modalError');
+  errEl.textContent = msg;
+  errEl.classList.add('show');
+  errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ============================================================
+// 🔍 Search + Filters
+// ============================================================
+$('searchContests').addEventListener('input', (e) => {
+  searchQuery = e.target.value;
+  $('clearSearch').classList.toggle('show', !!cleanInput(searchQuery));
+  applyFilters();
+});
+
+$('clearSearch').addEventListener('click', () => {
+  $('searchContests').value = '';
+  searchQuery = '';
+  $('clearSearch').classList.remove('show');
+  applyFilters();
+});
+
+document.querySelectorAll('[data-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentFilter = btn.dataset.filter;
+    document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  });
+});
+
+// ============================================================
+// 🔴 CHAT ROOM
+// ============================================================
+function openChatRoom(contest) {
+  currentChatContestId = contest.id;
+  currentChatContest = contest;
+
+  $('chatTitle').textContent = contest.name;
+  $('chatSub').textContent = `الحد الأقصى: ${contest.maxContestants} متسابق`;
+  $('chatModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+
+  startChatListener();
+  startContestantsListener();
+  startCountdownTimer();
+
+  setTimeout(() => {
+    $('chatInput').focus();
+  }, 300);
+}
+
+function closeChatRoom() {
+  $('chatModal').classList.remove('show');
+  document.body.style.overflow = '';
+  currentChatContestId = null;
+  currentChatContest = null;
+  currentContestants = [];
+  currentViewers = [];
+  currentWinner = null;
+  currentRoomData = null;
+  currentJoinRequests = [];
+
+  if (unsubscribeChat) { unsubscribeChat(); unsubscribeChat = null; }
+  if (unsubscribeContestants) { unsubscribeContestants(); unsubscribeContestants = null; }
+  if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+}
+
+$('chatBackBtn').addEventListener('click', closeChatRoom);
+$('chatCloseBtn').addEventListener('click', closeChatRoom);
+
+// ============================================================
+// 📡 Chat Listener
+// ============================================================
+function startChatListener() {
+  if (unsubscribeChat) unsubscribeChat();
+
+  const roomRef = doc(db, 'contest_rooms', String(currentChatContestId));
+
+  unsubscribeChat = onSnapshot(roomRef, (snap) => {
+    if (!snap.exists()) {
+      setDoc(roomRef, {
+        contestId: currentChatContestId,
+        messages: [],
+        contestants: [],
+        viewers: [],
+        kickedUsers: [],
+        answers: {},
+        allowViewersChat: false,
+        roomStatus: 'waiting',
+        createdAt: serverTimestamp()
+      }, { merge: true });
+      return;
+    }
+
+    const data = snap.data();
+    currentRoomData = data;
+    const messages = data.messages || [];
+
+    if (data.allowViewersChat !== undefined) {
+      $('chatViewersIcon').className = data.allowViewersChat ? 'fas fa-user-check' : 'fas fa-user-slash';
+    }
+
+    renderMessages(messages);
+    renderWinner(data.winner);
+
+    const msgContainer = $('chatMessages');
+    if (msgContainer) {
+      setTimeout(() => {
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+      }, 100);
+    }
+  }, (err) => console.log('chat error:', err.message));
+}
+
+// ============================================================
+// 📡 Contestants + Viewers Listener
+// ============================================================
+function startContestantsListener() {
+  if (unsubscribeContestants) unsubscribeContestants();
+
+  const contestRef = doc(db, 'contests', 'all');
+
+  const unsub = onSnapshot(contestRef, async (snap) => {
+    if (!snap.exists()) return;
+    const items = snap.data().items || [];
+    const contest = items.find(c => c.id === currentChatContestId);
+    if (!contest) return;
+
+    currentChatContest = contest;
+    currentContestants = contest.contestants || [];
+    currentWinner = contest.winner || null;
+
+    // مزامنة مع الغرفة
+    try {
+      const roomRef = doc(db, 'contest_rooms', String(currentChatContestId));
+      const roomSnap = await getDoc(roomRef);
+      const roomData = roomSnap.exists() ? roomSnap.data() : {};
+
+      const roomContestants = roomData.contestants || [];
+      const roomKicked = roomData.kickedUsers || [];
+      const contestantIds = contest.contestantIds || [];
+
+      const roomIdsSorted = JSON.stringify(roomContestants.map(c => c.id).sort());
+      const contestIdsSorted = JSON.stringify(contestantIds.slice().sort());
+
+      if (roomIdsSorted !== contestIdsSorted) {
+        await setDoc(roomRef, {
+          contestants: currentContestants,
+          kickedUsers: contest.kickedUsers || roomKicked,
+          allowViewersChat: contest.allowViewersChat !== undefined
+            ? contest.allowViewersChat
+            : (roomData.allowViewersChat || false)
+        }, { merge: true });
+      }
+    } catch (e) {
+      console.error('sync error:', e);
+    }
+
+    renderContestants();
+    renderWinner(currentWinner);
+    renderLeaderboard();
+  }, (err) => console.log('contestants error:', err.message));
+
+  unsubscribeContestants = () => {
+    unsub();
+  };
+}
+
+// ============================================================
+// ⏰ Countdown Timer
+// ============================================================
+function startCountdownTimer() {
+  if (countdownInterval) clearInterval(countdownInterval);
+
+  countdownInterval = setInterval(() => {
+    if (!currentChatContest || !currentChatContest.startAt) return;
+
+    const now = new Date();
+    const startAt = new Date(currentChatContest.startAt);
+    const diff = startAt - now;
+
+    if (diff > 0) {
+      $('chatCountdown').textContent = `⏰ تبدأ بعد: ${formatCountdown(diff)}`;
+    } else {
+      $('chatCountdown').textContent = '🔴 جارية الآن';
+    }
+  }, 1000);
+}
+
+// ============================================================
+// 💬 Render Messages
+// ============================================================
+function renderMessages(messages) {
+  const container = $('chatMessages');
+  container.innerHTML = '';
+
+  if (messages.length === 0) {
+    container.innerHTML = `
+      <div class="msg system">
+        <div class="msg-content">
+          <div class="msg-text">🎯 مرحباً بكم في غرفة المسابقة</div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  messages.forEach(msg => {
+    if (msg.deleted) return;
+    container.appendChild(createMessageElement(msg));
+  });
+}
+
+function createMessageElement(msg) {
+  const el = document.createElement('div');
+  const sender = msg.sender || 'user';
+
+  el.className = `msg ${sender}`;
+
+  if (sender === 'system') {
+    el.innerHTML = `
+      <div class="msg-content">
+        <div class="msg-text">${escapeHtml(msg.text || '')}</div>
+      </div>
+    `;
+    return el;
+  }
+
+  if (msg.type === 'question') {
+    return createQuestionMessageElement(msg);
+  }
+
+  // Join request message
+  if (msg.type === 'join_request') {
+    return createJoinRequestElement(msg);
+  }
+
+  const avatar = document.createElement('div');
+  avatar.className = 'msg-avatar';
+
+  if (sender === 'admin') {
+    avatar.innerHTML = '<i class="fas fa-crown"></i>';
+    avatar.style.background = 'linear-gradient(135deg, #C9A961, #E0C888)';
+    avatar.style.color = '#fff';
+  } else {
+    if (msg.senderAvatar) {
+      avatar.innerHTML = `<img src="${escapeHtml(msg.senderAvatar)}" alt="" onerror="this.parentNode.innerHTML='<i class=\\'fas fa-user\\'></i>'">`;
+    } else {
+      avatar.innerHTML = `<span>${(msg.senderName || '؟').charAt(0).toUpperCase()}</span>`;
+    }
+  }
+
+  const content = document.createElement('div');
+  content.className = 'msg-content';
+
+  let html = '';
+  if (sender === 'admin') {
+    html += `<div class="msg-sender-name"><i class="fas fa-crown"></i> ${escapeHtml(msg.senderName || 'المدير')}</div>`;
+  } else {
+    html += `<div class="msg-sender-name" style="color: var(--primary);"><i class="fas fa-user"></i> ${escapeHtml(msg.senderName || 'مستخدم')}</div>`;
+  }
+
+  if (msg.text) {
+    html += `<div class="msg-text">${escapeHtml(msg.text)}</div>`;
+  }
+
+  html += `<div class="msg-meta"><i class="far fa-clock"></i> ${formatTimeOnly(msg.createdAt)}</div>`;
+
+  content.innerHTML = html;
+
+  el.appendChild(avatar);
+  el.appendChild(content);
+  return el;
+}
+
+// ============================================================
+// 🙋 Join Request Element (Real-time)
+// ============================================================
+function createJoinRequestElement(msg) {
+  const el = document.createElement('div');
+  el.className = 'msg join-request';
+
+  const isProcessed = msg.processed === true;
+  const wasAccepted = msg.accepted === true;
+  const requesterName = msg.senderName || 'مستخدم';
+
+  let actionsHTML = '';
+
+  if (isProcessed) {
+    actionsHTML = `
+      <div style="margin-top: 10px; padding: 8px 14px; border-radius: 10px; text-align: center; font-size: 12.5px; font-weight: 700; ${wasAccepted
+        ? 'background: rgba(30, 122, 90, 0.12); color: var(--success); border: 1.5px solid var(--success);'
+        : 'background: rgba(192, 57, 43, 0.12); color: var(--error); border: 1.5px solid var(--error);'
+      }">
+        <i class="fas ${wasAccepted ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+        ${wasAccepted ? 'تم قبول الانضمام' : 'تم رفض الانضمام'}
+      </div>
+    `;
+  } else {
+    actionsHTML = `
+      <div class="join-request-actions">
+        <button class="join-action-btn accept" data-join-accept data-req-id="${msg.id}" data-user-id="${msg.senderId}">
+          <i class="fas fa-check"></i>
+          <span>قبول</span>
+        </button>
+        <button class="join-action-btn reject" data-join-reject data-req-id="${msg.id}" data-user-id="${msg.senderId}">
+          <i class="fas fa-times"></i>
+          <span>رفض</span>
+        </button>
+      </div>
+    `;
+  }
+
+  el.innerHTML = `
+    <div class="msg-content">
+      <div class="join-request-title">
+        <i class="fas fa-hand-paper" style="color: var(--warning);"></i>
+        <strong>${escapeHtml(requesterName)}</strong> يريد الانضمام للمسابقة
+      </div>
+      <div style="font-size: 12px; color: var(--text-sub); font-weight: 600;">
+        <i class="far fa-clock"></i> ${formatTimeOnly(msg.createdAt)}
+        ${isProcessed ? '' : ' — بانتظار قرارك'}
+      </div>
+      ${actionsHTML}
+    </div>
+  `;
+
+  if (!isProcessed) {
+    el.querySelector('[data-join-accept]')?.addEventListener('click', () => {
+      handleJoinRequest(msg.id, msg.senderId, msg.senderName, true);
+    });
+    el.querySelector('[data-join-reject]')?.addEventListener('click', () => {
+      handleJoinRequest(msg.id, msg.senderId, msg.senderName, false);
+    });
+  }
+
+  return el;
+}
+
+// ============================================================
+// ✅ Handle Join Request (Accept / Reject)
+// ============================================================
+async function handleJoinRequest(msgId, userId, userName, accept) {
+  try {
+    const contestRef = doc(db, 'contests', 'all');
+    const contestSnap = await getDoc(contestRef);
+    if (!contestSnap.exists()) return;
+
+    const items = contestSnap.data().items || [];
+    const cIdx = items.findIndex(c => c.id === currentChatContestId);
+    if (cIdx === -1) return;
+
+    const contest = items[cIdx];
+    const contestantIds = contest.contestantIds || [];
+    const contestants = contest.contestants || [];
+    const kickedUsers = (contest.kickedUsers || []).filter(id => id !== userId);
+
+    const roomRef = doc(db, 'contest_rooms', String(currentChatContestId));
+    const roomSnap = await getDoc(roomRef);
+    const roomData = roomSnap.exists() ? roomSnap.data() : {};
+    let messages = roomData.messages || [];
+
+    // حدّث الرسالة
+    const msgIdx = messages.findIndex(m => m.id === msgId);
+    if (msgIdx === -1) return;
+
+    if (accept) {
+      const maxContestants = contest.maxContestants || 1;
+
+      // تحقق من الأسبقية
+      if (contestantIds.length >= maxContestants) {
+        // المسابقة ممتلئة → ارفض تلقائياً
+        messages[msgIdx].processed = true;
+        messages[msgIdx].accepted = false;
+        messages.push({
+          id: 'sys_' + Date.now(),
+          sender: 'system',
+          type: 'system',
+          text: `⚠️ تعذّر قبول ${userName} — المسابقة ممتلئة`,
+          createdAt: new Date().toISOString()
+        });
+
+        await setDoc(roomRef, { messages, updatedAt: serverTimestamp() }, { merge: true });
+        showToast('المسابقة ممتلئة', 'warning');
+        return;
+      }
+
+      if (contestantIds.includes(userId)) {
+        messages[msgIdx].processed = true;
+        messages[msgIdx].accepted = true;
+        await setDoc(roomRef, { messages, updatedAt: serverTimestamp() }, { merge: true });
+        return;
+      }
+
+      // احصل على بيانات المستخدم
+      const usersSnap = await getDoc(doc(db, 'users', 'all'));
+      let userInfo = { id: userId, name: userName, avatarUrl: '' };
+      if (usersSnap.exists()) {
+        const users = usersSnap.data().items || [];
+        const u = users.find(x => x.id === userId);
+        if (u) userInfo = { id: u.id, name: u.fullName || u.name || userName, avatarUrl: u.avatarUrl || '' };
+      }
+
+      // أضف كمتسابق
+      contestantIds.push(userId);
+      contestants.push({
+        id: userId,
+        name: userInfo.name,
+        avatarUrl: userInfo.avatarUrl,
+        joinedAt: new Date().toISOString(),
+        finished: false
+      });
+
+      items[cIdx] = {
+        ...contest,
+        contestantIds,
+        contestants,
+        kickedUsers,
+        contestantsCount: contestantIds.length,
+        updatedAt: new Date().toISOString()
+      };
+
+      await setDoc(contestRef, { items, updatedAt: serverTimestamp() });
+
+      messages[msgIdx].processed = true;
+      messages[msgIdx].accepted = true;
+
+      // رسالة نظام موحّدة للانضمام
+      messages.push({
+        id: 'sys_' + Date.now(),
+        sender: 'system',
+        type: 'system',
+        text: `✅ انضم ${userInfo.name} كمتسابق`,
+        createdAt: new Date().toISOString()
+      });
+
+      // شيل رسائل الانضمام المعلّقة لنفس المستخدم (لو عنده أكثر من طلب)
+      messages = messages.filter(m =>
+        !(m.type === 'join_request' && m.senderId === userId && m.id !== msgId)
+      );
+
+      await setDoc(roomRef, {
+        messages,
+        contestants,
+        kickedUsers,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+
+      showToast(`✅ تم قبول ${userInfo.name}`, 'success');
+    } else {
+      // رفض
+      messages[msgIdx].processed = true;
+      messages[msgIdx].accepted = false;
+
+      const kickedUsers2 = contest.kickedUsers || [];
+      if (!kickedUsers2.includes(userId)) kickedUsers2.push(userId);
+
+      items[cIdx] = {
+        ...contest,
+        kickedUsers: kickedUsers2,
+        updatedAt: new Date().toISOString()
+      };
+      await setDoc(contestRef, { items, updatedAt: serverTimestamp() });
+
+      await setDoc(roomRef, {
+        messages,
+        kickedUsers: kickedUsers2,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+
+      showToast(`❌ تم رفض ${userName}`, 'info');
+    }
+  } catch (e) {
+    console.error('handleJoinRequest error:', e);
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+// ============================================================
+// 📝 Question Message Element
+// ============================================================
+function createQuestionMessageElement(msg) {
+  const el = document.createElement('div');
+  el.className = 'msg question';
+
+  const q = msg.question || {};
+  const qIndex = msg.questionIndex || 1;
+  const isMcq = q.type === 'mcq';
+  const typeLabel = isMcq ? 'اختياري' : 'مقالي';
+
+  let optionsHTML = '';
+  if (isMcq && q.options) {
+    optionsHTML = `
+      <div class="question-options-chat">
+        ${q.options.map((opt, i) => `
+          <div class="question-option-chat ${opt.correct ? 'correct' : ''}">
+            <div class="option-letter">${String.fromCharCode(65 + i)}</div>
+            <div>${escapeHtml(opt.text)}</div>
+            ${opt.correct ? '<i class="fas fa-check" style="margin-right:auto;"></i>' : ''}
+          </div>
+        `).join('')}
+      </div>
+    `;
+  } else if (q.correctEssayAnswer) {
+    optionsHTML = `
+      <div style="margin-top: 10px; padding: 10px; background: rgba(30, 122, 90, 0.08); border: 1px solid var(--success); border-radius: 10px; font-size: 12.5px; color: var(--success); font-weight: 600;">
+        <i class="fas fa-check-circle"></i> <strong>الإجابة النموذجية:</strong> ${escapeHtml(q.correctEssayAnswer)}
+      </div>
+    `;
+  }
+
+  el.innerHTML = `
+    <div class="msg-content">
+      <span class="question-number-badge">
+        <i class="fas fa-hashtag"></i> سؤال ${qIndex}
+      </span>
+      <span class="question-type-badge-chat">${typeLabel}</span>
+      <span class="question-type-badge-chat"><i class="fas fa-star"></i> ${q.score || 1}</span>
+
+      <div class="question-title-chat">${escapeHtml(q.title || '')}</div>
+
+      ${optionsHTML}
+
+      ${q.explanation ? `<div style="margin-top: 10px; font-size: 12px; color: var(--text-sub); font-style: italic;"><i class="fas fa-info-circle"></i> ${escapeHtml(q.explanation)}</div>` : ''}
+
+      <div class="msg-meta" style="margin-top: 10px;">
+        <i class="far fa-clock"></i> ${formatTimeOnly(msg.createdAt)}
+      </div>
+
+      <div class="question-actions-chat">
+        <button class="question-action-btn edit" data-action="edit-q" data-qid="${msg.questionId}">
+          <i class="fas fa-pen"></i> تعديل
+        </button>
+        <button class="question-action-btn delete" data-action="delete-q" data-qid="${msg.questionId}">
+          <i class="fas fa-trash-can"></i> حذف
+        </button>
+      </div>
+    </div>
+  `;
+
+  el.querySelector('[data-action="edit-q"]').addEventListener('click', () => {
+    editQuestionInChat(msg.questionId, msg.questionIndex);
+  });
+
+  el.querySelector('[data-action="delete-q"]').addEventListener('click', () => {
+    deleteQuestionFromChat(msg.questionId);
+  });
+
+  return el;
+}
+
+// ============================================================
+// 📤 Send Message
+// ============================================================
+$('chatSendBtn').addEventListener('click', sendChatMessage);
+$('chatInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendChatMessage();
+  }
+});
+
+$('chatInput').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+});
+
+async function sendChatMessage() {
+  const input = $('chatInput');
+  const text = cleanInput(input.value);
+  if (!text) return;
+
+  try {
+    const roomRef = doc(db, 'contest_rooms', String(currentChatContestId));
+    const snap = await getDoc(roomRef);
+
+    let messages = [];
+    if (snap.exists()) messages = snap.data().messages || [];
+
+    messages.push({
+      id: 'msg_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+      sender: 'admin',
+      senderId: adminId,
+      senderName: adminName,
+      text: text,
+      type: 'chat',
+      createdAt: new Date().toISOString()
+    });
+
+    await setDoc(roomRef, {
+      messages,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    input.value = '';
+    input.style.height = 'auto';
+  } catch (e) {
+    console.error('send error:', e);
+    showToast('تعذّر الإرسال', 'error');
+  }
+}
+
+// ============================================================
+// 📝 Ask Question (from chat)
+// ============================================================
+function openQuestionModal(existingQ = null, existingIndex = null) {
+  chatQuestionModalType = existingQ ? existingQ.type : 'mcq';
+  editingQuestionId = existingQ ? existingQ.id : null;
+
+  $('qModalTitle').textContent = existingQ ? 'تعديل السؤال' : 'إضافة سؤال جديد';
+  $('qTitle').value = existingQ ? (existingQ.title || '') : '';
+  $('qScore').value = existingQ ? (existingQ.score || 1) : 1;
+  $('qEssayAnswer').value = existingQ ? (existingQ.correctEssayAnswer || '') : '';
+  $('qExplanation').value = existingQ ? (existingQ.explanation || '') : '';
+
+  chatQuestionOptions = existingQ && existingQ.options
+    ? JSON.parse(JSON.stringify(existingQ.options))
+    : [
+        { text: '', correct: false },
+        { text: '', correct: false }
+      ];
+
+  document.querySelectorAll('[data-q-type]').forEach(b => {
+    b.classList.toggle('active', b.dataset.qType === chatQuestionModalType);
+  });
+  updateQuestionTypeUI();
+
+  renderQuestionOptions();
+
+  $('qModalError').classList.remove('show');
+  $('questionModal').classList.add('show');
+  setTimeout(() => $('qTitle').focus(), 100);
+}
+
+function closeQuestionModal() {
+  $('questionModal').classList.remove('show');
+  editingQuestionId = null;
+}
+
+$('qModalClose').addEventListener('click', closeQuestionModal);
+$('qModalCancel').addEventListener('click', closeQuestionModal);
+$('questionModal').addEventListener('click', (e) => {
+  if (e.target === $('questionModal')) closeQuestionModal();
+});
+
+$('btnAskQuestion').addEventListener('click', () => openQuestionModal());
+
+document.querySelectorAll('[data-q-type]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    chatQuestionModalType = btn.dataset.qType;
+    document.querySelectorAll('[data-q-type]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateQuestionTypeUI();
+  });
+});
+
+function updateQuestionTypeUI() {
+  if (chatQuestionModalType === 'mcq') {
+    $('qMcqSection').style.display = 'block';
+    $('qEssaySection').style.display = 'none';
+  } else {
+    $('qMcqSection').style.display = 'none';
+    $('qEssaySection').style.display = 'block';
+  }
+}
+
+function renderQuestionOptions() {
+  const container = $('qOptionsList');
+  container.innerHTML = '';
+
+  chatQuestionOptions.forEach((opt, idx) => {
+    const row = document.createElement('div');
+    row.className = `option-row ${opt.correct ? 'correct' : ''}`;
+
+    row.innerHTML = `
+      <div class="option-correct-check" data-toggle-correct>
+        <i class="fas fa-check"></i>
+      </div>
+      <input type="text" class="option-input" value="${escapeHtml(opt.text || '')}" placeholder="اكتب الإجابة..." data-opt-input>
+      <button type="button" class="remove-option" data-remove-opt>
+        <i class="fas fa-times"></i>
+      </button>
+    `;
+
+    row.querySelector('[data-toggle-correct]').addEventListener('click', () => {
+      chatQuestionOptions[idx].correct = !chatQuestionOptions[idx].correct;
+      renderQuestionOptions();
+    });
+
+    row.querySelector('[data-opt-input]').addEventListener('input', (e) => {
+      chatQuestionOptions[idx].text = e.target.value;
+    });
+
+    row.querySelector('[data-remove-opt]').addEventListener('click', () => {
+      if (chatQuestionOptions.length > 2) {
+        chatQuestionOptions.splice(idx, 1);
+        renderQuestionOptions();
+      } else {
+        showToast('يجب أن يكون هناك إجابتان على الأقل', 'warning');
+      }
+    });
+
+    container.appendChild(row);
+  });
+}
+
+$('btnAddOption').addEventListener('click', () => {
+  chatQuestionOptions.push({ text: '', correct: false });
+  renderQuestionOptions();
+});
+
+$('qModalSave').addEventListener('click', async () => {
+  const errEl = $('qModalError');
+  errEl.classList.remove('show');
+
+  const title = cleanInput($('qTitle').value);
+  const score = parseInt($('qScore').value) || 1;
+  const essayAnswer = cleanInput($('qEssayAnswer').value);
+  const explanation = cleanInput($('qExplanation').value);
+
+  if (!title) return showQErr('الرجاء إدخال نص السؤال');
+
+  if (chatQuestionModalType === 'mcq') {
+    if (chatQuestionOptions.length < 2) return showQErr('يجب أن يكون هناك إجابتان على الأقل');
+    if (!chatQuestionOptions.some(o => o.correct)) return showQErr('حدد إجابة صحيحة واحدة على الأقل');
+    if (chatQuestionOptions.some(o => !cleanInput(o.text))) return showQErr('كل الإجابات يجب أن تكون مكتوبة');
+  }
+
+  const btn = $('qModalSave');
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري النشر...';
+
+  try {
+    const roomRef = doc(db, 'contest_rooms', String(currentChatContestId));
+    const snap = await getDoc(roomRef);
+
+    let messages = [];
+    if (snap.exists()) messages = snap.data().messages || [];
+
+    if (editingQuestionId) {
+      const idx = messages.findIndex(m => m.type === 'question' && m.questionId === editingQuestionId);
+      if (idx !== -1) {
+        messages[idx].question = {
+          type: chatQuestionModalType,
+          title,
+          score,
+          options: chatQuestionModalType === 'mcq' ? chatQuestionOptions : [],
+          correctEssayAnswer: essayAnswer,
+          explanation
+        };
+      }
+      showToast('✅ تم تعديل السؤال', 'success');
+    } else {
+      const questionCount = messages.filter(m => m.type === 'question').length + 1;
+
+      messages.push({
+        id: 'qmsg_' + Date.now(),
+        sender: 'admin',
+        senderId: adminId,
+        senderName: adminName,
+        type: 'question',
+        questionId: generateQuestionId(),
+        questionIndex: questionCount,
+        question: {
+          type: chatQuestionModalType,
+          title,
+          score,
+          options: chatQuestionModalType === 'mcq' ? chatQuestionOptions : [],
+          correctEssayAnswer: essayAnswer,
+          explanation
+        },
+        createdAt: new Date().toISOString()
+      });
+
+      showToast('✅ تم نشر السؤال في الشات', 'success');
+    }
+
+    const contestRef = doc(db, 'contests', 'all');
+    const contestSnap = await getDoc(contestRef);
+    if (contestSnap.exists()) {
+      const items = contestSnap.data().items || [];
+      const contestIdx = items.findIndex(c => c.id === currentChatContestId);
+      if (contestIdx !== -1) {
+        if (!items[contestIdx].questions) items[contestIdx].questions = [];
+
+        if (editingQuestionId) {
+          const qIdx = items[contestIdx].questions.findIndex(q => q.id === editingQuestionId);
+          if (qIdx !== -1) {
+            items[contestIdx].questions[qIdx] = {
+              id: editingQuestionId,
+              type: chatQuestionModalType,
+              title, score,
+              options: chatQuestionModalType === 'mcq' ? chatQuestionOptions : [],
+              correctEssayAnswer: essayAnswer,
+              explanation
+            };
+          }
+        } else {
+          items[contestIdx].questions.push({
+            id: messages[messages.length - 1].questionId,
+            type: chatQuestionModalType,
+            title, score,
+            options: chatQuestionModalType === 'mcq' ? chatQuestionOptions : [],
+            correctEssayAnswer: essayAnswer,
+            explanation
+          });
+        }
+
+        await setDoc(contestRef, { items, updatedAt: serverTimestamp() });
+      }
+    }
+
+    await setDoc(roomRef, {
+      messages,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    closeQuestionModal();
+
+  } catch (e) {
+    console.error(e);
+    showQErr('حدث خطأ: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+});
+
+function showQErr(msg) {
+  const errEl = $('qModalError');
+  errEl.textContent = msg;
+  errEl.classList.add('show');
+}
+
+// ============================================================
+// ✏️ Edit / Delete Question
+// ============================================================
+async function editQuestionInChat(questionId, questionIndex) {
+  try {
+    const roomRef = doc(db, 'contest_rooms', String(currentChatContestId));
+    const snap = await getDoc(roomRef);
+    if (!snap.exists()) return;
+
+    const messages = snap.data().messages || [];
+    const msg = messages.find(m => m.type === 'question' && m.questionId === questionId);
+    if (!msg) return;
+
+    openQuestionModal({
+      ...msg.question,
+      id: questionId
+    }, questionIndex);
+
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+async function deleteQuestionFromChat(questionId) {
+  const ok = await showConfirm({
+    title: 'حذف السؤال',
+    message: 'هل تريد حذف هذا السؤال من الشات؟',
+    icon: 'fa-trash-can',
+    iconType: 'danger',
+    okText: 'حذف',
+    okClass: 'btn-danger'
+  });
+  if (!ok) return;
+
+  try {
+    const roomRef = doc(db, 'contest_rooms', String(currentChatContestId));
+    const snap = await getDoc(roomRef);
+    if (!snap.exists()) return;
+
+    let messages = snap.data().messages || [];
+    messages = messages.filter(m => !(m.type === 'question' && m.questionId === questionId));
+
+    await setDoc(roomRef, {
+      messages,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    showToast('✅ تم حذف السؤال', 'success');
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+// ============================================================
+// 👥 Render Contestants
+// ============================================================
+function renderContestants() {
+  const container = $('contestantsList');
+  const countEl = $('contestantsCount');
+
+  if (!container) return;
+
+  const contestants = currentContestants || [];
+  countEl.textContent = contestants.length;
+
+  if (contestants.length === 0) {
+    container.innerHTML = `
+      <div style="padding: 20px 12px; text-align: center; font-size: 12.5px; color: var(--text-sub); font-weight: 600;">
+        <i class="fas fa-hourglass-half" style="font-size: 24px; display: block; margin-bottom: 8px; opacity: 0.5;"></i>
+        بانتظار دخول المتسابقين...
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = '';
+
+  contestants.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'contestant-item';
+    if (c.finished) item.classList.add('finished');
+    if (currentWinner && currentWinner.id === c.id) item.classList.add('winner');
+
+    const avatar = c.avatarUrl
+      ? `<img src="${escapeHtml(c.avatarUrl)}" alt="" onerror="this.parentNode.innerHTML='<span>${(c.name || '؟').charAt(0).toUpperCase()}</span>'">`
+      : `<span>${(c.name || '؟').charAt(0).toUpperCase()}</span>`;
+
+    let statusHTML = '';
+    if (currentWinner && currentWinner.id === c.id) {
+      statusHTML = `<span class="contestant-status winner"><i class="fas fa-crown"></i> الفائز</span>`;
+    } else if (c.finished) {
+      statusHTML = `<span class="contestant-status finished"><i class="fas fa-check-circle"></i> انتهى</span>`;
+    } else {
+      statusHTML = `<span class="contestant-status active"><i class="fas fa-pen"></i> يجاوب</span>`;
+    }
+
+    item.innerHTML = `
+      <div class="contestant-avatar">${avatar}</div>
+      <div class="contestant-info">
+        <div class="contestant-name">${escapeHtml(c.name || 'مستخدم')}</div>
+        ${statusHTML}
+      </div>
+      <button class="kick-btn" data-kick="${c.id}" title="طرد المتسابق">
+        <i class="fas fa-user-slash"></i>
+      </button>
+    `;
+
+    item.querySelector('[data-kick]').addEventListener('click', () => kickContestant(c.id, c.name));
+
+    container.appendChild(item);
+  });
+}
+
+// ============================================================
+// 🏆 قائمة الصدارة
+// ============================================================
+function renderLeaderboard() {
+  const container = $('leaderboardList');
+  if (!container) return;
+
+  if (!currentContestants || currentContestants.length === 0) {
+    container.innerHTML = `
+      <div style="padding: 15px 12px; text-align: center; font-size: 12px; color: var(--text-sub); font-weight: 600;">
+        <i class="fas fa-chart-simple" style="font-size: 22px; display: block; margin-bottom: 6px; opacity: 0.5;"></i>
+        لا توجد إجابات بعد
+      </div>
+    `;
+    return;
+  }
+
+  const answers = currentRoomData?.answers || {};
+  const questions = currentChatContest?.questions || [];
+
+  const stats = currentContestants.map(c => {
+    let answeredCount = 0;
+    let totalTime = 0;
+    let firstAnswerTime = null;
+    let lastAnswerTime = null;
+
+    Object.keys(answers).forEach(qId => {
+      const a = answers[qId]?.[c.id];
+      if (a && a.answeredAt) {
+        answeredCount++;
+        const t = new Date(a.answeredAt).getTime();
+        if (firstAnswerTime === null || t < firstAnswerTime) firstAnswerTime = t;
+        if (lastAnswerTime === null || t > lastAnswerTime) lastAnswerTime = t;
+      }
+    });
+
+    const duration = (firstAnswerTime && lastAnswerTime)
+      ? Math.round((lastAnswerTime - firstAnswerTime) / 1000)
+      : 0;
+
+    return {
+      ...c,
+      answeredCount,
+      duration,
+      firstAnswerTime: firstAnswerTime || Infinity
+    };
+  });
+
+  stats.sort((a, b) => {
+    if (b.answeredCount !== a.answeredCount) {
+      return b.answeredCount - a.answeredCount;
+    }
+    return a.duration - b.duration;
+  });
+
+  container.innerHTML = '';
+
+  stats.forEach((s, idx) => {
+    const rank = idx + 1;
+    const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
+
+    const item = document.createElement('div');
+    item.className = 'leaderboard-item';
+    if (rank === 1) item.classList.add('rank-1');
+    else if (rank === 2) item.classList.add('rank-2');
+    else if (rank === 3) item.classList.add('rank-3');
+
+    const avatar = s.avatarUrl
+      ? `<img src="${escapeHtml(s.avatarUrl)}" alt="" onerror="this.parentNode.innerHTML='<span>${(s.name || '؟').charAt(0).toUpperCase()}</span>'">`
+      : `<span>${(s.name || '؟').charAt(0).toUpperCase()}</span>`;
+
+    const durationText = s.duration > 0 ? formatDuration(s.duration) : '—';
+
+    item.innerHTML = `
+      <div class="leaderboard-rank">${medal}</div>
+      <div class="leaderboard-avatar">${avatar}</div>
+      <div class="leaderboard-info">
+        <div class="leaderboard-name">${escapeHtml(s.name || 'مستخدم')}</div>
+        <div class="leaderboard-stats">
+          <span><i class="fas fa-check-circle"></i> ${s.answeredCount} / ${questions.length}</span>
+          <span><i class="fas fa-clock"></i> ${durationText}</span>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(item);
+  });
+}
+
+// ============================================================
+// 🚫 Kick Contestant (يحوّله إلى مشاهد)
+// ============================================================
+async function kickContestant(userId, userName) {
+  const ok = await showConfirm({
+    title: 'طرد المتسابق',
+    message: `هل تريد طرد "<strong>${escapeHtml(userName)}</strong>" من المسابقة؟<br><br>سيتم تحويله إلى <strong>مشاهد</strong> ويمكنه متابعة الشات.`,
+    icon: 'fa-user-slash',
+    iconType: 'danger',
+    okText: 'طرد',
+    okClass: 'btn-danger'
+  });
+  if (!ok) return;
+
+  try {
+    const contestRef = doc(db, 'contests', 'all');
+    const contestSnap = await getDoc(contestRef);
+    if (!contestSnap.exists()) return;
+
+    const items = contestSnap.data().items || [];
+    const cIdx = items.findIndex(c => c.id === currentChatContestId);
+    if (cIdx === -1) return;
+
+    const contest = items[cIdx];
+    const contestantIds = (contest.contestantIds || []).filter(id => id !== userId);
+    const contestants = (contest.contestants || []).filter(c => c.id !== userId);
+    const kickedUsers = contest.kickedUsers || [];
+    if (!kickedUsers.includes(userId)) kickedUsers.push(userId);
+
+    items[cIdx] = {
+      ...contest,
+      contestantIds,
+      contestants,
+      kickedUsers,
+      contestantsCount: contestantIds.length,
+      updatedAt: new Date().toISOString()
+    };
+
+    await setDoc(contestRef, { items, updatedAt: serverTimestamp() });
+
+    const roomRef = doc(db, 'contest_rooms', String(currentChatContestId));
+    const roomSnap = await getDoc(roomRef);
+    let messages = roomSnap.exists() ? (roomSnap.data().messages || []) : [];
+
+    // شيل كل رسائل طلب الانضمام المعلّقة لهذا المستخدم
+    messages = messages.filter(m =>
+      !(m.type === 'join_request' && m.senderId === userId && !m.processed)
+    );
+
+    messages.push({
+      id: 'sys_' + Date.now(),
+      sender: 'system',
+      type: 'system',
+      text: `🚫 تم طرد ${userName} — أصبح مشاهداً`,
+      createdAt: new Date().toISOString()
+    });
+
+    await setDoc(roomRef, {
+      contestants,
+      kickedUsers,
+      messages,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    showToast('✅ تم طرد المتسابق (أصبح مشاهداً)', 'success');
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+$('btnKickAll').addEventListener('click', async () => {
+  if (!currentContestants || currentContestants.length === 0) {
+    return showToast('لا يوجد متسابقون لطردهم', 'warning');
+  }
+
+  const ok = await showConfirm({
+    title: 'طرد كل المتسابقين',
+    message: `هل تريد طرد <strong>${currentContestants.length}</strong> متسابق من المسابقة؟<br><br>سيتم تحويلهم إلى مشاهدين.`,
+    icon: 'fa-users-slash',
+    iconType: 'danger',
+    okText: 'طرد الكل',
+    okClass: 'btn-danger'
+  });
+  if (!ok) return;
+
+  try {
+    const contestRef = doc(db, 'contests', 'all');
+    const contestSnap = await getDoc(contestRef);
+    if (!contestSnap.exists()) return;
+
+    const items = contestSnap.data().items || [];
+    const cIdx = items.findIndex(c => c.id === currentChatContestId);
+    if (cIdx === -1) return;
+
+    const contest = items[cIdx];
+    const kickedUsers = contest.kickedUsers || [];
+    const kickedIds = currentContestants.map(c => c.id);
+    kickedIds.forEach(id => {
+      if (!kickedUsers.includes(id)) kickedUsers.push(id);
+    });
+
+    items[cIdx] = {
+      ...contest,
+      contestantIds: [],
+      contestants: [],
+      kickedUsers,
+      contestantsCount: 0,
+      updatedAt: new Date().toISOString()
+    };
+
+    await setDoc(contestRef, { items, updatedAt: serverTimestamp() });
+
+    const roomRef = doc(db, 'contest_rooms', String(currentChatContestId));
+    const roomSnap = await getDoc(roomRef);
+    let messages = roomSnap.exists() ? (roomSnap.data().messages || []) : [];
+
+    // شيل كل طلبات الانضمام المعلّقة
+    messages = messages.filter(m => !(m.type === 'join_request' && !m.processed));
+
+    messages.push({
+      id: 'sys_' + Date.now(),
+      sender: 'system',
+      type: 'system',
+      text: `🚫 تم طرد جميع المتسابقين (${currentContestants.length}) — أصبحوا مشاهدين`,
+      createdAt: new Date().toISOString()
+    });
+
+    await setDoc(roomRef, {
+      contestants: [],
+      kickedUsers,
+      messages,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    showToast('✅ تم طرد كل المتسابقين', 'success');
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ', 'error');
+  }
+});
+
+// ============================================================
+// 🏆 Render Winner — Real-time + قائمة منسدلة منظمة
+// ============================================================
+function renderWinner(winner) {
+  const box = $('winnerBox');
+  if (!box) return;
+
+  if (!winner) {
+    box.innerHTML = `
+      <div style="padding: 12px; text-align: center; font-size: 12px; color: var(--text-sub); font-weight: 600; background: var(--bg-input); border-radius: 10px;">
+        لم يتم تحديد الفائز بعد
+      </div>
+      <button class="sidebar-action-btn success" id="btnAnnounceWinner" style="margin-top: 8px;">
+        <i class="fas fa-crown"></i>
+        <span>تحديد الفائز</span>
+      </button>
+      <div id="winnerDropdown" style="margin-top: 10px; display: none;"></div>
+    `;
+
+    $('btnAnnounceWinner')?.addEventListener('click', toggleWinnerDropdown);
+    return;
+  }
+
+  const avatar = winner.avatarUrl
+    ? `<img src="${escapeHtml(winner.avatarUrl)}" alt="" onerror="this.parentNode.innerHTML='<span>${(winner.name || '؟').charAt(0).toUpperCase()}</span>'">`
+    : `<span>${(winner.name || '؟').charAt(0).toUpperCase()}</span>`;
+
+  box.innerHTML = `
+    <div class="contestant-item winner" style="margin-bottom: 0;">
+      <div class="contestant-avatar" style="border-color: #C9A961;">${avatar}</div>
+      <div class="contestant-info">
+        <div class="contestant-name">${escapeHtml(winner.name || '')}</div>
+        <span class="contestant-status winner"><i class="fas fa-crown"></i> الفائز</span>
+      </div>
+    </div>
+    <button class="sidebar-action-btn warning" id="btnChangeWinner" style="margin-top: 8px;">
+      <i class="fas fa-rotate"></i>
+      <span>تغيير الفائز</span>
+    </button>
+    <div id="winnerDropdown" style="margin-top: 10px; display: none;"></div>
+  `;
+
+  $('btnChangeWinner')?.addEventListener('click', toggleWinnerDropdown);
+}
+
+// ===== قائمة منسدلة منظمة لاختيار الفائز =====
+function toggleWinnerDropdown() {
+  const dropdown = $('winnerDropdown');
+  if (!dropdown) return;
+
+  if (dropdown.style.display === 'block') {
+    dropdown.style.display = 'none';
+    return;
+  }
+
+  if (!currentContestants || currentContestants.length === 0) {
+    showToast('لا يوجد متسابقون بعد', 'warning');
+    return;
+  }
+
+  const answers = currentRoomData?.answers || {};
+  const questions = currentChatContest?.questions || [];
+
+  const stats = currentContestants.map(c => {
+    let answeredCount = 0;
+    Object.keys(answers).forEach(qId => {
+      const a = answers[qId]?.[c.id];
+      if (a && a.answeredAt) answeredCount++;
+    });
+    return { ...c, answeredCount };
+  });
+
+  stats.sort((a, b) => b.answeredCount - a.answeredCount);
+
+  dropdown.style.display = 'block';
+  dropdown.innerHTML = `
+    <div style="background: var(--bg-input); border: 2px solid var(--border); border-radius: 12px; padding: 8px; max-height: 280px; overflow-y: auto;">
+      <div style="font-size: 11px; font-weight: 800; color: var(--text-sub); padding: 6px 8px; text-transform: uppercase;">
+        <i class="fas fa-list-ol"></i> اختر الفائز
+      </div>
+      ${stats.map((c, i) => {
+        const avatar = c.avatarUrl
+          ? `<img src="${escapeHtml(c.avatarUrl)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentNode.innerHTML='<span>${(c.name||'؟').charAt(0).toUpperCase()}</span>'">`
+          : `<span>${(c.name || '؟').charAt(0).toUpperCase()}</span>`;
+        const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i+1}`;
+        return `
+          <button class="winner-pick-btn" data-winner-id="${c.id}" data-winner-name="${escapeHtml(c.name || '')}" style="
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            text-align: right;
+            transition: all 0.2s;
+          ">
+            <div style="font-size: 16px; min-width: 28px;">${medal}</div>
+            <div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; background: linear-gradient(135deg, var(--primary), var(--primary-lighter)); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 13px; flex-shrink: 0;">
+              ${avatar}
+            </div>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: 13px; font-weight: 800; color: var(--text-main); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                ${escapeHtml(c.name || 'مستخدم')}
+              </div>
+              <div style="font-size: 10.5px; color: var(--text-sub); font-weight: 600;">
+                <i class="fas fa-check-circle" style="color: var(--accent);"></i>
+                ${c.answeredCount} / ${questions.length}
+              </div>
+            </div>
+            <i class="fas fa-crown" style="color: var(--accent);"></i>
+          </button>
+        `;
+      }).join('')}
+      <button id="winnerCancelBtn" style="
+        width: 100%;
+        padding: 8px;
+        background: var(--bg-card);
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        cursor: pointer;
+        font-family: 'Cairo', sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-sub);
+        margin-top: 4px;
+      ">
+        <i class="fas fa-times"></i> إلغاء
+      </button>
+    </div>
+  `;
+
+  dropdown.querySelectorAll('[data-winner-id]').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      btn.style.borderColor = 'var(--accent)';
+      btn.style.transform = 'translateX(-3px)';
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.borderColor = 'var(--border)';
+      btn.style.transform = 'translateX(0)';
+    });
+    btn.addEventListener('click', () => {
+      announceWinner(btn.dataset.winnerId, btn.dataset.winnerName);
+    });
+  });
+
+  $('winnerCancelBtn')?.addEventListener('click', () => {
+    dropdown.style.display = 'none';
+  });
+}
+
+// ===== إعلان الفائز =====
+async function announceWinner(winnerId, winnerName) {
+  const winner = currentContestants.find(c => c.id === winnerId);
+  if (!winner) return;
+
+  const ok = await showConfirm({
+    title: 'تحديد الفائز',
+    message: `هل تريد إعلان "<strong>${escapeHtml(winner.name)}</strong>" فائزاً بالمسابقة؟<br><br>سيتم إرسال إشعار للجميع.`,
+    icon: 'fa-crown',
+    iconType: 'success',
+    okText: 'إعلان الفائز'
+  });
+  if (!ok) return;
+
+  try {
+    const roomRef = doc(db, 'contest_rooms', String(currentChatContestId));
+    const snap = await getDoc(roomRef);
+    if (!snap.exists()) return;
+
+    const messages = snap.data().messages || [];
+
+    const winnerData = {
+      id: winner.id,
+      name: winner.name,
+      avatarUrl: winner.avatarUrl || '',
+      announcedAt: new Date().toISOString()
+    };
+
+    messages.push({
+      id: 'sys_' + Date.now(),
+      sender: 'system',
+      type: 'system',
+      text: `🏆 مبروك! فاز ${winner.name} بالمسابقة`,
+      createdAt: new Date().toISOString()
+    });
+
+    await setDoc(roomRef, {
+      winner: winnerData,
+      roomStatus: 'finished',
+      messages,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    const contestRef = doc(db, 'contests', 'all');
+    const contestSnap = await getDoc(contestRef);
+    if (contestSnap.exists()) {
+      const items = contestSnap.data().items || [];
+      const cIdx = items.findIndex(c => c.id === currentChatContestId);
+      if (cIdx !== -1) {
+        items[cIdx].winner = winnerData;
+        items[cIdx].roomStatus = 'finished';
+        items[cIdx].finishedAt = new Date().toISOString();
+        await setDoc(contestRef, { items, updatedAt: serverTimestamp() });
+      }
+    }
+
+    await notifyWinnerAnnounced(winnerData);
+
+    showToast(`🏆 مبروك ${winner.name}!`, 'success');
+
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+async function notifyWinnerAnnounced(winner) {
+  try {
+    const contest = currentChatContest;
+    const link = `${location.origin}/contest.html?id=${contest.id}`;
+
+    const winnerNotifId = 'notif_winner_' + Date.now();
+    const winnerNotif = {
+      id: winnerNotifId,
+      title: '🏆 مبروك! فزت بالمسابقة',
+      body: `فزت في مسابقة "${contest.name}"!\n\n🎉 مبروك يا ${winner.name}\n\n🔗 شاهد الشهادة: ${link}`,
+      type: 'link',
+      url: link,
+      senderId: adminId,
+      senderName: adminName,
+      createdAt: new Date().toISOString(),
+      target: 'custom',
+      recipients: [winner.id]
+    };
+    await setDoc(doc(db, 'notifications', winnerNotifId), winnerNotif);
+
+    const otherContestants = (currentContestants || []).filter(c => c.id !== winner.id);
+    for (const c of otherContestants) {
+      const notifId = 'notif_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+      await setDoc(doc(db, 'notifications', notifId), {
+        id: notifId,
+        title: '🏁 انتهت المسابقة',
+        body: `انتهت مسابقة "${contest.name}"\n\n🏆 الفائز: ${winner.name}\n\nشكراً لمشاركتك!`,
+        type: 'link',
+        url: link,
+        senderId: adminId,
+        senderName: adminName,
+        createdAt: new Date().toISOString(),
+        target: 'custom',
+        recipients: [c.id]
+      });
+    }
+
+    await setDoc(doc(db, 'settings', 'lastNotification'), {
+      id: winnerNotifId,
+      title: winnerNotif.title,
+      body: winnerNotif.body,
+      type: 'link',
+      url: link,
+      createdAt: winnerNotif.createdAt,
+      senderName: adminName
+    });
+
+  } catch (e) {
+    console.error('notify winner error:', e);
+  }
+}
+
+// ============================================================
+// 🔄 Toggle Viewers Chat
+// ============================================================
+$('chatToggleViewers').addEventListener('click', async () => {
+  if (!currentChatContestId) return;
+
+  try {
+    const roomRef = doc(db, 'contest_rooms', String(currentChatContestId));
+    const snap = await getDoc(roomRef);
+    const current = snap.exists() ? snap.data().allowViewersChat === true : false;
+    const newVal = !current;
+
+    await setDoc(roomRef, {
+      allowViewersChat: newVal,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    const contestRef = doc(db, 'contests', 'all');
+    const contestSnap = await getDoc(contestRef);
+    if (contestSnap.exists()) {
+      const items = contestSnap.data().items || [];
+      const idx = items.findIndex(c => c.id === currentChatContestId);
+      if (idx !== -1) {
+        items[idx].allowViewersChat = newVal;
+        await setDoc(contestRef, { items, updatedAt: serverTimestamp() });
+      }
+    }
+
+    $('chatViewersIcon').className = newVal ? 'fas fa-user-check' : 'fas fa-user-slash';
+
+    showToast(newVal ? '✅ تم السماح للمشاهدين بالكتابة' : '🚫 تم منع المشاهدين من الكتابة', 'success');
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ', 'error');
+  }
+});
+
+// ============================================================
+// 📱 Sidebar Toggle
+// ============================================================
+$('chatToggleSidebar').addEventListener('click', () => {
+  const sidebar = $('chatSidebar');
+  sidebar.classList.toggle('mobile-open');
+});
+
+// ============================================================
+// 📡 Contests Listener
+// ============================================================
+function startContestsListener() {
+  onSnapshot(doc(db, 'contests', 'all'), (snap) => {
+    if (snap.exists()) {
+      allContests = snap.data().items || [];
+    } else {
+      allContests = [];
+    }
+    applyFilters();
+    updateStats();
+  }, (err) => console.log('contests error:', err.message));
+}
+
+// ============================================================
+// 🚪 Logout
+// ============================================================
+async function handleLogout() {
+  const ok = await showConfirm({
+    title: 'تسجيل الخروج',
+    message: 'هل تريد تسجيل الخروج؟',
+    icon: 'fa-sign-out-alt',
+    iconType: 'warning',
+    okText: 'خروج'
+  });
+  if (!ok) return;
+  sessionStorage.clear();
+  window.location.replace('login.html');
+}
+
+$('logoutBtn').addEventListener('click', handleLogout);
+$('drawerLogoutBtn').addEventListener('click', () => {
+  closeDrawer();
+  setTimeout(handleLogout, 300);
+});
+
+// ============================================================
+// 📱 Drawer
+// ============================================================
+const drawer = $('drawer');
+const drawerOverlay = $('drawerOverlay');
+const menuBtn = $('menuBtn');
+const drawerClose = $('drawerClose');
+
+menuBtn?.addEventListener('click', () => {
+  drawer.classList.add('open');
+  drawerOverlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+});
+
+function closeDrawer() {
+  drawer.classList.remove('open');
+  drawerOverlay.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+drawerClose?.addEventListener('click', closeDrawer);
+drawerOverlay?.addEventListener('click', closeDrawer);
+
+// ============================================================
+// 🚀 Init
+// ============================================================
+requestAnimationFrame(() => document.body.classList.add('ready'));
+
+startContestsListener();
+
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted && sessionStorage.getItem('meezan_logged_in') !== 'true') {
+    window.location.replace('login.html');
+  }
+});
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>

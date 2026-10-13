@@ -1,0 +1,3849 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0B3D2E">
+<title>إدارة النتائج | MEEZAN</title>
+<link rel="icon" type="image/png" href="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --primary: #0B3D2E;
+    --primary-light: #145A43;
+    --primary-lighter: #1E7A5A;
+    --accent: #C9A961;
+    --accent-light: #E0C888;
+    --bg-page: #F5F1E8;
+    --bg-card: #FFFFFF;
+    --bg-input: #F8FBF9;
+    --text-main: #0B3D2E;
+    --text-sub: #5A6B66;
+    --border: #E0E5E1;
+    --shadow: rgba(11, 61, 46, 0.15);
+    --error: #C0392B;
+    --success: #1E7A5A;
+    --warning: #E67E22;
+    --info: #2980B9;
+  }
+
+  [data-theme="dark"] {
+    --primary: #C9A961;
+    --primary-light: #E0C888;
+    --primary-lighter: #F0DBA8;
+    --accent: #0B3D2E;
+    --accent-light: #145A43;
+    --bg-page: #0A1612;
+    --bg-card: #11201B;
+    --bg-input: #1A2C25;
+    --text-main: #F5F1E8;
+    --text-sub: #9BAEA6;
+    --border: #1E3A31;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --error: #E74C3C;
+    --success: #2ECC71;
+    --warning: #F39C12;
+    --info: #3498DB;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg-page);
+    min-height: 100vh;
+    color: var(--text-main);
+    opacity: 0;
+    transition: opacity 0.3s ease, background 0.4s ease;
+    overflow-x: hidden;
+  }
+
+  body.ready { opacity: 1; }
+
+  .topbar {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 20px var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .back-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .back-btn { color: var(--accent); }
+
+  .back-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    transform: translateX(-3px);
+  }
+
+  [data-theme="dark"] .back-btn:hover { color: var(--bg-page); }
+
+  .topbar-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .topbar-title i.header-icon { color: var(--accent); font-size: 22px; }
+
+  .topbar-title-text h1 {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  [data-theme="dark"] .topbar-title-text h1 { color: var(--accent); }
+
+  .topbar-title-text small {
+    display: block;
+    font-size: 10.5px;
+    color: var(--text-sub);
+    font-weight: 600;
+    letter-spacing: 1.5px;
+  }
+
+  .topbar-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+    align-items: center;
+  }
+
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .icon-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  [data-theme="dark"] .icon-btn:hover { color: var(--bg-page); }
+
+  .icon-btn.logout {
+    color: var(--error);
+    border-color: rgba(192, 57, 43, 0.3);
+  }
+
+  .icon-btn.logout:hover {
+    background: var(--error);
+    color: #fff;
+    border-color: var(--error);
+  }
+
+  .menu-btn {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 18px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .menu-btn:hover, .menu-btn:active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+
+  .container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 24px 20px 100px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 4px 14px var(--shadow);
+    transition: all 0.25s ease;
+  }
+
+  .stat-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px var(--shadow);
+  }
+
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .stat-icon { color: var(--bg-page); }
+
+  .stat-icon.green { background: linear-gradient(135deg, #1E7A5A, #2ECC71); }
+  .stat-icon.orange { background: linear-gradient(135deg, #E67E22, #F39C12); }
+  .stat-icon.blue { background: linear-gradient(135deg, #2980B9, #3498DB); }
+  .stat-icon.purple { background: linear-gradient(135deg, #8E44AD, #9B59B6); }
+  .stat-icon.red { background: linear-gradient(135deg, #C0392B, #E74C3C); }
+
+  .stat-info { min-width: 0; }
+
+  .stat-number {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--text-main);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-sub);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  .main-tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--bg-card);
+    padding: 6px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 14px var(--shadow);
+    margin-bottom: 22px;
+  }
+
+  .main-tab {
+    flex: 1;
+    padding: 15px 18px;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    color: var(--text-sub);
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    white-space: nowrap;
+  }
+
+  .main-tab:hover {
+    color: var(--text-main);
+    background: var(--bg-input);
+  }
+
+  .main-tab.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    box-shadow: 0 6px 16px var(--shadow);
+  }
+
+  [data-theme="dark"] .main-tab.active { color: var(--bg-page); }
+
+  .main-tab i { font-size: 17px; }
+
+  .main-tab .tab-badge {
+    padding: 2px 9px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 800;
+    background: rgba(255, 255, 255, 0.25);
+    min-width: 24px;
+    text-align: center;
+  }
+
+  .main-tab:not(.active) .tab-badge {
+    background: var(--bg-input);
+    color: var(--text-sub);
+    border: 1px solid var(--border);
+  }
+
+  .section-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .section-content.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .toolbar {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 14px var(--shadow);
+    border: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .search-wrapper {
+    flex: 1;
+    min-width: 220px;
+    position: relative;
+  }
+
+  .search-wrapper i {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-sub);
+    font-size: 15px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 13px 44px 13px 44px;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    outline: none;
+    font-weight: 500;
+    transition: all 0.25s ease;
+  }
+
+  .search-input:focus {
+    border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1);
+  }
+
+  .search-clear {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    border: none;
+    background: rgba(192, 57, 43, 0.1);
+    color: var(--error);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+
+  .search-clear:hover { background: var(--error); color: #fff; }
+  .search-clear.show { display: flex; }
+
+  .btn {
+    padding: 13px 22px;
+    border-radius: 12px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    box-shadow: 0 6px 18px var(--shadow);
+  }
+
+  [data-theme="dark"] .btn-primary { color: var(--bg-page); }
+
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px var(--shadow);
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, #C0392B, #E74C3C);
+    color: #fff;
+  }
+
+  .btn-danger:hover:not(:disabled) { transform: translateY(-2px); }
+
+  .btn-warning {
+    background: linear-gradient(135deg, #E67E22, #F39C12);
+    color: #fff;
+  }
+
+  .btn-warning:hover:not(:disabled) { transform: translateY(-2px); }
+
+  .btn-info {
+    background: linear-gradient(135deg, #2980B9, #3498DB);
+    color: #fff;
+  }
+
+  .btn-info:hover:not(:disabled) { transform: translateY(-2px); }
+
+  .btn-success {
+    background: linear-gradient(135deg, #1E7A5A, #2ECC71);
+    color: #fff;
+  }
+
+  .btn-success:hover:not(:disabled) { transform: translateY(-2px); }
+
+  .btn-cancel {
+    background: var(--bg-input);
+    color: var(--text-main);
+    border: 1.5px solid var(--border) !important;
+  }
+
+  .btn-cancel:hover {
+    background: var(--bg-card);
+    transform: translateY(-2px);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+
+  .item-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px var(--shadow);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .item-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px var(--shadow);
+  }
+
+  .item-card.hidden-item {
+    opacity: 0.55;
+    background: repeating-linear-gradient(45deg, var(--bg-card), var(--bg-card) 8px, rgba(150, 150, 150, 0.05) 8px, rgba(150, 150, 150, 0.05) 16px);
+  }
+
+  .item-card.blocked-item {
+    border-color: var(--error);
+  }
+
+  .item-hidden-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .item-hidden-badge.hidden {
+    background: rgba(149, 165, 166, 0.95);
+    color: #fff;
+  }
+
+  .item-hidden-badge.blocked {
+    background: rgba(192, 57, 43, 0.95);
+    color: #fff;
+  }
+
+  .item-header {
+    padding: 20px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .item-header { color: var(--bg-page); }
+
+  .item-header-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .item-header-info { flex: 1; min-width: 0; }
+
+  .item-title {
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.4;
+    word-break: break-word;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .item-subtitle {
+    font-size: 12px;
+    opacity: 0.9;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .item-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .item-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+
+  .mini-stat {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 6px;
+    text-align: center;
+  }
+
+  .mini-stat-value {
+    font-size: 17px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .mini-stat-label {
+    font-size: 10px;
+    color: var(--text-sub);
+    font-weight: 600;
+  }
+
+  .item-badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid;
+  }
+
+  .badge.grade { color: var(--info); border-color: var(--info); background: rgba(41, 128, 185, 0.08); }
+  .badge.manual { color: var(--error); border-color: var(--error); background: rgba(192, 57, 43, 0.08); }
+  .badge.auto { color: var(--success); border-color: var(--success); background: rgba(30, 122, 90, 0.08); }
+  .badge.questions { color: var(--primary); border-color: var(--primary); background: rgba(11, 61, 46, 0.08); }
+  .badge.duration { color: var(--warning); border-color: var(--warning); background: rgba(230, 126, 34, 0.08); }
+
+  [data-theme="dark"] .badge.questions { color: var(--accent); border-color: var(--accent); background: rgba(201, 169, 97, 0.12); }
+
+  .item-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+  }
+
+  .item-actions-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .btn-action {
+    padding: 11px 12px;
+    border-radius: 11px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .btn-action.primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    box-shadow: 0 6px 18px var(--shadow);
+  }
+
+  [data-theme="dark"] .btn-action.primary { color: var(--bg-page); }
+
+  .btn-action.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px var(--shadow);
+  }
+
+  .btn-action.warning {
+    background: var(--bg-input);
+    color: var(--warning);
+    border: 1.5px solid var(--warning);
+  }
+
+  .btn-action.warning:hover {
+    background: var(--warning);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .btn-action.success {
+    background: var(--bg-input);
+    color: var(--success);
+    border: 1.5px solid var(--success);
+  }
+
+  .btn-action.success:hover {
+    background: var(--success);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .btn-action.info {
+    background: var(--bg-input);
+    color: var(--info);
+    border: 1.5px solid var(--info);
+  }
+
+  .btn-action.info:hover {
+    background: var(--info);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .btn-action.danger {
+    background: var(--bg-input);
+    color: var(--error);
+    border: 1.5px solid var(--error);
+  }
+
+  .btn-action.danger:hover {
+    background: var(--error);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .btn-action.full { grid-column: 1 / -1; }
+
+  .empty-state {
+    padding: 60px 24px;
+    text-align: center;
+    color: var(--text-sub);
+    background: var(--bg-card);
+    border-radius: 18px;
+    border: 2px dashed var(--border);
+    grid-column: 1 / -1;
+  }
+
+  .empty-state i {
+    font-size: 60px;
+    color: var(--accent);
+    opacity: 0.5;
+    margin-bottom: 16px;
+    display: block;
+    animation: floatIcon 3s ease-in-out infinite;
+  }
+
+  @keyframes floatIcon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .empty-state h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .empty-state p { font-size: 13.5px; font-weight: 500; line-height: 1.6; }
+
+  .loading-state {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--text-sub);
+    font-size: 14px;
+    font-weight: 600;
+    grid-column: 1 / -1;
+  }
+
+  .loading-state i {
+    font-size: 42px;
+    color: var(--accent);
+    animation: spin 1s linear infinite;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100000;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal-box {
+    background: var(--bg-card);
+    border-radius: 22px;
+    padding: 28px 24px;
+    max-width: 620px;
+    width: 100%;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+    border-top: 6px solid var(--accent);
+    animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 94vh;
+    overflow-y: auto;
+  }
+
+  .modal-box.wide { max-width: 900px; }
+  .modal-box.xwide { max-width: 1100px; }
+  .modal-box.small { max-width: 460px; text-align: center; }
+
+  @keyframes modalPop {
+    from { opacity: 0; transform: scale(0.85) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 2px dashed var(--border);
+    position: sticky;
+    top: -28px;
+    background: var(--bg-card);
+    padding-top: 8px;
+    z-index: 10;
+  }
+
+  .modal-header-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .modal-header-icon { color: var(--bg-page); }
+
+  .modal-header h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-main);
+    flex: 1;
+  }
+
+  .modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: none;
+    background: var(--bg-input);
+    color: var(--text-sub);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .modal-close:hover { background: var(--error); color: #fff; }
+
+  .student-row {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+    position: relative;
+    flex-wrap: wrap;
+  }
+
+  .student-row:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .student-row.hidden-result {
+    opacity: 0.5;
+    background: repeating-linear-gradient(45deg, var(--bg-card), var(--bg-card) 8px, rgba(150, 150, 150, 0.05) 8px, rgba(150, 150, 150, 0.05) 16px);
+  }
+
+  .student-row.blocked-student {
+    border-color: var(--error);
+    background: rgba(192, 57, 43, 0.03);
+  }
+
+  .student-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 2px solid var(--accent);
+  }
+
+  [data-theme="dark"] .student-avatar { color: var(--bg-page); }
+
+  .student-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .student-info { flex: 1; min-width: 200px; }
+
+  .student-name {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .student-meta {
+    font-size: 11.5px;
+    color: var(--text-sub);
+    font-weight: 600;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .student-meta i { color: var(--accent); font-size: 11px; }
+
+  .student-status {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 10.5px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid;
+    flex-shrink: 0;
+  }
+
+  .student-status.not-started {
+    color: var(--text-sub);
+    border-color: var(--border);
+    background: var(--bg-input);
+  }
+
+  .student-status.pending {
+    color: var(--warning);
+    border-color: var(--warning);
+    background: rgba(230, 126, 34, 0.08);
+  }
+
+  .student-status.passed {
+    color: var(--success);
+    border-color: var(--success);
+    background: rgba(30, 122, 90, 0.08);
+  }
+
+  .student-status.failed {
+    color: var(--error);
+    border-color: var(--error);
+    background: rgba(192, 57, 43, 0.08);
+  }
+
+  .student-status.blocked {
+    color: var(--error);
+    border-color: var(--error);
+    background: rgba(192, 57, 43, 0.15);
+  }
+
+  .student-status.opened {
+    color: var(--info);
+    border-color: var(--info);
+    background: rgba(41, 128, 185, 0.08);
+  }
+
+  .student-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .btn-sm-action {
+    padding: 8px 12px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-input);
+    color: var(--text-sub);
+    font-family: 'Cairo', sans-serif;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-sm-action:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    color: var(--text-main);
+  }
+
+  .btn-sm-action.open-access:hover {
+    background: var(--info);
+    color: #fff;
+    border-color: var(--info);
+  }
+
+  .btn-sm-action.close-access:hover {
+    background: var(--warning);
+    color: #fff;
+    border-color: var(--warning);
+  }
+
+  .btn-sm-action.block:hover {
+    background: var(--error);
+    color: #fff;
+    border-color: var(--error);
+  }
+
+  .btn-sm-action.unblock:hover {
+    background: var(--success);
+    color: #fff;
+    border-color: var(--success);
+  }
+
+  .btn-sm-action.hide-result:hover {
+    background: var(--warning);
+    color: #fff;
+    border-color: var(--warning);
+  }
+
+  .btn-sm-action.show-result:hover {
+    background: var(--success);
+    color: #fff;
+    border-color: var(--success);
+  }
+
+  .student-score-box {
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--bg-input);
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12.5px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .student-score-box.passed {
+    background: rgba(30, 122, 90, 0.08);
+    border-color: var(--success);
+    color: var(--success);
+  }
+
+  .student-score-box.failed {
+    background: rgba(192, 57, 43, 0.08);
+    border-color: var(--error);
+    color: var(--error);
+  }
+
+  .student-score-percent {
+    font-size: 18px;
+    font-weight: 900;
+    direction: ltr;
+    color: inherit;
+  }
+
+  .submission-datetime {
+    background: linear-gradient(135deg, rgba(41, 128, 185, 0.08), rgba(41, 128, 185, 0.03));
+    border: 1.5px solid var(--info);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--info);
+    margin-bottom: 10px;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .submission-datetime i {
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  .submission-datetime .dt-value {
+    font-family: 'Cairo', monospace;
+    direction: ltr;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+  }
+
+  [data-theme="dark"] .submission-datetime .dt-value {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .form-group { margin-bottom: 16px; }
+
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .form-label .required { color: var(--error); margin-right: 3px; }
+  .form-label .hint { font-size: 11px; color: var(--text-sub); font-weight: 500; margin-right: 6px; }
+
+  .form-input, .form-select {
+    width: 100%;
+    padding: 13px 16px;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    transition: all 0.25s ease;
+    outline: none;
+    font-weight: 500;
+  }
+
+  .form-input:focus, .form-select:focus {
+    border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1);
+  }
+
+  .form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 2px dashed var(--border);
+    flex-wrap: wrap;
+  }
+
+  .modal-actions .btn { flex: 1; min-width: 120px; padding: 14px; }
+
+  .modal-info {
+    background: rgba(41, 128, 185, 0.1);
+    color: var(--info);
+    border: 1px solid rgba(41, 128, 185, 0.3);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.6;
+  }
+
+  .modal-info i { color: var(--info); margin-top: 2px; flex-shrink: 0; }
+
+  .modal-warning {
+    background: rgba(192, 57, 43, 0.1);
+    color: var(--error);
+    border: 1px solid rgba(192, 57, 43, 0.3);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.6;
+  }
+
+  .modal-warning i { color: var(--error); margin-top: 2px; flex-shrink: 0; }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background: var(--bg-card);
+    color: var(--text-main);
+    padding: 14px 24px;
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--border);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 999999;
+    transition: transform 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+    max-width: calc(100vw - 32px);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast.success { border-color: var(--success); }
+  .toast.success i { color: var(--success); }
+  .toast.error { border-color: var(--error); }
+  .toast.error i { color: var(--error); }
+  .toast.warning { border-color: var(--warning); }
+  .toast.warning i { color: var(--warning); }
+  .toast.info { border-color: var(--info); }
+  .toast.info i { color: var(--info); }
+
+  .drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 9998;
+  }
+
+  .drawer-overlay.show { opacity: 1; visibility: visible; }
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 88%;
+    max-width: 340px;
+    height: 100vh;
+    height: 100dvh;
+    background: var(--bg-card);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
+    transform: translateX(105%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-left: 1px solid var(--border);
+  }
+
+  .drawer.open { transform: translateX(0); }
+
+  .drawer-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 22px 20px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .drawer-header-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .drawer-logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: contain;
+    background: rgba(255,255,255,0.1);
+    padding: 4px;
+    border: 2px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .drawer-brand { flex: 1; min-width: 0; }
+
+  .drawer-brand-name {
+    font-size: 18px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .drawer-brand-name .divider { color: var(--accent); font-weight: 300; }
+
+  .drawer-brand-sub {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .drawer-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .drawer-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+  }
+
+  .drawer-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 16px;
+  }
+
+  .drawer-section { margin-bottom: 22px; }
+
+  .drawer-section-title {
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--text-sub);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    padding-right: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .drawer-section-title i { color: var(--accent); font-size: 12px; }
+
+  .drawer-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    width: 100%;
+    text-align: right;
+  }
+
+  .drawer-btn:hover, .drawer-btn:active {
+    background: var(--bg-card);
+    border-color: var(--accent);
+    transform: translateX(-4px);
+  }
+
+  .drawer-btn-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .drawer-btn-icon { color: var(--bg-page); }
+
+  .drawer-btn-label { flex: 1; }
+
+  .drawer-btn.logout-btn {
+    color: var(--error);
+    border-color: rgba(192, 57, 43, 0.3);
+    background: rgba(192, 57, 43, 0.05);
+  }
+
+  .drawer-btn.logout-btn .drawer-btn-icon {
+    background: linear-gradient(135deg, #C0392B, #E74C3C);
+  }
+
+  .drawer-btn.logout-btn:hover {
+    background: var(--error);
+    color: #fff;
+    border-color: var(--error);
+  }
+
+  @media (max-width: 900px) {
+    .topbar-inner { padding: 12px 16px; }
+    .back-btn { width: 40px; height: 40px; font-size: 16px; }
+    .topbar-title i.header-icon { font-size: 19px; }
+    .topbar-title-text h1 { font-size: 16px; }
+    .icon-btn { width: 38px; height: 38px; font-size: 15px; }
+    .menu-btn { display: flex; }
+    .topbar-actions .icon-btn { display: none; }
+    .topbar-actions .menu-btn { display: flex; }
+    .container { padding: 16px 12px 120px; }
+    .items-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+    .stat-card { padding: 12px 14px; }
+    .stat-icon { width: 42px; height: 42px; font-size: 18px; }
+    .stat-number { font-size: 20px; }
+    .main-tab { padding: 12px 14px; font-size: 13.5px; }
+    .main-tab i { font-size: 15px; }
+    .modal-box { padding: 22px 16px; border-radius: 18px; }
+    .modal-header { top: -22px; }
+    .modal-actions { flex-direction: column; }
+    .modal-actions .btn { min-width: 100%; }
+    .form-row-2 { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .stat-number { font-size: 18px; }
+    .stat-label { font-size: 10.5px; }
+    .items-grid { grid-template-columns: 1fr; }
+    .item-stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .item-actions-row { grid-template-columns: 1fr; }
+    .item-header { padding: 16px; }
+    .item-header-icon { width: 48px; height: 48px; font-size: 20px; }
+    .item-title { font-size: 15.5px; }
+    .student-actions { justify-content: stretch; }
+    .student-actions .btn-sm-action { flex: 1; justify-content: center; }
+  }
+
+  @media (min-width: 901px) {
+    .menu-btn { display: none !important; }
+    .drawer, .drawer-overlay { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ Topbar ============ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-brand">
+      <a href="index.html" class="back-btn" title="الرجوع">
+        <i class="fas fa-arrow-right"></i>
+      </a>
+      <div class="topbar-title">
+        <i class="fas fa-chart-bar header-icon"></i>
+        <div class="topbar-title-text">
+          <h1>إدارة النتائج</h1>
+          <small>RESULTS MANAGEMENT</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <button class="icon-btn" id="themeToggle" title="الوضع">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+      <button class="icon-btn logout" id="logoutBtn" title="تسجيل الخروج">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+      <button class="menu-btn" id="menuBtn" aria-label="القائمة">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ Container ============ -->
+<div class="container">
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-file-pen"></i></div>
+      <div class="stat-info">
+        <div class="stat-number" id="statHomeworks">0</div>
+        <div class="stat-label">الواجبات</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon blue"><i class="fas fa-graduation-cap"></i></div>
+      <div class="stat-info">
+        <div class="stat-number" id="statExams">0</div>
+        <div class="stat-label">الامتحانات</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+      <div class="stat-info">
+        <div class="stat-number" id="statPassed">0</div>
+        <div class="stat-label">ناجحون</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon red"><i class="fas fa-times-circle"></i></div>
+      <div class="stat-info">
+        <div class="stat-number" id="statFailed">0</div>
+        <div class="stat-label">راسبون</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-tabs">
+    <button class="main-tab active" data-tab="homeworks">
+      <i class="fas fa-file-pen"></i>
+      <span>الواجبات</span>
+      <span class="tab-badge" id="tabHomeworksCount">0</span>
+    </button>
+    <button class="main-tab" data-tab="exams">
+      <i class="fas fa-graduation-cap"></i>
+      <span>الامتحانات</span>
+      <span class="tab-badge" id="tabExamsCount">0</span>
+    </button>
+  </div>
+
+  <!-- ============ SECTION 1: HOMEWORKS ============ -->
+  <div class="section-content active" id="section-homeworks">
+    <div class="toolbar">
+      <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" class="search-input" id="searchHomeworks" placeholder="ابحث بالاسم...">
+        <button class="search-clear" id="clearSearchHomeworks" aria-label="مسح">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <button class="btn btn-success" id="openAllHomeworks">
+        <i class="fas fa-unlock"></i>
+        <span>فتح الكل</span>
+      </button>
+      <button class="btn btn-warning" id="closeAllHomeworks">
+        <i class="fas fa-lock"></i>
+        <span>غلق الكل</span>
+      </button>
+      <button class="btn btn-danger" id="blockAllHomeworks">
+        <i class="fas fa-ban"></i>
+        <span>حظر الكل</span>
+      </button>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn btn-warning" id="hideAllHomeworksResults" style="flex: 1;">
+        <i class="fas fa-eye-slash"></i>
+        <span>إخفاء جميع النتائج</span>
+      </button>
+      <button class="btn btn-success" id="showAllHomeworksResults" style="flex: 1;">
+        <i class="fas fa-eye"></i>
+        <span>إظهار جميع النتائج</span>
+      </button>
+    </div>
+
+    <div class="items-grid" id="homeworksGrid">
+      <div class="loading-state">
+        <i class="fas fa-spinner"></i>
+        <div>جاري تحميل الواجبات...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 2: EXAMS ============ -->
+  <div class="section-content" id="section-exams">
+    <div class="toolbar">
+      <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" class="search-input" id="searchExams" placeholder="ابحث بالاسم...">
+        <button class="search-clear" id="clearSearchExams" aria-label="مسح">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <button class="btn btn-success" id="openAllExams">
+        <i class="fas fa-unlock"></i>
+        <span>فتح الكل</span>
+      </button>
+      <button class="btn btn-warning" id="closeAllExams">
+        <i class="fas fa-lock"></i>
+        <span>غلق الكل</span>
+      </button>
+      <button class="btn btn-danger" id="blockAllExams">
+        <i class="fas fa-ban"></i>
+        <span>حظر الكل</span>
+      </button>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn btn-warning" id="hideAllExamsResults" style="flex: 1;">
+        <i class="fas fa-eye-slash"></i>
+        <span>إخفاء جميع النتائج</span>
+      </button>
+      <button class="btn btn-success" id="showAllExamsResults" style="flex: 1;">
+        <i class="fas fa-eye"></i>
+        <span>إظهار جميع النتائج</span>
+      </button>
+    </div>
+
+    <div class="items-grid" id="examsGrid">
+      <div class="loading-state">
+        <i class="fas fa-spinner"></i>
+        <div>جاري تحميل الامتحانات...</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ MODAL: STUDENTS LIST ============ -->
+<div class="modal-overlay" id="studentsModal">
+  <div class="modal-box xwide">
+    <div class="modal-header">
+      <div class="modal-header-icon">
+        <i class="fas fa-users"></i>
+      </div>
+      <h2 id="studentsModalTitle">الطلاب</h2>
+      <button class="modal-close" id="studentsModalClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="search-wrapper" style="margin-bottom: 16px;">
+      <i class="fas fa-search"></i>
+      <input type="text" class="search-input" id="studentSearch" placeholder="ابحث بالاسم أو الكود...">
+    </div>
+
+    <div id="studentsListContent"></div>
+  </div>
+</div>
+
+<!-- ============ MODAL: OPEN ACCESS ============ -->
+<div class="modal-overlay" id="openAccessModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-header-icon">
+        <i class="fas fa-unlock"></i>
+      </div>
+      <h2 id="openAccessModalTitle">فتح الواجب للطالب</h2>
+      <button class="modal-close" id="openAccessClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-warning">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span><strong>تنبيه:</strong> سيتم <strong>حذف النتيجة السابقة</strong> للطالب نهائياً، وسيبدأ الحل من جديد. لا يمكن التراجع عن هذه العملية.</span>
+    </div>
+
+    <div class="modal-info">
+      <i class="fas fa-info-circle"></i>
+      <span>سيتم فتح العنصر للطالب وتمديد الوقت المتبقي. يُرسل إشعار تلقائي للطالب.</span>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">المدة <span class="required">*</span></label>
+      <div class="form-row-2">
+        <input type="number" class="form-input" id="openAccessValue" min="1" value="30">
+        <select class="form-select" id="openAccessUnit">
+          <option value="minutes" selected>دقائق</option>
+          <option value="hours">ساعات</option>
+          <option value="days">أيام</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="openAccessCancelBtn">
+        <i class="fas fa-times"></i>
+        <span>إلغاء</span>
+      </button>
+      <button class="btn btn-success" id="openAccessConfirmBtn">
+        <i class="fas fa-unlock"></i>
+        <span>فتح وحذف النتيجة</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: CONFIRM ============ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box small">
+    <div class="modal-header" style="justify-content: center; border: none; padding: 0; margin-bottom: 16px;">
+      <div class="modal-header-icon" id="confirmIcon" style="width: 72px; height: 72px; font-size: 30px; border-radius: 50%; margin: 0 auto;">
+        <i class="fas fa-question-circle"></i>
+      </div>
+    </div>
+    <h2 style="text-align: center; font-size: 20px; font-weight: 800; margin-bottom: 10px; color: var(--text-main);" id="confirmTitle">تأكيد</h2>
+    <p style="text-align: center; font-size: 14px; color: var(--text-sub); font-weight: 600; line-height: 1.7; margin-bottom: 22px; padding: 0 10px;" id="confirmMessage">—</p>
+
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="confirmCancel">
+        <i class="fas fa-times"></i><span>إلغاء</span>
+      </button>
+      <button class="btn btn-primary" id="confirmOk">
+        <i class="fas fa-check"></i><span>تأكيد</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Toast ============ -->
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle" id="toastIcon"></i>
+  <span id="toastText"></span>
+</div>
+
+<!-- ============ Drawer ============ -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<aside class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="drawer-header-content">
+      <img src="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png" 
+           alt="Logo" class="drawer-logo" id="drawerLogo">
+      <div class="drawer-brand">
+        <div class="drawer-brand-name">
+          <span id="drawerNameAr">ميزان</span>
+          <span class="divider">|</span>
+          <span id="drawerNameEn">MEEZAN</span>
+        </div>
+        <div class="drawer-brand-sub" id="drawerSubtitle">إدارة النتائج</div>
+      </div>
+      <button class="drawer-close" id="drawerClose" aria-label="إغلاق">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="drawer-content">
+    <div class="drawer-section">
+      <div class="drawer-section-title">
+        <i class="fas fa-th-large"></i>
+        <span>الأقسام</span>
+      </div>
+      <a href="index.html" class="drawer-btn">
+        <span class="drawer-btn-icon"><i class="fas fa-home"></i></span>
+        <span class="drawer-btn-label">الرئيسية</span>
+      </a>
+      <button class="drawer-btn" id="drawerThemeBtn">
+        <span class="drawer-btn-icon"><i class="fas fa-moon" id="drawerThemeIcon"></i></span>
+        <span class="drawer-btn-label" id="drawerThemeText">الوضع الليلي</span>
+      </button>
+      <a href="index1.html" class="drawer-btn">
+        <span class="drawer-btn-icon"><i class="fas fa-cog"></i></span>
+        <span class="drawer-btn-label">الإعدادات</span>
+      </a>
+      <button class="drawer-btn logout-btn" id="drawerLogoutBtn">
+        <span class="drawer-btn-icon"><i class="fas fa-sign-out-alt"></i></span>
+        <span class="drawer-btn-label">تسجيل الخروج</span>
+      </button>
+    </div>
+  </div>
+</aside>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+  getFirestore, doc, onSnapshot, setDoc, getDoc, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAmkCOrSaklhUiDdDfZCpSDQNmMYP-Gdw0",
+  authDomain: "qanon-c716d.firebaseapp.com",
+  projectId: "qanon-c716d",
+  storageBucket: "qanon-c716d.firebasestorage.app",
+  messagingSenderId: "757756130875",
+  appId: "1:757756130875:web:63c53534c6843e2a29ce1e",
+  measurementId: "G-8FZGTC779Y"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const $ = (id) => document.getElementById(id);
+
+// ============================================================
+// 🔒 الحماية
+// ============================================================
+if (sessionStorage.getItem('meezan_logged_in') !== 'true') {
+  window.location.replace('login.html');
+}
+
+const adminId = sessionStorage.getItem('meezan_user_id') || 'admin';
+const adminName = sessionStorage.getItem('meezan_username') || 'المشرف';
+
+history.pushState(null, '', location.href);
+window.addEventListener('popstate', () => {
+  if (sessionStorage.getItem('meezan_logged_in') === 'true') {
+    history.pushState(null, '', location.href);
+  } else {
+    window.location.replace('login.html');
+  }
+});
+
+// ============================================================
+// 🧹 التنظيف
+// ============================================================
+function cleanInput(value) {
+  if (typeof value !== 'string') return '';
+  return value
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .replace(/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/g, ' ')
+    .replace(/^\s+|\s+$/g, '')
+    .trim();
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = String(text);
+  return div.innerHTML;
+}
+
+function formatDate(iso) {
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso);
+    const now = new Date();
+    const diff = (now - d) / 1000;
+
+    if (diff < 60) return 'الآن';
+    if (diff < 3600) return `قبل ${Math.floor(diff / 60)} دقيقة`;
+    if (diff < 86400) return `قبل ${Math.floor(diff / 3600)} ساعة`;
+    if (diff < 604800) return `قبل ${Math.floor(diff / 86400)} يوم`;
+
+    return d.toLocaleDateString('ar-EG', {
+      year: 'numeric', month: 'short', day: 'numeric'
+    });
+  } catch (e) { return '—'; }
+}
+
+function formatFullDateTime(iso) {
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso);
+    const datePart = d.toLocaleDateString('ar-EG', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+    const timePart = d.toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+    return `${datePart} — ${timePart}`;
+  } catch (e) { return '—'; }
+}
+
+function formatDuration(value, unit) {
+  const map = { minutes: 'دقيقة', hours: 'ساعة', days: 'يوم' };
+  return `${value} ${map[unit] || ''}`;
+}
+
+// ============================================================
+// 📊 الحالة
+// ============================================================
+let allHomeworks = [];
+let allExams = [];
+let allStudents = [];
+
+let homeworkSubs = {};  // { hwId: { uid: subData } }
+let examSubs = {};      // { examId: { uid: subData } }
+
+let hiddenHomeworks = new Set();
+let hiddenExams = new Set();
+let hiddenStudentResults = {};  // { "homework_5": Set(uid) }
+
+let currentTab = 'homeworks';
+let searchHomeworkQuery = '';
+let searchExamQuery = '';
+let searchStudentQuery = '';
+
+let currentStudentsTarget = null;
+let currentOpenAccessTarget = null;
+
+// ============================================================
+// 🌙 الوضع
+// ============================================================
+const savedTheme = localStorage.getItem('meezan_theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+updateThemeIcon(savedTheme);
+updateDrawerTheme(savedTheme);
+
+$('themeToggle').addEventListener('click', toggleTheme);
+$('drawerThemeBtn').addEventListener('click', toggleTheme);
+
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('meezan_theme', next);
+  updateThemeIcon(next);
+  updateDrawerTheme(next);
+}
+
+function updateThemeIcon(t) {
+  $('themeIcon').className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+function updateDrawerTheme(t) {
+  const icon = $('drawerThemeIcon');
+  const text = $('drawerThemeText');
+  if (!icon || !text) return;
+  if (t === 'dark') {
+    icon.className = 'fas fa-sun';
+    text.textContent = 'الوضع النهاري';
+  } else {
+    icon.className = 'fas fa-moon';
+    text.textContent = 'الوضع الليلي';
+  }
+}
+
+// ============================================================
+// 💬 Toast
+// ============================================================
+let toastTimeout;
+function showToast(text, type = 'success') {
+  const toast = $('toast');
+  const icon = $('toastIcon');
+  $('toastText').textContent = text;
+  toast.className = 'toast show ' + type;
+  const icons = {
+    success: 'fa-check-circle',
+    error: 'fa-times-circle',
+    warning: 'fa-exclamation-triangle',
+    info: 'fa-info-circle'
+  };
+  icon.className = `fas ${icons[type] || icons.success}`;
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ============================================================
+// 🔔 Confirm
+// ============================================================
+let confirmResolve = null;
+function showConfirm(options = {}) {
+  return new Promise((resolve) => {
+    const {
+      title = 'تأكيد',
+      message = 'هل أنت متأكد؟',
+      icon = 'fa-question-circle',
+      iconType = 'default',
+      okText = 'تأكيد',
+      cancelText = 'إلغاء'
+    } = options;
+
+    const iconEl = $('confirmIcon');
+    iconEl.className = 'modal-header-icon';
+    if (iconType === 'danger') iconEl.style.background = 'linear-gradient(135deg, #C0392B, #E74C3C)';
+    else if (iconType === 'warning') iconEl.style.background = 'linear-gradient(135deg, #E67E22, #F39C12)';
+    else if (iconType === 'success') iconEl.style.background = 'linear-gradient(135deg, #1E7A5A, #2ECC71)';
+    else iconEl.style.background = 'linear-gradient(135deg, var(--primary), var(--primary-lighter))';
+
+    iconEl.innerHTML = `<i class="fas ${icon}"></i>`;
+    $('confirmTitle').textContent = title;
+    $('confirmMessage').innerHTML = message;
+    $('confirmOk').innerHTML = `<i class="fas fa-check"></i> <span>${okText}</span>`;
+    $('confirmCancel').innerHTML = `<i class="fas fa-times"></i> <span>${cancelText}</span>`;
+
+    confirmResolve = resolve;
+    $('confirmModal').classList.add('show');
+  });
+}
+
+function closeConfirm(result) {
+  $('confirmModal').classList.remove('show');
+  if (confirmResolve) {
+    confirmResolve(result);
+    confirmResolve = null;
+  }
+}
+
+$('confirmOk').addEventListener('click', () => closeConfirm(true));
+$('confirmCancel').addEventListener('click', () => closeConfirm(false));
+$('confirmModal').addEventListener('click', (e) => {
+  if (e.target === $('confirmModal')) closeConfirm(false);
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if ($('confirmModal').classList.contains('show')) closeConfirm(false);
+    if ($('studentsModal').classList.contains('show')) closeStudentsModal();
+    if ($('openAccessModal').classList.contains('show')) closeOpenAccessModal();
+    if ($('drawer').classList.contains('open')) closeDrawer();
+  }
+});
+
+// ============================================================
+// 🎯 Tabs
+// ============================================================
+document.querySelectorAll('.main-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    currentTab = tab.dataset.tab;
+    document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
+    $(`section-${currentTab}`).classList.add('active');
+  });
+});
+
+// ============================================================
+// 📊 Stats
+// ============================================================
+function updateStats() {
+  const totalHw = allHomeworks.length;
+  const totalEx = allExams.length;
+
+  let totalPassed = 0;
+  let totalFailed = 0;
+
+  Object.values(homeworkSubs).forEach(hwSubs => {
+    Object.values(hwSubs).forEach(sub => {
+      if (sub.submitted && sub.corrected) {
+        const percent = sub.totalScore > 0 ? (sub.score / sub.totalScore) * 100 : 0;
+        if (percent >= 50) totalPassed++;
+        else totalFailed++;
+      }
+    });
+  });
+
+  Object.values(examSubs).forEach(exSubs => {
+    Object.values(exSubs).forEach(sub => {
+      if (sub.submitted && sub.corrected) {
+        const percent = sub.totalScore > 0 ? (sub.score / sub.totalScore) * 100 : 0;
+        if (percent >= 50) totalPassed++;
+        else totalFailed++;
+      }
+    });
+  });
+
+  $('statHomeworks').textContent = totalHw;
+  $('statExams').textContent = totalEx;
+  $('statPassed').textContent = totalPassed;
+  $('statFailed').textContent = totalFailed;
+
+  $('tabHomeworksCount').textContent = totalHw;
+  $('tabExamsCount').textContent = totalEx;
+}
+
+// ============================================================
+// 🔍 Helpers — حالة الطالب في عنصر
+// ============================================================
+function getStudentItemState(student, type, itemId, subs) {
+  const sub = subs[student.id];
+
+  // محظور؟
+  if (student.blockedItems && student.blockedItems[`${type}_${itemId}`]) {
+    return 'blocked';
+  }
+
+  // سُلِّم
+  if (sub && sub.submitted) {
+    if (sub.corrected) {
+      const percent = sub.totalScore > 0 ? (sub.score / sub.totalScore) * 100 : 0;
+      return percent >= 50 ? 'passed' : 'failed';
+    }
+    return 'pending';
+  }
+
+  // مفتوح
+  if (student.openAccess && student.openAccess[`${type}_${itemId}`]) {
+    const oa = student.openAccess[`${type}_${itemId}`];
+    if (new Date(oa.endAt) > new Date()) {
+      return 'opened';
+    }
+  }
+
+  // مغلق
+  if (student.closedItems && student.closedItems[`${type}_${itemId}`]) {
+    return 'not-started';
+  }
+
+  return 'not-started';
+}
+
+// ============================================================
+// 🗑️ حذف تسليم طالب واحد (للسماح بإعادة الحل)
+// ============================================================
+async function deleteStudentSubmission(type, itemId, studentId) {
+  const collName = type === 'homework' ? 'homework_subs' : 'exam_subs';
+  const idField = type === 'homework' ? 'homeworkId' : 'examId';
+
+  try {
+    const ref = doc(db, collName, 'all');
+    const snap = await getDoc(ref);
+    if (!snap.exists()) return 0;
+
+    let items = snap.data().items || [];
+    const originalLength = items.length;
+
+    // احذف تسليم الطالب لهذا العنصر
+    items = items.filter(s => !(s[idField] === itemId && s.userId === studentId));
+
+    if (items.length !== originalLength) {
+      await setDoc(ref, { items, updatedAt: serverTimestamp() });
+      console.log(`✅ تم حذف ${originalLength - items.length} تسليم للطالب ${studentId}`);
+      return originalLength - items.length;
+    }
+    return 0;
+  } catch (e) {
+    console.error('delete submission error:', e);
+    return 0;
+  }
+}
+
+// ============================================================
+// 🗑️ حذف تسليمات عدة طلاب لعنصر واحد
+// ============================================================
+async function deleteAllSubmissionsForItem(type, itemId, studentIds) {
+  const collName = type === 'homework' ? 'homework_subs' : 'exam_subs';
+  const idField = type === 'homework' ? 'homeworkId' : 'examId';
+
+  try {
+    const ref = doc(db, collName, 'all');
+    const snap = await getDoc(ref);
+    if (!snap.exists()) return 0;
+
+    let items = snap.data().items || [];
+    const originalLength = items.length;
+    const studentIdSet = new Set(studentIds);
+
+    // احذف تسليمات هؤلاء الطلاب لهذا العنصر
+    items = items.filter(s => 
+      !(s[idField] === itemId && studentIdSet.has(s.userId))
+    );
+
+    if (items.length !== originalLength) {
+      await setDoc(ref, { items, updatedAt: serverTimestamp() });
+      console.log(`✅ تم حذف ${originalLength - items.length} تسليم من ${collName}`);
+      return originalLength - items.length;
+    }
+    return 0;
+  } catch (e) {
+    console.error('delete all submissions error:', e);
+    return 0;
+  }
+}
+
+// ============================================================
+// 🎨 Render Homeworks
+// ============================================================
+function renderHomeworks() {
+  const grid = $('homeworksGrid');
+  grid.innerHTML = '';
+
+  const q = cleanInput(searchHomeworkQuery).toLowerCase();
+  let items = allHomeworks.filter(h => h.status === 'published');
+
+  if (q) {
+    items = items.filter(h =>
+      (h.name || '').toLowerCase().includes(q) ||
+      (h.description || '').toLowerCase().includes(q)
+    );
+  }
+
+  items.sort((a, b) => (b.id || 0) - (a.id || 0));
+
+  if (items.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-file-pen"></i>
+        <h3>${allHomeworks.length === 0 ? 'لا توجد واجبات' : 'لا توجد نتائج'}</h3>
+        <p>${allHomeworks.length === 0 ? 'أضف واجبات من إدارة الواجبات' : 'جرّب البحث بكلمة أخرى'}</p>
+      </div>
+    `;
+    return;
+  }
+
+  items.forEach(hw => {
+    grid.appendChild(createHomeworkCard(hw));
+  });
+}
+
+function createHomeworkCard(hw) {
+  const card = document.createElement('div');
+  card.className = 'item-card';
+
+  const isHidden = hiddenHomeworks.has(hw.id);
+  if (isHidden) card.classList.add('hidden-item');
+
+  const subs = homeworkSubs[hw.id] || {};
+  const subsArr = Object.values(subs);
+  const submittedCount = subsArr.filter(s => s.submitted).length;
+  const correctedCount = subsArr.filter(s => s.corrected).length;
+
+  let passedCount = 0;
+  let failedCount = 0;
+  subsArr.forEach(s => {
+    if (s.submitted && s.corrected) {
+      const percent = s.totalScore > 0 ? (s.score / s.totalScore) * 100 : 0;
+      if (percent >= 50) passedCount++;
+      else failedCount++;
+    }
+  });
+
+  const gradeBadge = hw.grade
+    ? `<span class="badge grade"><i class="fas fa-graduation-cap"></i> ${escapeHtml(hw.grade)}</span>`
+    : '';
+
+  const corrBadge = hw.correctionType === 'manual'
+    ? `<span class="badge manual"><i class="fas fa-clipboard-check"></i> تصحيح يدوي</span>`
+    : `<span class="badge auto"><i class="fas fa-bolt"></i> تصحيح تلقائي</span>`;
+
+  const qBadge = `<span class="badge questions"><i class="fas fa-list-check"></i> ${(hw.questions || []).length} سؤال</span>`;
+
+  card.innerHTML = `
+    ${isHidden ? `<div class="item-hidden-badge hidden"><i class="fas fa-eye-slash"></i> مخفي من الطلاب</div>` : ''}
+
+    <div class="item-header">
+      <div class="item-header-icon">
+        <i class="fas fa-file-pen"></i>
+      </div>
+      <div class="item-header-info">
+        <div class="item-title">${escapeHtml(hw.name)}</div>
+        <div class="item-subtitle">
+          <i class="fas fa-hashtag"></i> #${hw.id}
+        </div>
+      </div>
+    </div>
+
+    <div class="item-body">
+      <div class="item-stats-grid">
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--info);">${submittedCount}</div>
+          <div class="mini-stat-label">مُسلَّم</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--primary);">${correctedCount}</div>
+          <div class="mini-stat-label">مُصحح</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--success);">${passedCount}</div>
+          <div class="mini-stat-label">ناجح</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--error);">${failedCount}</div>
+          <div class="mini-stat-label">راسب</div>
+        </div>
+      </div>
+
+      <div class="item-badges">
+        ${gradeBadge}
+        ${qBadge}
+        ${corrBadge}
+      </div>
+
+      <div class="item-actions">
+        <button class="btn-action primary" data-action="details">
+          <i class="fas fa-list"></i>
+          <span>عرض التفاصيل</span>
+        </button>
+        <div class="item-actions-row">
+          <button class="btn-action ${isHidden ? 'success' : 'warning'}" data-action="toggle-hide">
+            <i class="fas ${isHidden ? 'fa-eye' : 'fa-eye-slash'}"></i>
+            <span>${isHidden ? 'إظهار' : 'إخفاء'}</span>
+          </button>
+          <button class="btn-action info" data-action="open-all" style="background: var(--bg-input);">
+            <i class="fas fa-unlock"></i>
+            <span>فتح الكل</span>
+          </button>
+        </div>
+        <button class="btn-action danger" data-action="block-all" style="width: 100%;">
+          <i class="fas fa-ban"></i>
+          <span>حظر الكل من هذا الواجب</span>
+        </button>
+      </div>
+    </div>
+  `;
+
+  card.querySelector('[data-action="details"]').addEventListener('click', () => {
+    openStudentsModal('homework', hw.id, hw.name);
+  });
+
+  card.querySelector('[data-action="toggle-hide"]').addEventListener('click', async () => {
+    await toggleHomeworkHide(hw);
+  });
+
+  card.querySelector('[data-action="open-all"]').addEventListener('click', async () => {
+    await openAllForItem('homework', hw.id, hw.grade);
+  });
+
+  card.querySelector('[data-action="block-all"]').addEventListener('click', async () => {
+    await blockAllForItem('homework', hw.id, hw.grade);
+  });
+
+  return card;
+}
+
+// ============================================================
+// 🎨 Render Exams
+// ============================================================
+function renderExams() {
+  const grid = $('examsGrid');
+  grid.innerHTML = '';
+
+  const q = cleanInput(searchExamQuery).toLowerCase();
+  let items = allExams.filter(e => e.status === 'published');
+
+  if (q) {
+    items = items.filter(e =>
+      (e.name || '').toLowerCase().includes(q) ||
+      (e.description || '').toLowerCase().includes(q)
+    );
+  }
+
+  items.sort((a, b) => (b.id || 0) - (a.id || 0));
+
+  if (items.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-graduation-cap"></i>
+        <h3>${allExams.length === 0 ? 'لا توجد امتحانات' : 'لا توجد نتائج'}</h3>
+        <p>${allExams.length === 0 ? 'أضف امتحانات من إدارة الامتحانات' : 'جرّب البحث بكلمة أخرى'}</p>
+      </div>
+    `;
+    return;
+  }
+
+  items.forEach(exam => {
+    grid.appendChild(createExamCard(exam));
+  });
+}
+
+function createExamCard(exam) {
+  const card = document.createElement('div');
+  card.className = 'item-card';
+
+  const isHidden = hiddenExams.has(exam.id);
+  if (isHidden) card.classList.add('hidden-item');
+
+  const subs = examSubs[exam.id] || {};
+  const subsArr = Object.values(subs);
+  const submittedCount = subsArr.filter(s => s.submitted).length;
+  const correctedCount = subsArr.filter(s => s.corrected).length;
+
+  let passedCount = 0;
+  let failedCount = 0;
+  subsArr.forEach(s => {
+    if (s.submitted && s.corrected) {
+      const percent = s.totalScore > 0 ? (s.score / s.totalScore) * 100 : 0;
+      if (percent >= 50) passedCount++;
+      else failedCount++;
+    }
+  });
+
+  const gradeBadge = exam.grade
+    ? `<span class="badge grade"><i class="fas fa-graduation-cap"></i> ${escapeHtml(exam.grade)}</span>`
+    : '';
+
+  const corrBadge = exam.correctionType === 'manual'
+    ? `<span class="badge manual"><i class="fas fa-clipboard-check"></i> تصحيح يدوي</span>`
+    : `<span class="badge auto"><i class="fas fa-bolt"></i> تصحيح تلقائي</span>`;
+
+  const qBadge = `<span class="badge questions"><i class="fas fa-list-check"></i> ${(exam.questions || []).length} سؤال</span>`;
+
+  const durationBadge = exam.durationValue > 0 && exam.durationUnit !== 'none'
+    ? `<span class="badge duration"><i class="fas fa-clock"></i> ${formatDuration(exam.durationValue, exam.durationUnit)}</span>`
+    : '';
+
+  card.innerHTML = `
+    ${isHidden ? `<div class="item-hidden-badge hidden"><i class="fas fa-eye-slash"></i> مخفي من الطلاب</div>` : ''}
+
+    <div class="item-header">
+      <div class="item-header-icon">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <div class="item-header-info">
+        <div class="item-title">${escapeHtml(exam.name)}</div>
+        <div class="item-subtitle">
+          <i class="fas fa-hashtag"></i> #${exam.id}
+        </div>
+      </div>
+    </div>
+
+    <div class="item-body">
+      <div class="item-stats-grid">
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--info);">${submittedCount}</div>
+          <div class="mini-stat-label">مُسلَّم</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--primary);">${correctedCount}</div>
+          <div class="mini-stat-label">مُصحح</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--success);">${passedCount}</div>
+          <div class="mini-stat-label">ناجح</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--error);">${failedCount}</div>
+          <div class="mini-stat-label">راسب</div>
+        </div>
+      </div>
+
+      <div class="item-badges">
+        ${gradeBadge}
+        ${qBadge}
+        ${durationBadge}
+        ${corrBadge}
+      </div>
+
+      <div class="item-actions">
+        <button class="btn-action primary" data-action="details">
+          <i class="fas fa-list"></i>
+          <span>عرض التفاصيل</span>
+        </button>
+        <div class="item-actions-row">
+          <button class="btn-action ${isHidden ? 'success' : 'warning'}" data-action="toggle-hide">
+            <i class="fas ${isHidden ? 'fa-eye' : 'fa-eye-slash'}"></i>
+            <span>${isHidden ? 'إظهار' : 'إخفاء'}</span>
+          </button>
+          <button class="btn-action info" data-action="open-all" style="background: var(--bg-input);">
+            <i class="fas fa-unlock"></i>
+            <span>فتح الكل</span>
+          </button>
+        </div>
+        <button class="btn-action danger" data-action="block-all" style="width: 100%;">
+          <i class="fas fa-ban"></i>
+          <span>حظر الكل من هذا الامتحان</span>
+        </button>
+      </div>
+    </div>
+  `;
+
+  card.querySelector('[data-action="details"]').addEventListener('click', () => {
+    openStudentsModal('exam', exam.id, exam.name);
+  });
+
+  card.querySelector('[data-action="toggle-hide"]').addEventListener('click', async () => {
+    await toggleExamHide(exam);
+  });
+
+  card.querySelector('[data-action="open-all"]').addEventListener('click', async () => {
+    await openAllForItem('exam', exam.id, exam.grade);
+  });
+
+  card.querySelector('[data-action="block-all"]').addEventListener('click', async () => {
+    await blockAllForItem('exam', exam.id, exam.grade);
+  });
+
+  return card;
+}
+
+// ============================================================
+// 👁️ إخفاء / إظهار
+// ============================================================
+async function toggleHomeworkHide(hw) {
+  const isCurrentlyHidden = hiddenHomeworks.has(hw.id);
+
+  if (isCurrentlyHidden) {
+    hiddenHomeworks.delete(hw.id);
+  } else {
+    hiddenHomeworks.add(hw.id);
+  }
+
+  try {
+    await setDoc(doc(db, 'settings', 'hidden_results'), {
+      homeworks: [...hiddenHomeworks],
+      exams: [...hiddenExams],
+      hiddenStudentResults: serializeHiddenStudentResults(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    showToast(isCurrentlyHidden ? '✅ تم إظهار النتائج' : '🙈 تم إخفاء النتائج', 'success');
+    renderHomeworks();
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+async function toggleExamHide(exam) {
+  const isCurrentlyHidden = hiddenExams.has(exam.id);
+
+  if (isCurrentlyHidden) {
+    hiddenExams.delete(exam.id);
+  } else {
+    hiddenExams.add(exam.id);
+  }
+
+  try {
+    await setDoc(doc(db, 'settings', 'hidden_results'), {
+      homeworks: [...hiddenHomeworks],
+      exams: [...hiddenExams],
+      hiddenStudentResults: serializeHiddenStudentResults(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    showToast(isCurrentlyHidden ? '✅ تم إظهار النتائج' : '🙈 تم إخفاء النتائج', 'success');
+    renderExams();
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+function serializeHiddenStudentResults() {
+  const toSave = {};
+  Object.keys(hiddenStudentResults).forEach(k => {
+    toSave[k] = [...hiddenStudentResults[k]];
+  });
+  return toSave;
+}
+
+// ============================================================
+// 🔓 فتح (مع حذف النتيجة السابقة) — فردي
+// ============================================================
+async function openAccessForStudent(type, itemId, studentId, value, unit) {
+  const msMap = { minutes: 60000, hours: 3600000, days: 86400000 };
+  const ms = value * (msMap[unit] || 0);
+
+  const startAt = new Date();
+  const endAt = new Date(startAt.getTime() + ms);
+
+  // اقرأ الطلاب
+  const userRef = doc(db, 'users', 'all');
+  const userSnap = await getDoc(userRef);
+  if (!userSnap.exists()) throw new Error('لا يوجد مستخدمون');
+
+  const items = userSnap.data().items || [];
+  const idx = items.findIndex(u => u.id === studentId);
+  if (idx === -1) throw new Error('الطالب غير موجود');
+
+  if (!items[idx].openAccess) items[idx].openAccess = {};
+  if (!items[idx].closedItems) items[idx].closedItems = {};
+  if (!items[idx].blockedItems) items[idx].blockedItems = {};
+
+  const key = `${type}_${itemId}`;
+
+  items[idx].openAccess[key] = {
+    type, itemId,
+    startAt: startAt.toISOString(),
+    endAt: endAt.toISOString(),
+    grantedBy: adminName,
+    grantedAt: startAt.toISOString()
+  };
+
+  // شيل من الإغلاق والحظر
+  delete items[idx].closedItems[key];
+  delete items[idx].blockedItems[key];
+
+  await setDoc(userRef, { items, updatedAt: serverTimestamp() });
+
+  // ✅ حذف التسليم السابق للطالب
+  const deletedCount = await deleteStudentSubmission(type, itemId, studentId);
+  console.log(`🗑️ تم حذف ${deletedCount} تسليم سابق للطالب`);
+
+  // إشعار للطالب
+  await sendStudentNotification(studentId, type, itemId, 'open', { value, unit, endAt });
+}
+
+// ============================================================
+// 🔒 غلق — فردي
+// ============================================================
+async function closeAccessForStudent(type, itemId, studentId) {
+  const userRef = doc(db, 'users', 'all');
+  const userSnap = await getDoc(userRef);
+  if (!userSnap.exists()) throw new Error('لا يوجد مستخدمون');
+
+  const items = userSnap.data().items || [];
+  const idx = items.findIndex(u => u.id === studentId);
+  if (idx === -1) throw new Error('الطالب غير موجود');
+
+  if (!items[idx].closedItems) items[idx].closedItems = {};
+  if (!items[idx].openAccess) items[idx].openAccess = {};
+
+  const key = `${type}_${itemId}`;
+
+  items[idx].closedItems[key] = {
+    type, itemId,
+    closedAt: new Date().toISOString(),
+    closedBy: adminName
+  };
+
+  delete items[idx].openAccess[key];
+
+  await setDoc(userRef, { items, updatedAt: serverTimestamp() });
+
+  // لو الطالب داخل → نسلم الواجب/الامتحان تلقائياً
+  await forceSubmitForStudent(type, itemId, studentId);
+}
+
+// ============================================================
+// 🚫 حظر — فردي
+// ============================================================
+async function blockStudentFromItem(type, itemId, studentId) {
+  const userRef = doc(db, 'users', 'all');
+  const userSnap = await getDoc(userRef);
+  if (!userSnap.exists()) throw new Error('لا يوجد مستخدمون');
+
+  const items = userSnap.data().items || [];
+  const idx = items.findIndex(u => u.id === studentId);
+  if (idx === -1) throw new Error('الطالب غير موجود');
+
+  if (!items[idx].blockedItems) items[idx].blockedItems = {};
+  if (!items[idx].openAccess) items[idx].openAccess = {};
+  if (!items[idx].closedItems) items[idx].closedItems = {};
+
+  const key = `${type}_${itemId}`;
+
+  items[idx].blockedItems[key] = {
+    type, itemId,
+    blockedAt: new Date().toISOString(),
+    blockedBy: adminName
+  };
+
+  delete items[idx].openAccess[key];
+  delete items[idx].closedItems[key];
+
+  await setDoc(userRef, { items, updatedAt: serverTimestamp() });
+
+  // طرد الطالب لو داخل
+  await forceSubmitForStudent(type, itemId, studentId);
+}
+
+// ============================================================
+// ✅ إلغاء الحظر — فردي
+// ============================================================
+async function unblockStudentFromItem(type, itemId, studentId) {
+  const userRef = doc(db, 'users', 'all');
+  const userSnap = await getDoc(userRef);
+  if (!userSnap.exists()) throw new Error('لا يوجد مستخدمون');
+
+  const items = userSnap.data().items || [];
+  const idx = items.findIndex(u => u.id === studentId);
+  if (idx === -1) throw new Error('الطالب غير موجود');
+
+  const key = `${type}_${itemId}`;
+
+  if (items[idx].blockedItems && items[idx].blockedItems[key]) {
+    delete items[idx].blockedItems[key];
+  }
+
+  await setDoc(userRef, { items, updatedAt: serverTimestamp() });
+}
+
+// ============================================================
+// 💾 force submit للطالب لو داخل
+// ============================================================
+async function forceSubmitForStudent(type, itemId, studentId) {
+  const collName = type === 'homework' ? 'homework_subs' : 'exam_subs';
+  const idField = type === 'homework' ? 'homeworkId' : 'examId';
+
+  try {
+    const ref = doc(db, collName, 'all');
+    const snap = await getDoc(ref);
+    let items = snap.exists() ? (snap.data().items || []) : [];
+
+    const idx = items.findIndex(s =>
+      s[idField] === itemId && s.userId === studentId
+    );
+
+    if (idx !== -1 && items[idx].submitted) {
+      // مسلّم بالفعل
+      return;
+    }
+
+    const source = type === 'homework'
+      ? allHomeworks.find(h => h.id === itemId)
+      : allExams.find(e => e.id === itemId);
+
+    if (!source) return;
+
+    const totalScore = (source.questions || []).reduce((sum, q) => sum + (q.score || 1), 0);
+
+    const subData = {
+      [idField]: itemId,
+      [type === 'homework' ? 'homeworkName' : 'examName']: source.name,
+      userId: studentId,
+      userGrade: source.grade,
+      answers: {},
+      submitted: true,
+      submittedAt: new Date().toISOString(),
+      submittedBy: 'admin_force',
+      corrected: false,
+      score: 0,
+      totalScore,
+      correctionType: source.correctionType || 'auto'
+    };
+
+    if (idx !== -1) {
+      items[idx] = { ...items[idx], ...subData };
+    } else {
+      items.push(subData);
+    }
+
+    await setDoc(ref, { items, updatedAt: serverTimestamp() });
+
+    await sendStudentNotification(studentId, type, itemId, 'force_submit', {});
+  } catch (e) {
+    console.error('force submit error:', e);
+  }
+}
+
+// ============================================================
+// 📩 إشعار للطالب
+// ============================================================
+async function sendStudentNotification(studentId, type, itemId, notifType, data) {
+  try {
+    const source = type === 'homework'
+      ? allHomeworks.find(h => h.id === itemId)
+      : allExams.find(e => e.id === itemId);
+
+    if (!source) return;
+
+    const notifId = 'notif_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+    const link = type === 'homework'
+      ? `${location.origin}/homework.html`
+      : `${location.origin}/exam.html`;
+
+    let title = '';
+    let body = '';
+
+    if (notifType === 'open') {
+      const durationText = data.unit === 'minutes' ? 'دقيقة' : data.unit === 'hours' ? 'ساعة' : 'يوم';
+      title = `🔓 تم فتح ${type === 'homework' ? 'الواجب' : 'الامتحان'}: ${source.name}`;
+      body = `تم إعطاؤك ${data.value} ${durationText} لحل ${type === 'homework' ? 'الواجب' : 'الامتحان'} من جديد.\n\n⚠️ النتيجة السابقة تم حذفها — يمكنك البدء من الصفر.\n\n🔗 ${link}`;
+    } else if (notifType === 'force_submit') {
+      title = `📤 تم تسليم ${type === 'homework' ? 'الواجب' : 'الامتحان'} تلقائياً`;
+      body = `تم تسليم ${type === 'homework' ? 'الواجب' : 'الامتحان'} "${source.name}" بواسطة الإدارة.`;
+    }
+
+    await setDoc(doc(db, 'notifications', notifId), {
+      id: notifId,
+      title, body,
+      type: 'link',
+      url: link,
+      senderId: adminId,
+      senderName: adminName,
+      createdAt: new Date().toISOString(),
+      target: 'custom',
+      targetLabel: notifType === 'open' ? 'فتح خاص' : 'تسليم تلقائي',
+      recipients: [studentId],
+      recipientsCount: 1
+    });
+
+    // ضيف في إشعارات الطالب
+    const userNotifRef = doc(db, 'user_notifications', studentId);
+    const uSnap = await getDoc(userNotifRef);
+    let notifIds = [];
+    let readIds = [];
+    if (uSnap.exists()) {
+      notifIds = uSnap.data().notifIds || [];
+      readIds = uSnap.data().readIds || [];
+    }
+    if (!notifIds.includes(notifId)) {
+      notifIds.unshift(notifId);
+      if (notifIds.length > 100) notifIds = notifIds.slice(0, 100);
+    }
+    await setDoc(userNotifRef, {
+      userId: studentId,
+      notifIds,
+      readIds,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (e) {
+    console.error('send notif error:', e);
+  }
+}
+
+// ============================================================
+// 👥 Students Modal
+// ============================================================
+function openStudentsModal(type, id, name) {
+  currentStudentsTarget = { type, id, name };
+  searchStudentQuery = '';
+  $('studentSearch').value = '';
+  $('studentsModalTitle').textContent = `الطلاب: ${name}`;
+  renderStudentsList();
+  $('studentsModal').classList.add('show');
+}
+
+function closeStudentsModal() {
+  $('studentsModal').classList.remove('show');
+  currentStudentsTarget = null;
+}
+
+$('studentsModalClose').addEventListener('click', closeStudentsModal);
+$('studentsModal').addEventListener('click', (e) => {
+  if (e.target === $('studentsModal')) closeStudentsModal();
+});
+
+$('studentSearch').addEventListener('input', (e) => {
+  searchStudentQuery = e.target.value;
+  renderStudentsList();
+});
+
+function renderStudentsList() {
+  if (!currentStudentsTarget) return;
+
+  const container = $('studentsListContent');
+  const q = cleanInput(searchStudentQuery).toLowerCase();
+
+  const { type, id } = currentStudentsTarget;
+
+  const source = type === 'homework'
+    ? allHomeworks.find(h => h.id === id)
+    : allExams.find(e => e.id === id);
+
+  if (!source) {
+    container.innerHTML = '<div class="empty-state">العنصر غير موجود</div>';
+    return;
+  }
+
+  const subs = type === 'homework'
+    ? (homeworkSubs[id] || {})
+    : (examSubs[id] || {});
+
+  let students = allStudents.filter(s => s.grade === source.grade);
+  if (q) {
+    students = students.filter(s =>
+      (s.fullName || '').toLowerCase().includes(q) ||
+      (s.username || '').toLowerCase().includes(q) ||
+      (s.code || '').toLowerCase().includes(q)
+    );
+  }
+
+  if (students.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state" style="padding: 30px 20px;">
+        <i class="fas fa-users-slash" style="font-size: 36px;"></i>
+        <p>لا يوجد طلاب</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = '';
+
+  students.forEach(student => {
+    const sub = subs[student.id];
+    container.appendChild(createStudentRow(student, sub, type, id));
+  });
+}
+
+function createStudentRow(student, sub, type, itemId) {
+  const row = document.createElement('div');
+  row.className = 'student-row';
+
+  const state = getStudentItemState(student, type, itemId, type === 'homework' ? (homeworkSubs[itemId] || {}) : (examSubs[itemId] || {}));
+  const isBlocked = state === 'blocked';
+  const isOpened = state === 'opened';
+
+  // النتيجة المخفية؟
+  const hiddenKey = `${type}_${itemId}`;
+  const hiddenSet = hiddenStudentResults[hiddenKey] || new Set();
+  const isResultHidden = hiddenSet.has(student.id);
+
+  if (isResultHidden) row.classList.add('hidden-result');
+  if (isBlocked) row.classList.add('blocked-student');
+
+  // حالة
+  let statusHTML = '';
+  if (state === 'blocked') {
+    statusHTML = `<span class="student-status blocked"><i class="fas fa-ban"></i> محظور</span>`;
+  } else if (state === 'passed') {
+    statusHTML = `<span class="student-status passed"><i class="fas fa-check-circle"></i> ناجح</span>`;
+  } else if (state === 'failed') {
+    statusHTML = `<span class="student-status failed"><i class="fas fa-times-circle"></i> راسب</span>`;
+  } else if (state === 'pending') {
+    statusHTML = `<span class="student-status pending"><i class="fas fa-hourglass-half"></i> قيد التصحيح</span>`;
+  } else if (state === 'opened') {
+    statusHTML = `<span class="student-status opened"><i class="fas fa-unlock"></i> مفتوح</span>`;
+  } else {
+    statusHTML = `<span class="student-status not-started"><i class="fas fa-circle"></i> لم يبدأ</span>`;
+  }
+
+  // النسبة المئوية
+  let scoreBoxHTML = '';
+  if (sub && sub.submitted && sub.corrected) {
+    const percent = sub.totalScore > 0 ? Math.round((sub.score / sub.totalScore) * 100) : 0;
+    const passed = percent >= 50;
+    scoreBoxHTML = `
+      <div class="student-score-box ${passed ? 'passed' : 'failed'}">
+        <i class="fas ${passed ? 'fa-trophy' : 'fa-times-circle'}"></i>
+        <span class="student-score-percent">${percent}%</span>
+        <span style="font-size: 11px; opacity: 0.8;">(${sub.score}/${sub.totalScore})</span>
+      </div>
+    `;
+  }
+
+  // تاريخ التسليم (للأمتحانات فقط)
+  let submissionDateHTML = '';
+  if (type === 'exam' && sub && sub.submittedAt) {
+    submissionDateHTML = `
+      <div class="submission-datetime">
+        <i class="fas fa-clock"></i>
+        <span>تاريخ التسليم:</span>
+        <span class="dt-value">${formatFullDateTime(sub.submittedAt)}</span>
+      </div>
+    `;
+  }
+
+  const avatar = student.avatarUrl
+    ? `<img src="${escapeHtml(student.avatarUrl)}" alt="" onerror="this.parentNode.innerHTML='<span>${(student.fullName || '؟').charAt(0).toUpperCase()}</span>'">`
+    : `<span>${(student.fullName || student.username || '؟').charAt(0).toUpperCase()}</span>`;
+
+  // أزرار
+  let actionsHTML = '';
+
+  if (isBlocked) {
+    actionsHTML = `
+      <button class="btn-sm-action unblock" data-action="unblock">
+        <i class="fas fa-check"></i>
+        <span>إلغاء الحظر</span>
+      </button>
+    `;
+  } else {
+    actionsHTML = `
+      <button class="btn-sm-action open-access" data-action="open-access">
+        <i class="fas fa-unlock"></i>
+        <span>${isOpened ? 'تمديد' : 'فتح بمدة'}</span>
+      </button>
+      <button class="btn-sm-action close-access" data-action="close-access">
+        <i class="fas fa-lock"></i>
+        <span>غلق</span>
+      </button>
+      <button class="btn-sm-action block" data-action="block">
+        <i class="fas fa-ban"></i>
+        <span>حظر</span>
+      </button>
+      ${sub && sub.submitted ? `
+        <button class="btn-sm-action ${isResultHidden ? 'show-result' : 'hide-result'}" data-action="toggle-result-hide">
+          <i class="fas ${isResultHidden ? 'fa-eye' : 'fa-eye-slash'}"></i>
+          <span>${isResultHidden ? 'إظهار النتيجة' : 'إخفاء النتيجة'}</span>
+        </button>
+      ` : ''}
+    `;
+  }
+
+  row.innerHTML = `
+    <div class="student-avatar">${avatar}</div>
+    <div class="student-info">
+      <div class="student-name">
+        ${escapeHtml(student.fullName || student.username || 'طالب')}
+        ${isResultHidden ? '<span class="badge" style="background: rgba(149, 165, 166, 0.15); color: #7F8C8D; border-color: #95A5A6; padding: 2px 6px; font-size: 9.5px;"><i class="fas fa-eye-slash"></i> مخفية</span>' : ''}
+      </div>
+      <div class="student-meta">
+        <span><i class="fas fa-hashtag"></i> ${escapeHtml(student.code || '—')}</span>
+      </div>
+    </div>
+    ${statusHTML}
+    ${scoreBoxHTML}
+    ${submissionDateHTML}
+    <div class="student-actions">${actionsHTML}</div>
+  `;
+
+  // Bind actions
+  row.querySelector('[data-action="open-access"]')?.addEventListener('click', () => {
+    openOpenAccessModal(type, itemId, student.id);
+  });
+
+  row.querySelector('[data-action="close-access"]')?.addEventListener('click', async () => {
+    const c = await showConfirm({
+      title: 'غلق الدخول',
+      message: `سيتم غلق ${type === 'homework' ? 'الواجب' : 'الامتحان'} للطالب "${student.fullName}". <br><br>لو الطالب داخل، سيتم تسليمه تلقائياً.`,
+      icon: 'fa-lock',
+      iconType: 'warning',
+      okText: 'غلق'
+    });
+    if (!c) return;
+
+    try {
+      await closeAccessForStudent(type, itemId, student.id);
+      showToast('✅ تم الغلق', 'success');
+      renderStudentsList();
+    } catch (e) {
+      showToast('حدث خطأ: ' + e.message, 'error');
+    }
+  });
+
+  row.querySelector('[data-action="block"]')?.addEventListener('click', async () => {
+    const c = await showConfirm({
+      title: 'حظر الطالب',
+      message: `سيتم حظر "${student.fullName}" من هذا ${type === 'homework' ? 'الواجب' : 'الامتحان'}. <br><br>لو داخل، سيتم طرده فوراً.`,
+      icon: 'fa-ban',
+      iconType: 'danger',
+      okText: 'حظر',
+      okClass: 'btn-danger'
+    });
+    if (!c) return;
+
+    try {
+      await blockStudentFromItem(type, itemId, student.id);
+      showToast('🚫 تم الحظر', 'success');
+      renderStudentsList();
+    } catch (e) {
+      showToast('حدث خطأ: ' + e.message, 'error');
+    }
+  });
+
+  row.querySelector('[data-action="unblock"]')?.addEventListener('click', async () => {
+    try {
+      await unblockStudentFromItem(type, itemId, student.id);
+      showToast('✅ تم إلغاء الحظر', 'success');
+      renderStudentsList();
+    } catch (e) {
+      showToast('حدث خطأ: ' + e.message, 'error');
+    }
+  });
+
+  row.querySelector('[data-action="toggle-result-hide"]')?.addEventListener('click', async () => {
+    await toggleStudentResultHide(type, itemId, student.id);
+  });
+
+  return row;
+}
+
+// ============================================================
+// 👁️ إخفاء / إظهار نتيجة طالب
+// ============================================================
+async function toggleStudentResultHide(type, itemId, studentId) {
+  const key = `${type}_${itemId}`;
+
+  if (!hiddenStudentResults[key]) {
+    hiddenStudentResults[key] = new Set();
+  }
+
+  const set = hiddenStudentResults[key];
+
+  if (set.has(studentId)) {
+    set.delete(studentId);
+  } else {
+    set.add(studentId);
+  }
+
+  try {
+    await setDoc(doc(db, 'settings', 'hidden_results'), {
+      homeworks: [...hiddenHomeworks],
+      exams: [...hiddenExams],
+      hiddenStudentResults: serializeHiddenStudentResults(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    showToast('✅ تم الحفظ', 'success');
+    renderStudentsList();
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+// ============================================================
+// 🔓 Open Access Modal
+// ============================================================
+function openOpenAccessModal(type, itemId, userId) {
+  currentOpenAccessTarget = { type, itemId, userId };
+  $('openAccessModalTitle').textContent = `فتح ${type === 'homework' ? 'الواجب' : 'الامتحان'} للطالب`;
+  $('openAccessValue').value = '30';
+  $('openAccessUnit').value = 'minutes';
+  $('openAccessModal').classList.add('show');
+}
+
+function closeOpenAccessModal() {
+  $('openAccessModal').classList.remove('show');
+  currentOpenAccessTarget = null;
+}
+
+$('openAccessClose').addEventListener('click', closeOpenAccessModal);
+$('openAccessCancelBtn').addEventListener('click', closeOpenAccessModal);
+$('openAccessModal').addEventListener('click', (e) => {
+  if (e.target.id === 'openAccessModal') closeOpenAccessModal();
+});
+
+$('openAccessConfirmBtn').addEventListener('click', async () => {
+  if (!currentOpenAccessTarget) return;
+
+  const { type, itemId, userId } = currentOpenAccessTarget;
+  const value = parseInt($('openAccessValue').value) || 30;
+  const unit = $('openAccessUnit').value;
+
+  if (value <= 0) return showToast('المدة غير صحيحة', 'error');
+
+  // تأكيد الحذف
+  const c = await showConfirm({
+    title: 'تأكيد الفتح والحذف',
+    message: `⚠️ سيتم <strong>حذف النتيجة السابقة</strong> للطالب نهائياً.<br><br>هل أنت متأكد؟`,
+    icon: 'fa-exclamation-triangle',
+    iconType: 'warning',
+    okText: 'نعم، احذف وافتح'
+  });
+  if (!c) return;
+
+  try {
+    await openAccessForStudent(type, itemId, userId, value, unit);
+    showToast('✅ تم الفتح وحذف النتيجة + إرسال إشعار', 'success');
+    closeOpenAccessModal();
+    renderStudentsList();
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ: ' + e.message, 'error');
+  }
+});
+
+// ============================================================
+// 🎯 فتح / حظر / غلق جماعي (لعنصر واحد)
+// ============================================================
+async function openAllForItem(type, itemId, grade) {
+  const c = await showConfirm({
+    title: 'فتح الكل',
+    message: `سيتم فتح ${type === 'homework' ? 'الواجب' : 'الامتحان'} لكل طلاب الفرقة "${grade}".<br><br>⚠️ <strong>سيتم حذف كل النتائج السابقة للطلاب نهائياً</strong>، وسيبدأون من جديد.<br><br>كم المدة؟ سيتم إعطاؤهم 24 ساعة افتراضياً.`,
+    icon: 'fa-unlock',
+    iconType: 'success',
+    okText: 'فتح الكل'
+  });
+  if (!c) return;
+
+  const studentsInGrade = allStudents.filter(s => s.grade === grade);
+
+  if (studentsInGrade.length === 0) {
+    return showToast('لا يوجد طلاب في الفرقة', 'warning');
+  }
+
+  try {
+    const userRef = doc(db, 'users', 'all');
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists()) throw new Error('لا يوجد مستخدمون');
+
+    const items = userSnap.data().items || [];
+    const now = new Date();
+    const endAt = new Date(now.getTime() + 24 * 3600000);
+    const key = `${type}_${itemId}`;
+
+    studentsInGrade.forEach(student => {
+      const idx = items.findIndex(u => u.id === student.id);
+      if (idx === -1) return;
+
+      if (!items[idx].openAccess) items[idx].openAccess = {};
+      if (!items[idx].closedItems) items[idx].closedItems = {};
+      if (!items[idx].blockedItems) items[idx].blockedItems = {};
+
+      items[idx].openAccess[key] = {
+        type, itemId,
+        startAt: now.toISOString(),
+        endAt: endAt.toISOString(),
+        grantedBy: adminName,
+        grantedAt: now.toISOString()
+      };
+
+      delete items[idx].closedItems[key];
+      delete items[idx].blockedItems[key];
+    });
+
+    await setDoc(userRef, { items, updatedAt: serverTimestamp() });
+
+    // ✅ حذف كل التسليمات السابقة لهذا العنصر
+    const deletedCount = await deleteAllSubmissionsForItem(type, itemId, studentsInGrade.map(s => s.id));
+    console.log(`🗑️ تم حذف ${deletedCount} تسليم سابق`);
+
+    // إشعار جماعي
+    const link = type === 'homework'
+      ? `${location.origin}/homework.html`
+      : `${location.origin}/exam.html`;
+
+    const source = type === 'homework'
+      ? allHomeworks.find(h => h.id === itemId)
+      : allExams.find(e => e.id === itemId);
+
+    const notifId = 'notif_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+
+    await setDoc(doc(db, 'notifications', notifId), {
+      id: notifId,
+      title: `🔓 تم فتح ${type === 'homework' ? 'الواجب' : 'الامتحان'}: ${source?.name || ''}`,
+      body: `تم فتح ${type === 'homework' ? 'الواجب' : 'الامتحان'} لفرقة "${grade}" لمدة 24 ساعة.\n\n⚠️ النتائج السابقة تم حذفها — يمكنكم البدء من جديد.`,
+      type: 'link',
+      url: link,
+      senderId: adminId,
+      senderName: adminName,
+      createdAt: new Date().toISOString(),
+      target: 'grade',
+      targetLabel: grade,
+      recipients: studentsInGrade.map(s => s.id),
+      recipientsCount: studentsInGrade.length
+    });
+
+    for (const student of studentsInGrade) {
+      const userNotifRef = doc(db, 'user_notifications', student.id);
+      const uSnap = await getDoc(userNotifRef);
+      let notifIds = uSnap.exists() ? (uSnap.data().notifIds || []) : [];
+      let readIds = uSnap.exists() ? (uSnap.data().readIds || []) : [];
+
+      if (!notifIds.includes(notifId)) {
+        notifIds.unshift(notifId);
+        if (notifIds.length > 100) notifIds = notifIds.slice(0, 100);
+      }
+
+      await setDoc(userNotifRef, {
+        userId: student.id,
+        notifIds,
+        readIds,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    }
+
+    showToast(`✅ تم فتح ${type === 'homework' ? 'الواجب' : 'الامتحان'} لـ ${studentsInGrade.length} طالب`, 'success');
+    renderHomeworks();
+    renderExams();
+    if (currentStudentsTarget) renderStudentsList();
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ: ' + e.message, 'error');
+  }
+}
+
+async function blockAllForItem(type, itemId, grade) {
+  const c = await showConfirm({
+    title: 'حظر الكل',
+    message: `سيتم حظر ${type === 'homework' ? 'الواجب' : 'الامتحان'} لكل طلاب الفرقة "${grade}".<br><br>الطلاب اللي داخلين هيتطردوا فوراً.`,
+    icon: 'fa-ban',
+    iconType: 'danger',
+    okText: 'حظر الكل',
+    okClass: 'btn-danger'
+  });
+  if (!c) return;
+
+  const studentsInGrade = allStudents.filter(s => s.grade === grade);
+
+  if (studentsInGrade.length === 0) {
+    return showToast('لا يوجد طلاب', 'warning');
+  }
+
+  try {
+    const userRef = doc(db, 'users', 'all');
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists()) throw new Error('لا يوجد مستخدمون');
+
+    const items = userSnap.data().items || [];
+    const key = `${type}_${itemId}`;
+
+    studentsInGrade.forEach(student => {
+      const idx = items.findIndex(u => u.id === student.id);
+      if (idx === -1) return;
+
+      if (!items[idx].blockedItems) items[idx].blockedItems = {};
+      if (!items[idx].openAccess) items[idx].openAccess = {};
+      if (!items[idx].closedItems) items[idx].closedItems = {};
+
+      items[idx].blockedItems[key] = {
+        type, itemId,
+        blockedAt: new Date().toISOString(),
+        blockedBy: adminName
+      };
+
+      delete items[idx].openAccess[key];
+      delete items[idx].closedItems[key];
+    });
+
+    await setDoc(userRef, { items, updatedAt: serverTimestamp() });
+
+    // طرد كل الطلاب اللي داخلين
+    for (const student of studentsInGrade) {
+      await forceSubmitForStudent(type, itemId, student.id);
+    }
+
+    showToast(`🚫 تم حظر ${type === 'homework' ? 'الواجب' : 'الامتحان'} لـ ${studentsInGrade.length} طالب`, 'success');
+    renderHomeworks();
+    renderExams();
+    if (currentStudentsTarget) renderStudentsList();
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+// ============================================================
+// 🎯 أزرار جماعية (فوق كل قسم)
+// ============================================================
+$('openAllHomeworks').addEventListener('click', async () => {
+  const c = await showConfirm({
+    title: 'فتح جميع الواجبات',
+    message: 'سيتم فتح جميع الواجبات لكل الطلاب لمدة 24 ساعة.<br><br>⚠️ <strong>سيتم حذف كل النتائج السابقة</strong>. متابعة؟',
+    icon: 'fa-unlock',
+    iconType: 'success',
+    okText: 'فتح الكل'
+  });
+  if (!c) return;
+
+  for (const hw of allHomeworks) {
+    if (hw.status !== 'published') continue;
+    await openAllForItemSilent('homework', hw.id, hw.grade);
+  }
+  showToast('✅ تم فتح جميع الواجبات + حذف النتائج السابقة', 'success');
+  renderHomeworks();
+});
+
+$('closeAllHomeworks').addEventListener('click', async () => {
+  const c = await showConfirm({
+    title: 'غلق جميع الواجبات',
+    message: 'سيتم غلق جميع الواجبات لكل الطلاب + تسليم أي طالب داخل. متابعة؟',
+    icon: 'fa-lock',
+    iconType: 'warning',
+    okText: 'غلق الكل'
+  });
+  if (!c) return;
+
+  for (const hw of allHomeworks) {
+    if (hw.status !== 'published') continue;
+    await closeAllForItemSilent('homework', hw.id, hw.grade);
+  }
+  showToast('🔒 تم غلق جميع الواجبات', 'success');
+  renderHomeworks();
+});
+
+$('blockAllHomeworks').addEventListener('click', async () => {
+  const c = await showConfirm({
+    title: 'حظر جميع الواجبات',
+    message: 'سيتم حظر جميع الواجبات لكل الطلاب + طرد أي طالب داخل. متابعة؟',
+    icon: 'fa-ban',
+    iconType: 'danger',
+    okText: 'حظر الكل',
+    okClass: 'btn-danger'
+  });
+  if (!c) return;
+
+  for (const hw of allHomeworks) {
+    if (hw.status !== 'published') continue;
+    await blockAllForItemSilent('homework', hw.id, hw.grade);
+  }
+  showToast('🚫 تم حظر جميع الواجبات', 'success');
+  renderHomeworks();
+});
+
+$('openAllExams').addEventListener('click', async () => {
+  const c = await showConfirm({
+    title: 'فتح جميع الامتحانات',
+    message: 'سيتم فتح جميع الامتحانات لكل الطلاب لمدة 24 ساعة.<br><br>⚠️ <strong>سيتم حذف كل النتائج السابقة</strong>. متابعة؟',
+    icon: 'fa-unlock',
+    iconType: 'success',
+    okText: 'فتح الكل'
+  });
+  if (!c) return;
+
+  for (const exam of allExams) {
+    if (exam.status !== 'published') continue;
+    await openAllForItemSilent('exam', exam.id, exam.grade);
+  }
+  showToast('✅ تم فتح جميع الامتحانات + حذف النتائج السابقة', 'success');
+  renderExams();
+});
+
+$('closeAllExams').addEventListener('click', async () => {
+  const c = await showConfirm({
+    title: 'غلق جميع الامتحانات',
+    message: 'سيتم غلق جميع الامتحانات + تسليم أي طالب داخل. متابعة؟',
+    icon: 'fa-lock',
+    iconType: 'warning',
+    okText: 'غلق الكل'
+  });
+  if (!c) return;
+
+  for (const exam of allExams) {
+    if (exam.status !== 'published') continue;
+    await closeAllForItemSilent('exam', exam.id, exam.grade);
+  }
+  showToast('🔒 تم غلق جميع الامتحانات', 'success');
+  renderExams();
+});
+
+$('blockAllExams').addEventListener('click', async () => {
+  const c = await showConfirm({
+    title: 'حظر جميع الامتحانات',
+    message: 'سيتم حظر جميع الامتحانات + طرد أي طالب داخل. متابعة؟',
+    icon: 'fa-ban',
+    iconType: 'danger',
+    okText: 'حظر الكل',
+    okClass: 'btn-danger'
+  });
+  if (!c) return;
+
+  for (const exam of allExams) {
+    if (exam.status !== 'published') continue;
+    await blockAllForItemSilent('exam', exam.id, exam.grade);
+  }
+  showToast('🚫 تم حظر جميع الامتحانات', 'success');
+  renderExams();
+});
+
+// ============================================================
+// 🎯 نسخ صامتة للعمليات الجماعية
+// ============================================================
+async function openAllForItemSilent(type, itemId, grade) {
+  const studentsInGrade = allStudents.filter(s => s.grade === grade);
+  if (studentsInGrade.length === 0) return;
+
+  const userRef = doc(db, 'users', 'all');
+  const userSnap = await getDoc(userRef);
+  if (!userSnap.exists()) return;
+
+  const items = userSnap.data().items || [];
+  const now = new Date();
+  const endAt = new Date(now.getTime() + 24 * 3600000);
+  const key = `${type}_${itemId}`;
+
+  studentsInGrade.forEach(student => {
+    const idx = items.findIndex(u => u.id === student.id);
+    if (idx === -1) return;
+
+    if (!items[idx].openAccess) items[idx].openAccess = {};
+    if (!items[idx].closedItems) items[idx].closedItems = {};
+    if (!items[idx].blockedItems) items[idx].blockedItems = {};
+
+    items[idx].openAccess[key] = {
+      type, itemId,
+      startAt: now.toISOString(),
+      endAt: endAt.toISOString(),
+      grantedBy: adminName,
+      grantedAt: now.toISOString()
+    };
+
+    delete items[idx].closedItems[key];
+    delete items[idx].blockedItems[key];
+  });
+
+  await setDoc(userRef, { items, updatedAt: serverTimestamp() });
+
+  // ✅ حذف كل التسليمات السابقة
+  await deleteAllSubmissionsForItem(type, itemId, studentsInGrade.map(s => s.id));
+}
+
+async function closeAllForItemSilent(type, itemId, grade) {
+  const studentsInGrade = allStudents.filter(s => s.grade === grade);
+  if (studentsInGrade.length === 0) return;
+
+  const userRef = doc(db, 'users', 'all');
+  const userSnap = await getDoc(userRef);
+  if (!userSnap.exists()) return;
+
+  const items = userSnap.data().items || [];
+  const key = `${type}_${itemId}`;
+
+  studentsInGrade.forEach(student => {
+    const idx = items.findIndex(u => u.id === student.id);
+    if (idx === -1) return;
+
+    if (!items[idx].closedItems) items[idx].closedItems = {};
+    if (!items[idx].openAccess) items[idx].openAccess = {};
+
+    items[idx].closedItems[key] = {
+      type, itemId,
+      closedAt: new Date().toISOString(),
+      closedBy: adminName
+    };
+
+    delete items[idx].openAccess[key];
+  });
+
+  await setDoc(userRef, { items, updatedAt: serverTimestamp() });
+
+  // طرد اللي داخلين
+  for (const student of studentsInGrade) {
+    await forceSubmitForStudent(type, itemId, student.id);
+  }
+}
+
+async function blockAllForItemSilent(type, itemId, grade) {
+  const studentsInGrade = allStudents.filter(s => s.grade === grade);
+  if (studentsInGrade.length === 0) return;
+
+  const userRef = doc(db, 'users', 'all');
+  const userSnap = await getDoc(userRef);
+  if (!userSnap.exists()) return;
+
+  const items = userSnap.data().items || [];
+  const key = `${type}_${itemId}`;
+
+  studentsInGrade.forEach(student => {
+    const idx = items.findIndex(u => u.id === student.id);
+    if (idx === -1) return;
+
+    if (!items[idx].blockedItems) items[idx].blockedItems = {};
+    if (!items[idx].openAccess) items[idx].openAccess = {};
+    if (!items[idx].closedItems) items[idx].closedItems = {};
+
+    items[idx].blockedItems[key] = {
+      type, itemId,
+      blockedAt: new Date().toISOString(),
+      blockedBy: adminName
+    };
+
+    delete items[idx].openAccess[key];
+    delete items[idx].closedItems[key];
+  });
+
+  await setDoc(userRef, { items, updatedAt: serverTimestamp() });
+
+  // طرد اللي داخلين
+  for (const student of studentsInGrade) {
+    await forceSubmitForStudent(type, itemId, student.id);
+  }
+}
+
+// ============================================================
+// 👁️ إخفاء / إظهار جماعي للنتائج
+// ============================================================
+$('hideAllHomeworksResults').addEventListener('click', async () => {
+  const c = await showConfirm({
+    title: 'إخفاء جميع النتائج',
+    message: 'سيتم إخفاء نتائج <strong>جميع الواجبات</strong> من الطلاب. متابعة؟',
+    icon: 'fa-eye-slash',
+    iconType: 'warning',
+    okText: 'إخفاء الكل'
+  });
+  if (!c) return;
+
+  allHomeworks.forEach(h => hiddenHomeworks.add(h.id));
+
+  try {
+    await setDoc(doc(db, 'settings', 'hidden_results'), {
+      homeworks: [...hiddenHomeworks],
+      exams: [...hiddenExams],
+      hiddenStudentResults: serializeHiddenStudentResults(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    showToast('🙈 تم إخفاء جميع نتائج الواجبات', 'success');
+    renderHomeworks();
+  } catch (e) {
+    showToast('حدث خطأ', 'error');
+  }
+});
+
+$('showAllHomeworksResults').addEventListener('click', async () => {
+  const c = await showConfirm({
+    title: 'إظهار جميع النتائج',
+    message: 'سيتم إظهار نتائج <strong>جميع الواجبات</strong> للطلاب. متابعة؟',
+    icon: 'fa-eye',
+    iconType: 'success',
+    okText: 'إظهار الكل'
+  });
+  if (!c) return;
+
+  hiddenHomeworks.clear();
+
+  try {
+    await setDoc(doc(db, 'settings', 'hidden_results'), {
+      homeworks: [],
+      exams: [...hiddenExams],
+      hiddenStudentResults: serializeHiddenStudentResults(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    showToast('✅ تم إظهار جميع نتائج الواجبات', 'success');
+    renderHomeworks();
+  } catch (e) {
+    showToast('حدث خطأ', 'error');
+  }
+});
+
+$('hideAllExamsResults').addEventListener('click', async () => {
+  const c = await showConfirm({
+    title: 'إخفاء جميع النتائج',
+    message: 'سيتم إخفاء نتائج <strong>جميع الامتحانات</strong>. متابعة؟',
+    icon: 'fa-eye-slash',
+    iconType: 'warning',
+    okText: 'إخفاء الكل'
+  });
+  if (!c) return;
+
+  allExams.forEach(e => hiddenExams.add(e.id));
+
+  try {
+    await setDoc(doc(db, 'settings', 'hidden_results'), {
+      homeworks: [...hiddenHomeworks],
+      exams: [...hiddenExams],
+      hiddenStudentResults: serializeHiddenStudentResults(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    showToast('🙈 تم إخفاء جميع نتائج الامتحانات', 'success');
+    renderExams();
+  } catch (e) {
+    showToast('حدث خطأ', 'error');
+  }
+});
+
+$('showAllExamsResults').addEventListener('click', async () => {
+  const c = await showConfirm({
+    title: 'إظهار جميع النتائج',
+    message: 'سيتم إظهار نتائج <strong>جميع الامتحانات</strong>. متابعة؟',
+    icon: 'fa-eye',
+    iconType: 'success',
+    okText: 'إظهار الكل'
+  });
+  if (!c) return;
+
+  hiddenExams.clear();
+
+  try {
+    await setDoc(doc(db, 'settings', 'hidden_results'), {
+      homeworks: [...hiddenHomeworks],
+      exams: [],
+      hiddenStudentResults: serializeHiddenStudentResults(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    showToast('✅ تم إظهار جميع نتائج الامتحانات', 'success');
+    renderExams();
+  } catch (e) {
+    showToast('حدث خطأ', 'error');
+  }
+});
+
+// ============================================================
+// 🔍 Search
+// ============================================================
+$('searchHomeworks').addEventListener('input', (e) => {
+  searchHomeworkQuery = e.target.value;
+  $('clearSearchHomeworks').classList.toggle('show', !!cleanInput(searchHomeworkQuery));
+  renderHomeworks();
+});
+
+$('clearSearchHomeworks').addEventListener('click', () => {
+  $('searchHomeworks').value = '';
+  searchHomeworkQuery = '';
+  $('clearSearchHomeworks').classList.remove('show');
+  renderHomeworks();
+});
+
+$('searchExams').addEventListener('input', (e) => {
+  searchExamQuery = e.target.value;
+  $('clearSearchExams').classList.toggle('show', !!cleanInput(searchExamQuery));
+  renderExams();
+});
+
+$('clearSearchExams').addEventListener('click', () => {
+  $('searchExams').value = '';
+  searchExamQuery = '';
+  $('clearSearchExams').classList.remove('show');
+  renderExams();
+});
+
+// ============================================================
+// 📡 Listeners
+// ============================================================
+function startHomeworksListener() {
+  onSnapshot(doc(db, 'homeworks', 'all'), (snap) => {
+    allHomeworks = snap.exists() ? (snap.data().items || []) : [];
+    updateStats();
+    renderHomeworks();
+  }, (err) => console.log('homeworks error:', err.message));
+}
+
+function startExamsListener() {
+  onSnapshot(doc(db, 'exams', 'all'), (snap) => {
+    allExams = snap.exists() ? (snap.data().items || []) : [];
+    updateStats();
+    renderExams();
+  }, (err) => console.log('exams error:', err.message));
+}
+
+function startStudentsListener() {
+  onSnapshot(doc(db, 'users', 'all'), (snap) => {
+    allStudents = snap.exists() ? (snap.data().items || []) : [];
+    renderHomeworks();
+    renderExams();
+    if (currentStudentsTarget) renderStudentsList();
+  }, (err) => console.log('students error:', err.message));
+}
+
+function startHomeworkSubsListener() {
+  onSnapshot(doc(db, 'homework_subs', 'all'), (snap) => {
+    homeworkSubs = {};
+    if (snap.exists()) {
+      (snap.data().items || []).forEach(sub => {
+        if (!homeworkSubs[sub.homeworkId]) homeworkSubs[sub.homeworkId] = {};
+        homeworkSubs[sub.homeworkId][sub.userId] = sub;
+      });
+    }
+    updateStats();
+    renderHomeworks();
+    if (currentStudentsTarget && currentStudentsTarget.type === 'homework') renderStudentsList();
+  }, (err) => console.log('homework_subs error:', err.message));
+}
+
+function startExamSubsListener() {
+  onSnapshot(doc(db, 'exam_subs', 'all'), (snap) => {
+    examSubs = {};
+    if (snap.exists()) {
+      (snap.data().items || []).forEach(sub => {
+        if (!examSubs[sub.examId]) examSubs[sub.examId] = {};
+        examSubs[sub.examId][sub.userId] = sub;
+      });
+    }
+    updateStats();
+    renderExams();
+    if (currentStudentsTarget && currentStudentsTarget.type === 'exam') renderStudentsList();
+  }, (err) => console.log('exam_subs error:', err.message));
+}
+
+function startHiddenResultsListener() {
+  onSnapshot(doc(db, 'settings', 'hidden_results'), (snap) => {
+    if (!snap.exists()) return;
+    const data = snap.data();
+
+    hiddenHomeworks = new Set(data.homeworks || []);
+    hiddenExams = new Set(data.exams || []);
+
+    hiddenStudentResults = {};
+    const hsr = data.hiddenStudentResults || {};
+    Object.keys(hsr).forEach(k => {
+      hiddenStudentResults[k] = new Set(hsr[k] || []);
+    });
+
+    renderHomeworks();
+    renderExams();
+    if (currentStudentsTarget) renderStudentsList();
+  }, (err) => console.log('hidden results error:', err.message));
+}
+
+// ============================================================
+// 🚪 Logout
+// ============================================================
+async function handleLogout() {
+  const c = await showConfirm({
+    title: 'تسجيل الخروج',
+    message: 'هل تريد تسجيل الخروج؟',
+    icon: 'fa-sign-out-alt',
+    iconType: 'warning',
+    okText: 'خروج'
+  });
+  if (!c) return;
+  sessionStorage.clear();
+  window.location.replace('login.html');
+}
+
+$('logoutBtn').addEventListener('click', handleLogout);
+$('drawerLogoutBtn').addEventListener('click', () => {
+  closeDrawer();
+  setTimeout(handleLogout, 300);
+});
+
+// ============================================================
+// 📱 Drawer
+// ============================================================
+const drawer = $('drawer');
+const drawerOverlay = $('drawerOverlay');
+const menuBtn = $('menuBtn');
+const drawerClose = $('drawerClose');
+
+menuBtn?.addEventListener('click', () => {
+  drawer.classList.add('open');
+  drawerOverlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+});
+
+function closeDrawer() {
+  drawer.classList.remove('open');
+  drawerOverlay.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+drawerClose?.addEventListener('click', closeDrawer);
+drawerOverlay?.addEventListener('click', closeDrawer);
+
+// ============================================================
+// 🚀 Init
+// ============================================================
+requestAnimationFrame(() => document.body.classList.add('ready'));
+
+startHomeworksListener();
+startExamsListener();
+startStudentsListener();
+startHomeworkSubsListener();
+startExamSubsListener();
+startHiddenResultsListener();
+
+// ============================================================
+// 🛡️ Protection
+// ============================================================
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted && sessionStorage.getItem('meezan_logged_in') !== 'true') {
+    window.location.replace('login.html');
+  }
+});
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,3787 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0B3D2E">
+<title>إدارة الكورسات | MEEZAN</title>
+<link rel="icon" type="image/png" href="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --primary: #0B3D2E;
+    --primary-light: #145A43;
+    --primary-lighter: #1E7A5A;
+    --accent: #C9A961;
+    --accent-light: #E0C888;
+    --bg-page: #F5F1E8;
+    --bg-card: #FFFFFF;
+    --bg-input: #F8FBF9;
+    --text-main: #0B3D2E;
+    --text-sub: #5A6B66;
+    --border: #E0E5E1;
+    --shadow: rgba(11, 61, 46, 0.15);
+    --error: #C0392B;
+    --success: #1E7A5A;
+    --warning: #E67E22;
+    --info: #2980B9;
+  }
+
+  [data-theme="dark"] {
+    --primary: #C9A961;
+    --primary-light: #E0C888;
+    --primary-lighter: #F0DBA8;
+    --accent: #0B3D2E;
+    --accent-light: #145A43;
+    --bg-page: #0A1612;
+    --bg-card: #11201B;
+    --bg-input: #1A2C25;
+    --text-main: #F5F1E8;
+    --text-sub: #9BAEA6;
+    --border: #1E3A31;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --error: #E74C3C;
+    --success: #2ECC71;
+    --warning: #F39C12;
+    --info: #3498DB;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg-page);
+    min-height: 100vh;
+    color: var(--text-main);
+    opacity: 0;
+    transition: opacity 0.3s ease, background 0.4s ease;
+    overflow-x: hidden;
+  }
+
+  body.ready { opacity: 1; }
+
+  /* ===== Topbar ===== */
+  .topbar {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 20px var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .back-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .back-btn { color: var(--accent); }
+
+  .back-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    transform: translateX(-3px);
+  }
+
+  [data-theme="dark"] .back-btn:hover { color: var(--bg-page); }
+
+  .topbar-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .topbar-title i.header-icon { color: var(--accent); font-size: 22px; }
+
+  .topbar-title-text h1 {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  [data-theme="dark"] .topbar-title-text h1 { color: var(--accent); }
+
+  .topbar-title-text small {
+    display: block;
+    font-size: 10.5px;
+    color: var(--text-sub);
+    font-weight: 600;
+    letter-spacing: 1.5px;
+  }
+
+  .topbar-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+    align-items: center;
+  }
+
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .icon-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  [data-theme="dark"] .icon-btn:hover { color: var(--bg-page); }
+
+  .icon-btn.logout {
+    color: var(--error);
+    border-color: rgba(192, 57, 43, 0.3);
+  }
+
+  .icon-btn.logout:hover {
+    background: var(--error);
+    color: #fff;
+    border-color: var(--error);
+  }
+
+  .menu-btn {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 18px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .menu-btn:hover, .menu-btn:active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+
+  /* ===== Container ===== */
+  .container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 24px 20px 100px;
+  }
+
+  /* ===== Dashboard ===== */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 4px 14px var(--shadow);
+    transition: all 0.25s ease;
+  }
+
+  .stat-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px var(--shadow);
+  }
+
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .stat-icon { color: var(--bg-page); }
+
+  .stat-icon.green { background: linear-gradient(135deg, #1E7A5A, #2ECC71); }
+  .stat-icon.orange { background: linear-gradient(135deg, #E67E22, #F39C12); }
+  .stat-icon.blue { background: linear-gradient(135deg, #2980B9, #3498DB); }
+
+  .stat-info { min-width: 0; }
+
+  .stat-number {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--text-main);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-sub);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* ===== Main Tabs ===== */
+  .main-tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--bg-card);
+    padding: 6px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 14px var(--shadow);
+    margin-bottom: 22px;
+  }
+
+  .main-tab {
+    flex: 1;
+    padding: 15px 18px;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    color: var(--text-sub);
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+  }
+
+  .main-tab:hover {
+    color: var(--text-main);
+    background: var(--bg-input);
+  }
+
+  .main-tab.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    box-shadow: 0 6px 16px var(--shadow);
+  }
+
+  [data-theme="dark"] .main-tab.active { color: var(--bg-page); }
+
+  .main-tab i { font-size: 17px; }
+
+  .main-tab .tab-badge {
+    padding: 2px 9px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 800;
+    background: rgba(255, 255, 255, 0.25);
+    min-width: 24px;
+    text-align: center;
+  }
+
+  .main-tab:not(.active) .tab-badge {
+    background: var(--bg-input);
+    color: var(--text-sub);
+    border: 1px solid var(--border);
+  }
+
+  /* ===== Section ===== */
+  .section-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .section-content.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== Toolbar ===== */
+  .toolbar {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 14px var(--shadow);
+    border: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .search-wrapper {
+    flex: 1;
+    min-width: 220px;
+    position: relative;
+  }
+
+  .search-wrapper i {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-sub);
+    font-size: 15px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 13px 44px 13px 44px;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    outline: none;
+    font-weight: 500;
+    transition: all 0.25s ease;
+  }
+
+  .search-input:focus {
+    border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1);
+  }
+
+  .search-clear {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    border: none;
+    background: rgba(192, 57, 43, 0.1);
+    color: var(--error);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+
+  .search-clear:hover { background: var(--error); color: #fff; }
+  .search-clear.show { display: flex; }
+
+  /* ===== Filter Row ===== */
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-btn {
+    padding: 9px 16px;
+    border-radius: 11px;
+    border: 2px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-sub);
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--accent);
+    color: var(--text-main);
+    transform: translateY(-2px);
+  }
+
+  .filter-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    border-color: var(--primary);
+  }
+
+  [data-theme="dark"] .filter-btn.active { color: var(--bg-page); }
+
+  .filter-btn .count {
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 10.5px;
+    font-weight: 800;
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .filter-btn:not(.active) .count {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+  }
+
+  /* ===== Buttons ===== */
+  .btn {
+    padding: 13px 22px;
+    border-radius: 12px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    box-shadow: 0 6px 18px var(--shadow);
+  }
+
+  [data-theme="dark"] .btn-primary { color: var(--bg-page); }
+
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px var(--shadow);
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, #C0392B, #E74C3C);
+    color: #fff;
+  }
+
+  .btn-danger:hover:not(:disabled) { transform: translateY(-2px); }
+
+  .btn-warning {
+    background: linear-gradient(135deg, #E67E22, #F39C12);
+    color: #fff;
+  }
+
+  .btn-warning:hover:not(:disabled) { transform: translateY(-2px); }
+
+  .btn-info {
+    background: linear-gradient(135deg, #2980B9, #3498DB);
+    color: #fff;
+  }
+
+  .btn-info:hover:not(:disabled) { transform: translateY(-2px); }
+
+  .btn-cancel {
+    background: var(--bg-input);
+    color: var(--text-main);
+    border: 1.5px solid var(--border) !important;
+  }
+
+  .btn-cancel:hover {
+    background: var(--bg-card);
+    transform: translateY(-2px);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  /* ===== Items Grid ===== */
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+
+  .item-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px var(--shadow);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+  }
+
+  .item-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px var(--shadow);
+  }
+
+  .item-card.selected {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(11, 61, 46, 0.2), 0 12px 30px var(--shadow);
+  }
+
+  [data-theme="dark"] .item-card.selected {
+    box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.3), 0 12px 30px var(--shadow);
+  }
+
+  .item-check {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid var(--border);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    font-size: 13px;
+    z-index: 5;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .item-card.selected .item-check {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+
+  [data-theme="dark"] .item-card.selected .item-check { color: var(--bg-page); }
+
+  body.selection-mode .item-check { display: flex; }
+
+  .item-status {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .item-status.published {
+    background: rgba(46, 204, 113, 0.95);
+    color: #fff;
+  }
+
+  .item-status.draft {
+    background: rgba(149, 165, 166, 0.95);
+    color: #fff;
+  }
+
+  .item-image {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 52px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .item-image { color: var(--bg-page); }
+
+  .item-image img,
+  .item-image video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .item-image.video::after {
+    content: '\f144';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    font-size: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .item-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .item-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1.4;
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .item-desc {
+    font-size: 13px;
+    color: var(--text-sub);
+    font-weight: 500;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .item-badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: auto;
+  }
+
+  .badge {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid;
+  }
+
+  .badge.grade { color: var(--info); border-color: var(--info); background: rgba(41, 128, 185, 0.08); }
+  .badge.free { color: var(--success); border-color: var(--success); background: rgba(30, 122, 90, 0.08); }
+  .badge.paid { color: var(--warning); border-color: var(--warning); background: rgba(230, 126, 34, 0.08); }
+  .badge.video { color: #8E44AD; border-color: #8E44AD; background: rgba(142, 68, 173, 0.08); }
+  .badge.image { color: #9B59B6; border-color: #9B59B6; background: rgba(155, 89, 182, 0.08); }
+  .badge.enrolled { color: var(--primary); border-color: var(--primary); background: rgba(11, 61, 46, 0.08); }
+
+  [data-theme="dark"] .badge.enrolled { color: var(--accent); border-color: var(--accent); background: rgba(201, 169, 97, 0.12); }
+
+  .item-footer {
+    padding: 12px 16px;
+    background: var(--bg-input);
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+
+  .btn-icon-action {
+    padding: 8px 6px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-sub);
+    font-family: 'Cairo', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-icon-action i { font-size: 13px; }
+
+  .btn-icon-action:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    color: var(--text-main);
+  }
+
+  .btn-icon-action.publish:hover { background: var(--success); color: #fff; border-color: var(--success); }
+  .btn-icon-action.unpublish:hover { background: var(--warning); color: #fff; border-color: var(--warning); }
+  .btn-icon-action.edit:hover { background: var(--info); color: #fff; border-color: var(--info); }
+  .btn-icon-action.share:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .btn-icon-action.delete { color: var(--error); border-color: rgba(192, 57, 43, 0.3); }
+  .btn-icon-action.delete:hover { background: var(--error); color: #fff; border-color: var(--error); }
+
+  /* ===== Codes Grid ===== */
+  .codes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+
+  .code-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px var(--shadow);
+    position: relative;
+  }
+
+  .code-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px var(--shadow);
+  }
+
+  .code-card.used { opacity: 0.6; }
+  .code-card.disabled {
+    background: repeating-linear-gradient(45deg, var(--bg-card), var(--bg-card) 8px, rgba(150, 150, 150, 0.05) 8px, rgba(150, 150, 150, 0.05) 16px);
+    border-style: dashed;
+  }
+
+  .code-card.selected {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(11, 61, 46, 0.2), 0 10px 26px var(--shadow);
+  }
+
+  [data-theme="dark"] .code-card.selected {
+    box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.3), 0 10px 26px var(--shadow);
+  }
+
+  .code-card-check {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid var(--border);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    font-size: 11px;
+    z-index: 5;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .code-card.selected .code-card-check {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+
+  [data-theme="dark"] .code-card.selected .code-card-check { color: var(--bg-page); }
+
+  body.selection-mode .code-card-check { display: flex; }
+
+  .code-value {
+    font-family: 'Cairo', monospace;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--primary);
+    text-align: center;
+    direction: ltr;
+    padding: 12px;
+    background: var(--bg-input);
+    border-radius: 10px;
+    border: 2px dashed var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: all;
+  }
+
+  [data-theme="dark"] .code-value { color: var(--accent); }
+  .code-value:hover { background: var(--bg-card); border-color: var(--accent); }
+
+  .code-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-sub);
+    font-weight: 600;
+  }
+
+  .code-info-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .code-info-row i { color: var(--accent); font-size: 11px; width: 14px; }
+
+  .code-info-row strong { color: var(--text-main); font-weight: 700; }
+
+  .code-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 10.5px;
+    font-weight: 800;
+    border: 1px solid;
+    align-self: flex-start;
+  }
+
+  .code-status-badge.unused { color: var(--success); border-color: var(--success); background: rgba(30, 122, 90, 0.08); }
+  .code-status-badge.used { color: var(--info); border-color: var(--info); background: rgba(41, 128, 185, 0.08); }
+  .code-status-badge.disabled { color: var(--error); border-color: var(--error); background: rgba(192, 57, 43, 0.08); }
+
+  .code-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+  }
+
+  .code-action-btn {
+    padding: 7px 4px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-input);
+    color: var(--text-sub);
+    font-family: 'Cairo', sans-serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .code-action-btn i { font-size: 12px; }
+
+  .code-action-btn:hover { transform: translateY(-2px); }
+  .code-action-btn.copy:hover { background: var(--info); color: #fff; border-color: var(--info); }
+  .code-action-btn.share:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .code-action-btn.toggle:hover { background: var(--warning); color: #fff; border-color: var(--warning); }
+  .code-action-btn.delete:hover { background: var(--error); color: #fff; border-color: var(--error); }
+
+  /* ===== Empty & Loading ===== */
+  .empty-state {
+    padding: 60px 24px;
+    text-align: center;
+    color: var(--text-sub);
+    background: var(--bg-card);
+    border-radius: 18px;
+    border: 2px dashed var(--border);
+    grid-column: 1 / -1;
+  }
+
+  .empty-state i {
+    font-size: 60px;
+    color: var(--accent);
+    opacity: 0.5;
+    margin-bottom: 16px;
+    display: block;
+    animation: floatIcon 3s ease-in-out infinite;
+  }
+
+  @keyframes floatIcon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .empty-state h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .empty-state p { font-size: 13.5px; font-weight: 500; line-height: 1.6; }
+
+  .loading-state {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--text-sub);
+    font-size: 14px;
+    font-weight: 600;
+    grid-column: 1 / -1;
+  }
+
+  .loading-state i {
+    font-size: 42px;
+    color: var(--accent);
+    animation: spin 1s linear infinite;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== Modal ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100000;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal-box {
+    background: var(--bg-card);
+    border-radius: 22px;
+    padding: 28px 24px;
+    max-width: 620px;
+    width: 100%;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+    border-top: 6px solid var(--accent);
+    animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 94vh;
+    overflow-y: auto;
+  }
+
+  .modal-box.wide { max-width: 780px; }
+  .modal-box.small { max-width: 460px; text-align: center; }
+
+  @keyframes modalPop {
+    from { opacity: 0; transform: scale(0.85) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 2px dashed var(--border);
+  }
+
+  .modal-header-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .modal-header-icon { color: var(--bg-page); }
+
+  .modal-header h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-main);
+    flex: 1;
+  }
+
+  .modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: none;
+    background: var(--bg-input);
+    color: var(--text-sub);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .modal-close:hover { background: var(--error); color: #fff; }
+
+  /* ===== Forms ===== */
+  .form-group { margin-bottom: 16px; }
+
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .form-label .required { color: var(--error); margin-right: 3px; }
+  .form-label .hint { font-size: 11px; color: var(--text-sub); font-weight: 500; margin-right: 6px; }
+
+  .form-input, .form-textarea, .form-select {
+    width: 100%;
+    padding: 13px 16px;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    transition: all 0.25s ease;
+    outline: none;
+    font-weight: 500;
+  }
+
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
+    border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1);
+  }
+
+  .form-textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
+
+  .form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .char-counter {
+    text-align: left;
+    font-size: 11px;
+    color: var(--text-sub);
+    margin-top: 4px;
+    font-weight: 600;
+    direction: ltr;
+  }
+
+  /* ===== Tabs mini ===== */
+  .tabs-mini {
+    display: flex;
+    gap: 6px;
+    background: var(--bg-input);
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+
+  .tab-mini {
+    flex: 1;
+    padding: 10px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 9px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--text-sub);
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .tab-mini:hover { color: var(--text-main); background: var(--bg-card); }
+
+  .tab-mini.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    box-shadow: 0 4px 12px var(--shadow);
+  }
+
+  [data-theme="dark"] .tab-mini.active { color: var(--bg-page); }
+
+  .tab-content-mini { display: none; }
+  .tab-content-mini.active { display: block; animation: fadeIn 0.3s ease; }
+
+  /* ===== Media Preview ===== */
+  .media-preview {
+    margin-top: 12px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid var(--border);
+    background: var(--bg-input);
+    display: none;
+    position: relative;
+  }
+
+  .media-preview.show { display: block; }
+
+  .media-preview img,
+  .media-preview video {
+    width: 100%;
+    max-height: 280px;
+    object-fit: contain;
+    display: block;
+    background: #000;
+  }
+
+  .media-preview img { background: transparent; }
+
+  .media-remove {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(192, 57, 43, 0.95);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+  }
+
+  .media-remove:hover { background: var(--error); transform: scale(1.1); }
+
+  .upload-area {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: var(--bg-input);
+    display: block;
+  }
+
+  .upload-area:hover { border-color: var(--primary); background: var(--bg-card); }
+  .upload-area i { font-size: 32px; color: var(--primary); margin-bottom: 8px; display: block; }
+  .upload-area p { font-size: 13px; color: var(--text-sub); font-weight: 600; }
+
+  /* ===== Switch ===== */
+  .switch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--bg-input);
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    gap: 14px;
+    transition: all 0.25s;
+  }
+
+  .switch-row.active { border-color: var(--accent); background: rgba(201, 169, 97, 0.06); }
+
+  .switch-info { flex: 1; text-align: right; }
+  .switch-info strong { display: block; font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 3px; }
+  .switch-info small { font-size: 11.5px; color: var(--text-sub); font-weight: 500; line-height: 1.5; }
+
+  .switch { position: relative; display: inline-block; width: 54px; height: 30px; flex-shrink: 0; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #cbd5d1;
+    transition: 0.3s;
+    border-radius: 30px;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background: #fff;
+    transition: 0.3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  .switch input:checked + .slider { background: var(--success); }
+  .switch input:checked + .slider:before { transform: translateX(-24px); }
+
+  /* ===== Modal Actions ===== */
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 2px dashed var(--border);
+    flex-wrap: wrap;
+  }
+
+  .modal-actions .btn { flex: 1; min-width: 120px; padding: 14px; }
+
+  /* ===== Error / Info ===== */
+  .modal-error {
+    background: rgba(192, 57, 43, 0.1);
+    color: var(--error);
+    border: 1px solid rgba(192, 57, 43, 0.3);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: none;
+    line-height: 1.6;
+  }
+
+  .modal-error.show { display: block; }
+
+  .modal-info {
+    background: rgba(41, 128, 185, 0.1);
+    color: var(--info);
+    border: 1px solid rgba(41, 128, 185, 0.3);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.6;
+  }
+
+  .modal-info i { color: var(--info); margin-top: 2px; }
+
+  /* ===== Chips ===== */
+  .chips-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+    background: var(--bg-input);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-top: 8px;
+  }
+
+  .chip-select {
+    padding: 7px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .chip-select:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .chip-select.selected {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    border-color: var(--primary);
+  }
+
+  [data-theme="dark"] .chip-select.selected { color: var(--bg-page); }
+
+  /* ===== Selection Bar ===== */
+  .selection-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border-top: 2px solid var(--primary);
+    box-shadow: 0 -8px 30px var(--shadow);
+    padding: 14px 20px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    z-index: 100;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .selection-bar.show { display: flex; transform: translateY(0); }
+
+  .selection-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .selection-info .badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  [data-theme="dark"] .selection-info .badge { color: var(--bg-page); }
+
+  .selection-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ===== Toast ===== */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background: var(--bg-card);
+    color: var(--text-main);
+    padding: 14px 24px;
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--border);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 999999;
+    transition: transform 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+    max-width: calc(100vw - 32px);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast.success { border-color: var(--success); }
+  .toast.success i { color: var(--success); }
+  .toast.error { border-color: var(--error); }
+  .toast.error i { color: var(--error); }
+  .toast.warning { border-color: var(--warning); }
+  .toast.warning i { color: var(--warning); }
+  .toast.info { border-color: var(--info); }
+  .toast.info i { color: var(--info); }
+
+  /* ===== Drawer ===== */
+  .drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 9998;
+  }
+
+  .drawer-overlay.show { opacity: 1; visibility: visible; }
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 88%;
+    max-width: 340px;
+    height: 100vh;
+    height: 100dvh;
+    background: var(--bg-card);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
+    transform: translateX(105%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-left: 1px solid var(--border);
+  }
+
+  .drawer.open { transform: translateX(0); }
+
+  .drawer-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 22px 20px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .drawer-header-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .drawer-logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: contain;
+    background: rgba(255,255,255,0.1);
+    padding: 4px;
+    border: 2px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .drawer-brand { flex: 1; min-width: 0; }
+
+  .drawer-brand-name {
+    font-size: 18px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .drawer-brand-name .divider { color: var(--accent); font-weight: 300; }
+
+  .drawer-brand-sub {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .drawer-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .drawer-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+  }
+
+  .drawer-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 16px;
+  }
+
+  .drawer-section { margin-bottom: 22px; }
+
+  .drawer-section-title {
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--text-sub);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    padding-right: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .drawer-section-title i { color: var(--accent); font-size: 12px; }
+
+  .drawer-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    width: 100%;
+    text-align: right;
+  }
+
+  .drawer-btn:hover, .drawer-btn:active {
+    background: var(--bg-card);
+    border-color: var(--accent);
+    transform: translateX(-4px);
+  }
+
+  .drawer-btn-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .drawer-btn-icon { color: var(--bg-page); }
+
+  .drawer-btn-label { flex: 1; }
+
+  .drawer-btn.logout-btn {
+    color: var(--error);
+    border-color: rgba(192, 57, 43, 0.3);
+    background: rgba(192, 57, 43, 0.05);
+  }
+
+  .drawer-btn.logout-btn .drawer-btn-icon {
+    background: linear-gradient(135deg, #C0392B, #E74C3C);
+  }
+
+  .drawer-btn.logout-btn:hover {
+    background: var(--error);
+    color: #fff;
+    border-color: var(--error);
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 900px) {
+    .topbar-inner { padding: 12px 16px; }
+    .back-btn { width: 40px; height: 40px; font-size: 16px; }
+    .topbar-title i.header-icon { font-size: 19px; }
+    .topbar-title-text h1 { font-size: 16px; }
+    .icon-btn { width: 38px; height: 38px; font-size: 15px; }
+    .menu-btn { display: flex; }
+    .topbar-actions .icon-btn { display: none; }
+    .topbar-actions .menu-btn { display: flex; }
+    .container { padding: 16px 12px 120px; }
+    .items-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    .codes-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+    .stat-card { padding: 12px 14px; }
+    .stat-icon { width: 42px; height: 42px; font-size: 18px; }
+    .stat-number { font-size: 20px; }
+    .main-tab { padding: 12px 14px; font-size: 13.5px; }
+    .main-tab i { font-size: 15px; }
+    .modal-box { padding: 22px 16px; border-radius: 18px; }
+    .form-row-2 { grid-template-columns: 1fr; }
+    .modal-actions { flex-direction: column; }
+    .modal-actions .btn { min-width: 100%; }
+    .selection-bar { padding: 12px 14px; flex-direction: column; gap: 10px; }
+    .selection-actions { width: 100%; }
+    .selection-actions .btn { flex: 1; }
+  }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .stat-number { font-size: 18px; }
+    .stat-label { font-size: 10.5px; }
+    .items-grid { grid-template-columns: 1fr; }
+    .codes-grid { grid-template-columns: 1fr; }
+    .btn-icon-action { font-size: 10px; padding: 6px 4px; }
+    .btn-icon-action i { font-size: 12px; }
+    .item-footer { grid-template-columns: repeat(4, 1fr); }
+    .code-actions { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  @media (min-width: 901px) {
+    .menu-btn { display: none !important; }
+    .drawer, .drawer-overlay { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<!-- ============================================
+     TOPBAR
+     ============================================ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-brand">
+      <a href="index.html" class="back-btn" title="الرجوع">
+        <i class="fas fa-arrow-right"></i>
+      </a>
+      <div class="topbar-title">
+        <i class="fas fa-graduation-cap header-icon"></i>
+        <div class="topbar-title-text">
+          <h1>إدارة الكورسات</h1>
+          <small>COURSES MANAGEMENT</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <button class="icon-btn" id="themeToggle" title="الوضع">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+      <button class="icon-btn logout" id="logoutBtn" title="تسجيل الخروج">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+      <button class="menu-btn" id="menuBtn" aria-label="القائمة">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================
+     CONTAINER
+     ============================================ -->
+<div class="container">
+
+  <!-- Dashboard -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-book"></i></div>
+      <div class="stat-info">
+        <div class="stat-number" id="statCoursesTotal">0</div>
+        <div class="stat-label">إجمالي الكورسات</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green"><i class="fas fa-eye"></i></div>
+      <div class="stat-info">
+        <div class="stat-number" id="statCoursesPublished">0</div>
+        <div class="stat-label">منشور</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon orange"><i class="fas fa-gift"></i></div>
+      <div class="stat-info">
+        <div class="stat-number" id="statCoursesFree">0</div>
+        <div class="stat-label">مجاني</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon blue"><i class="fas fa-key"></i></div>
+      <div class="stat-info">
+        <div class="stat-number" id="statCodesTotal">0</div>
+        <div class="stat-label">إجمالي الأكواد</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Tabs -->
+  <div class="main-tabs">
+    <button class="main-tab active" data-tab="courses">
+      <i class="fas fa-book"></i>
+      <span>الكورسات</span>
+      <span class="tab-badge" id="tabCoursesCount">0</span>
+    </button>
+    <button class="main-tab" data-tab="codes">
+      <i class="fas fa-key"></i>
+      <span>أكواد الدفع</span>
+      <span class="tab-badge" id="tabCodesCount">0</span>
+    </button>
+  </div>
+
+  <!-- ============================================
+       SECTION 1: COURSES
+       ============================================ -->
+  <div class="section-content active" id="section-courses">
+    <div class="toolbar">
+      <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" class="search-input" id="searchCourses" placeholder="ابحث بالاسم أو الوصف...">
+        <button class="search-clear" id="clearSearchCourses" aria-label="مسح">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <button class="btn btn-info" id="selectAllCourses" title="تحديد الكل">
+        <i class="fas fa-check-double"></i>
+      </button>
+      <button class="btn btn-primary" id="btnAddCourse">
+        <i class="fas fa-plus"></i>
+        <span>كورس جديد</span>
+      </button>
+    </div>
+
+    <div class="filter-row">
+      <button class="filter-btn active" data-course-filter="all">
+        <i class="fas fa-list"></i><span>الكل</span>
+        <span class="count" id="courseFilterAll">0</span>
+      </button>
+      <button class="filter-btn" data-course-filter="published">
+        <i class="fas fa-eye"></i><span>منشور</span>
+        <span class="count" id="courseFilterPublished">0</span>
+      </button>
+      <button class="filter-btn" data-course-filter="draft">
+        <i class="fas fa-edit"></i><span>مسودة</span>
+        <span class="count" id="courseFilterDraft">0</span>
+      </button>
+      <button class="filter-btn" data-course-filter="free">
+        <i class="fas fa-gift"></i><span>مجاني</span>
+        <span class="count" id="courseFilterFree">0</span>
+      </button>
+      <button class="filter-btn" data-course-filter="paid">
+        <i class="fas fa-dollar-sign"></i><span>مدفوع</span>
+        <span class="count" id="courseFilterPaid">0</span>
+      </button>
+    </div>
+
+    <div class="items-grid" id="coursesGrid">
+      <div class="loading-state">
+        <i class="fas fa-spinner"></i>
+        <div>جاري تحميل الكورسات...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       SECTION 2: CODES
+       ============================================ -->
+  <div class="section-content" id="section-codes">
+    <div class="toolbar">
+      <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" class="search-input" id="searchCodes" placeholder="ابحث بالكود أو اسم المستخدم...">
+        <button class="search-clear" id="clearSearchCodes" aria-label="مسح">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <button class="btn btn-info" id="selectAllCodes" title="تحديد الكل">
+        <i class="fas fa-check-double"></i>
+      </button>
+      <button class="btn btn-primary" id="btnGenerateCodes">
+        <i class="fas fa-plus"></i>
+        <span>توليد أكواد</span>
+      </button>
+    </div>
+
+    <div class="filter-row">
+      <button class="filter-btn active" data-code-filter="all">
+        <i class="fas fa-list"></i><span>الكل</span>
+        <span class="count" id="codeFilterAll">0</span>
+      </button>
+      <button class="filter-btn" data-code-filter="unused">
+        <i class="fas fa-check-circle"></i><span>غير مستخدم</span>
+        <span class="count" id="codeFilterUnused">0</span>
+      </button>
+      <button class="filter-btn" data-code-filter="used">
+        <i class="fas fa-lock"></i><span>مستخدم</span>
+        <span class="count" id="codeFilterUsed">0</span>
+      </button>
+      <button class="filter-btn" data-code-filter="disabled">
+        <i class="fas fa-ban"></i><span>معطّل</span>
+        <span class="count" id="codeFilterDisabled">0</span>
+      </button>
+    </div>
+
+    <div class="codes-grid" id="codesGrid">
+      <div class="loading-state">
+        <i class="fas fa-spinner"></i>
+        <div>جاري تحميل الأكواد...</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================
+     MODAL: COURSE
+     ============================================ -->
+<div class="modal-overlay" id="courseModal">
+  <div class="modal-box wide">
+    <div class="modal-header">
+      <div class="modal-header-icon">
+        <i class="fas fa-book" id="courseModalIcon"></i>
+      </div>
+      <h2 id="courseModalTitle">إضافة كورس جديد</h2>
+      <button class="modal-close" id="courseModalClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-error" id="courseError"></div>
+
+    <div class="form-group">
+      <label class="form-label">اسم الكورس <span class="required">*</span></label>
+      <input type="text" class="form-input" id="courseName" placeholder="مثال: كورس الرياضيات المتقدم" maxlength="100">
+      <div class="char-counter"><span id="courseNameCount">0</span> / 100</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">شرح الكورس</label>
+      <textarea class="form-textarea" id="courseDesc" placeholder="وصف مختصر عن محتوى الكورس..." maxlength="1000"></textarea>
+      <div class="char-counter"><span id="courseDescCount">0</span> / 1000</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">صورة / فيديو الكورس</label>
+      <div class="tabs-mini">
+        <button type="button" class="tab-mini active" data-course-img="url">
+          <i class="fas fa-link"></i>
+          <span>رابط</span>
+        </button>
+        <button type="button" class="tab-mini" data-course-img="upload">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <span>رفع</span>
+        </button>
+      </div>
+
+      <div class="tab-content-mini active" id="courseImgUrlTab">
+        <input type="url" class="form-input" id="courseImageUrl" placeholder="https://example.com/image.jpg" style="direction:ltr;text-align:left;">
+      </div>
+
+      <div class="tab-content-mini" id="courseImgUploadTab">
+        <label class="upload-area" for="courseImageFile">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>اضغط لاختيار صورة أو فيديو</p>
+          <p style="font-size:11px;opacity:0.7;margin-top:4px;">PNG, JPG, MP4 · أقل من 2MB</p>
+        </label>
+        <input type="file" id="courseImageFile" accept="image/*,video/*" style="display:none;">
+      </div>
+
+      <div class="media-preview" id="courseImagePreview">
+        <button type="button" class="media-remove" id="courseImageRemove">
+          <i class="fas fa-trash"></i>
+        </button>
+        <div id="courseImagePreviewContent"></div>
+      </div>
+    </div>
+
+    <div class="form-row-2">
+      <div class="form-group">
+        <label class="form-label">
+          <i class="fas fa-graduation-cap" style="color: var(--accent); font-size: 12px;"></i>
+          الفرقة الدراسية
+        </label>
+        <select class="form-select" id="courseGrade">
+          <option value="">— بدون فرقة —</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">نوع الكورس</label>
+        <select class="form-select" id="courseType">
+          <option value="free">مجاني</option>
+          <option value="paid">مدفوع</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        <i class="fas fa-users" style="color: var(--accent); font-size: 12px;"></i>
+        عدد المسجلين
+      </label>
+      <input type="number" class="form-input" id="courseEnrolledCount" min="0" value="0" placeholder="0">
+      <small style="font-size:11px;color:var(--text-sub);display:block;margin-top:6px;">
+        يظهر في بطاقة الكورس للطلاب
+      </small>
+    </div>
+
+    <div class="form-group">
+      <div class="switch-row active" id="courseNotifyRow">
+        <div class="switch-info">
+          <strong>🔔 إشعار للفرقة عند النشر</strong>
+          <small>سيتم إشعار الطلاب بالفرقة عند نشر الكورس</small>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="courseNotifyEnabled" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 0;">
+      <label class="form-label">حالة النشر</label>
+      <select class="form-select" id="courseStatus">
+        <option value="published">✅ منشور</option>
+        <option value="draft">📝 مسودة</option>
+      </select>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="courseModalCancel">
+        <i class="fas fa-times"></i>
+        <span>إلغاء</span>
+      </button>
+      <button class="btn btn-primary" id="courseModalSave">
+        <i class="fas fa-check"></i>
+        <span>حفظ</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     MODAL: GENERATE CODES
+     ============================================ -->
+<div class="modal-overlay" id="codesModal">
+  <div class="modal-box wide">
+    <div class="modal-header">
+      <div class="modal-header-icon">
+        <i class="fas fa-key"></i>
+      </div>
+      <h2 id="codesModalTitle">توليد أكواد دفع</h2>
+      <button class="modal-close" id="codesModalClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-error" id="codesError"></div>
+
+    <div class="form-group">
+      <label class="form-label">الكورس <span class="required">*</span></label>
+      <select class="form-select" id="codesCourse">
+        <option value="">— اختر كورس —</option>
+      </select>
+    </div>
+
+    <div class="form-row-2">
+      <div class="form-group">
+        <label class="form-label">عدد الأكواد <span class="required">*</span></label>
+        <input type="number" class="form-input" id="codesCount" min="1" max="100" value="10">
+      </div>
+      <div class="form-group">
+        <label class="form-label">طريقة التوليد</label>
+        <select class="form-select" id="codesMode">
+          <option value="random">عشوائي (8 أحرف)</option>
+          <option value="manual">يدوي</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group" id="codesManualWrapper" style="display:none;">
+      <label class="form-label">الأكواد اليدوية <span class="hint">(افصل بينها بفاصلة أو سطر)</span></label>
+      <textarea class="form-textarea" id="codesManualInput" placeholder="CODE1, CODE2, CODE3" style="direction:ltr;text-align:left;font-family:monospace;min-height:80px;"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">التخصيص <span class="required">*</span></label>
+      <select class="form-select" id="codesTarget">
+        <option value="all">🎯 توزيع تلقائي على كل الطلاب (كل كود لمستخدم)</option>
+        <option value="specific">👤 اختيار مستخدمين محددين</option>
+      </select>
+    </div>
+
+    <div class="form-group" id="codesSpecificWrapper" style="display:none;">
+      <label class="form-label">
+        اختر المستخدمين
+        <span class="hint">(المحددون: <strong id="codesSelectedCount">0</strong>)</span>
+      </label>
+      <div class="search-wrapper" style="margin-bottom: 8px;">
+        <i class="fas fa-search"></i>
+        <input type="text" class="search-input" id="codesUserSearch" placeholder="ابحث بالاسم أو الكود...">
+      </div>
+      <div class="chips-selector" id="codesUsersChips">
+        <div class="loading-state" style="padding:20px;width:100%;">
+          <i class="fas fa-spinner"></i>
+          <span>جاري التحميل...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="switch-row active" id="codesNotifyRow">
+        <div class="switch-info">
+          <strong>🔔 إرسال الأكواد في الإشعارات فوراً</strong>
+          <small>كل مستخدم يستلم كوده الخاص في إشعاراته — ولا يمكن لمستخدم آخر استلامه</small>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="codesNotifyEnabled" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="codesModalCancel">
+        <i class="fas fa-times"></i>
+        <span>إلغاء</span>
+      </button>
+      <button class="btn btn-primary" id="codesModalGenerate">
+        <i class="fas fa-magic"></i>
+        <span>توليد وإرسال</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     MODAL: CONFIRM
+     ============================================ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box small">
+    <div class="modal-header" style="justify-content: center; border: none; padding: 0; margin-bottom: 16px;">
+      <div class="modal-header-icon" id="confirmIcon" style="width: 72px; height: 72px; font-size: 30px; border-radius: 50%; margin: 0 auto;">
+        <i class="fas fa-question-circle"></i>
+      </div>
+    </div>
+    <h2 style="text-align: center; font-size: 20px; font-weight: 800; margin-bottom: 10px; color: var(--text-main);" id="confirmTitle">تأكيد</h2>
+    <p style="text-align: center; font-size: 14px; color: var(--text-sub); font-weight: 600; line-height: 1.7; margin-bottom: 22px; padding: 0 10px;" id="confirmMessage">—</p>
+
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="confirmCancel">
+        <i class="fas fa-times"></i>
+        <span>إلغاء</span>
+      </button>
+      <button class="btn btn-primary" id="confirmOk">
+        <i class="fas fa-check"></i>
+        <span>تأكيد</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     Selection Bar
+     ============================================ -->
+<div class="selection-bar" id="selectionBar">
+  <div class="selection-info">
+    <i class="fas fa-check-circle" style="color: var(--success); font-size: 20px;"></i>
+    <span>تم تحديد</span>
+    <span class="badge" id="selectedCount">0</span>
+    <span id="selectedTypeText">عنصر</span>
+  </div>
+  <div class="selection-actions">
+    <button class="btn btn-cancel" id="clearSelectionBtn">
+      <i class="fas fa-times"></i>
+      <span>إلغاء التحديد</span>
+    </button>
+    <button class="btn btn-warning" id="bulkPublishBtn">
+      <i class="fas fa-eye"></i>
+      <span>نشر</span>
+    </button>
+    <button class="btn btn-info" id="bulkUnpublishBtn">
+      <i class="fas fa-eye-slash"></i>
+      <span>إلغاء النشر</span>
+    </button>
+    <button class="btn btn-danger" id="bulkDeleteBtn">
+      <i class="fas fa-trash-can"></i>
+      <span>حذف</span>
+    </button>
+  </div>
+</div>
+
+<!-- ============================================
+     Toast
+     ============================================ -->
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle" id="toastIcon"></i>
+  <span id="toastText"></span>
+</div>
+
+<!-- ============================================
+     Drawer
+     ============================================ -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<aside class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="drawer-header-content">
+      <img src="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png" 
+           alt="Logo" class="drawer-logo" id="drawerLogo">
+      <div class="drawer-brand">
+        <div class="drawer-brand-name">
+          <span id="drawerNameAr">ميزان</span>
+          <span class="divider">|</span>
+          <span id="drawerNameEn">MEEZAN</span>
+        </div>
+        <div class="drawer-brand-sub" id="drawerSubtitle">إدارة الكورسات</div>
+      </div>
+      <button class="drawer-close" id="drawerClose" aria-label="إغلاق">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="drawer-content">
+    <div class="drawer-section">
+      <div class="drawer-section-title">
+        <i class="fas fa-th-large"></i>
+        <span>الأقسام</span>
+      </div>
+      <a href="index.html" class="drawer-btn">
+        <span class="drawer-btn-icon"><i class="fas fa-home"></i></span>
+        <span class="drawer-btn-label">الرئيسية</span>
+      </a>
+      <button class="drawer-btn" id="drawerThemeBtn">
+        <span class="drawer-btn-icon"><i class="fas fa-moon" id="drawerThemeIcon"></i></span>
+        <span class="drawer-btn-label" id="drawerThemeText">الوضع الليلي</span>
+      </button>
+      <a href="index1.html" class="drawer-btn">
+        <span class="drawer-btn-icon"><i class="fas fa-cog"></i></span>
+        <span class="drawer-btn-label">الإعدادات</span>
+      </a>
+      <button class="drawer-btn logout-btn" id="drawerLogoutBtn">
+        <span class="drawer-btn-icon"><i class="fas fa-sign-out-alt"></i></span>
+        <span class="drawer-btn-label">تسجيل الخروج</span>
+      </button>
+    </div>
+  </div>
+</aside>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+  getFirestore, doc, onSnapshot, setDoc, getDoc, deleteDoc, serverTimestamp, collection
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAmkCOrSaklhUiDdDfZCpSDQNmMYP-Gdw0",
+  authDomain: "qanon-c716d.firebaseapp.com",
+  projectId: "qanon-c716d",
+  storageBucket: "qanon-c716d.firebasestorage.app",
+  messagingSenderId: "757756130875",
+  appId: "1:757756130875:web:63c53534c6843e2a29ce1e",
+  measurementId: "G-8FZGTC779Y"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const $ = (id) => document.getElementById(id);
+
+// ============================================================
+// 🔒 الحماية
+// ============================================================
+if (sessionStorage.getItem('meezan_logged_in') !== 'true') {
+  window.location.replace('login.html');
+}
+
+const adminId = sessionStorage.getItem('meezan_user_id') || 'admin';
+const adminName = sessionStorage.getItem('meezan_username') || 'المشرف';
+
+history.pushState(null, '', location.href);
+window.addEventListener('popstate', () => {
+  if (sessionStorage.getItem('meezan_logged_in') === 'true') {
+    history.pushState(null, '', location.href);
+  } else {
+    window.location.replace('login.html');
+  }
+});
+
+// ============================================================
+// 🧹 التنظيف
+// ============================================================
+function cleanInput(value) {
+  if (typeof value !== 'string') return '';
+  return value
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .replace(/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/g, ' ')
+    .replace(/^\s+|\s+$/g, '')
+    .trim();
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = String(text);
+  return div.innerHTML;
+}
+
+// ============================================================
+// 📊 الحالة
+// ============================================================
+let allCourses = [];
+let allCodes = [];
+let allStudents = [];
+let allGrades = [];
+
+let filteredCourses = [];
+let filteredCodes = [];
+
+let currentTab = 'courses';
+let courseFilter = 'all';
+let codeFilter = 'all';
+let courseSearchQuery = '';
+let codeSearchQuery = '';
+
+let selectedCourses = new Set();
+let selectedCodes = new Set();
+
+let editingCourseId = null;
+let courseImageMode = 'url';
+let courseImageBase64 = '';
+let courseImageUrlValue = '';
+let courseMediaType = 'image';
+
+let codesSelectedUsers = new Set();
+let codesTargetType = 'all';
+let codesMode = 'random';
+
+// ============================================================
+// 🌙 الوضع
+// ============================================================
+const savedTheme = localStorage.getItem('meezan_theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+updateThemeIcon(savedTheme);
+updateDrawerTheme(savedTheme);
+
+$('themeToggle').addEventListener('click', toggleTheme);
+$('drawerThemeBtn').addEventListener('click', toggleTheme);
+
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('meezan_theme', next);
+  updateThemeIcon(next);
+  updateDrawerTheme(next);
+}
+
+function updateThemeIcon(t) {
+  $('themeIcon').className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+function updateDrawerTheme(t) {
+  const icon = $('drawerThemeIcon');
+  const text = $('drawerThemeText');
+  if (!icon || !text) return;
+  if (t === 'dark') {
+    icon.className = 'fas fa-sun';
+    text.textContent = 'الوضع النهاري';
+  } else {
+    icon.className = 'fas fa-moon';
+    text.textContent = 'الوضع الليلي';
+  }
+}
+
+// ============================================================
+// 💬 Toast
+// ============================================================
+let toastTimeout;
+function showToast(text, type = 'success') {
+  const toast = $('toast');
+  const icon = $('toastIcon');
+  $('toastText').textContent = text;
+  toast.className = 'toast show ' + type;
+  const icons = {
+    success: 'fa-check-circle',
+    error: 'fa-times-circle',
+    warning: 'fa-exclamation-triangle',
+    info: 'fa-info-circle'
+  };
+  icon.className = `fas ${icons[type] || icons.success}`;
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ============================================================
+// 🔔 Confirm
+// ============================================================
+let confirmResolve = null;
+function showConfirm(options = {}) {
+  return new Promise((resolve) => {
+    const {
+      title = 'تأكيد',
+      message = 'هل أنت متأكد؟',
+      icon = 'fa-question-circle',
+      iconType = 'default',
+      okText = 'تأكيد',
+      cancelText = 'إلغاء',
+      okClass = 'btn-primary'
+    } = options;
+
+    const iconEl = $('confirmIcon');
+    iconEl.className = 'modal-header-icon';
+    if (iconType === 'danger') iconEl.style.background = 'linear-gradient(135deg, #C0392B, #E74C3C)';
+    else if (iconType === 'warning') iconEl.style.background = 'linear-gradient(135deg, #E67E22, #F39C12)';
+    else if (iconType === 'success') iconEl.style.background = 'linear-gradient(135deg, #1E7A5A, #2ECC71)';
+    else iconEl.style.background = 'linear-gradient(135deg, var(--primary), var(--primary-lighter))';
+
+    iconEl.innerHTML = `<i class="fas ${icon}"></i>`;
+    $('confirmTitle').textContent = title;
+    $('confirmMessage').innerHTML = message;
+
+    const okBtn = $('confirmOk');
+    okBtn.className = 'btn ' + okClass;
+    okBtn.innerHTML = `<i class="fas fa-check"></i> <span>${okText}</span>`;
+    $('confirmCancel').innerHTML = `<i class="fas fa-times"></i> <span>${cancelText}</span>`;
+
+    confirmResolve = resolve;
+    $('confirmModal').classList.add('show');
+  });
+}
+
+function closeConfirm(result) {
+  $('confirmModal').classList.remove('show');
+  if (confirmResolve) {
+    confirmResolve(result);
+    confirmResolve = null;
+  }
+}
+
+$('confirmOk').addEventListener('click', () => closeConfirm(true));
+$('confirmCancel').addEventListener('click', () => closeConfirm(false));
+$('confirmModal').addEventListener('click', (e) => {
+  if (e.target === $('confirmModal')) closeConfirm(false);
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if ($('confirmModal').classList.contains('show')) closeConfirm(false);
+    if ($('courseModal').classList.contains('show')) closeCourseModal();
+    if ($('codesModal').classList.contains('show')) closeCodesModal();
+    if ($('drawer').classList.contains('open')) closeDrawer();
+  }
+});
+
+// ============================================================
+// 🎯 Tabs
+// ============================================================
+document.querySelectorAll('.main-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    currentTab = tab.dataset.tab;
+    document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
+    $(`section-${currentTab}`).classList.add('active');
+    clearSelection();
+  });
+});
+
+// ============================================================
+// 📊 Stats
+// ============================================================
+function updateStats() {
+  const total = allCourses.length;
+  const published = allCourses.filter(c => c.status === 'published').length;
+  const free = allCourses.filter(c => c.type === 'free').length;
+  const codesTotal = allCodes.length;
+
+  $('statCoursesTotal').textContent = total;
+  $('statCoursesPublished').textContent = published;
+  $('statCoursesFree').textContent = free;
+  $('statCodesTotal').textContent = codesTotal;
+
+  $('tabCoursesCount').textContent = total;
+  $('tabCodesCount').textContent = codesTotal;
+}
+
+// ============================================================
+// 🔢 IDs التصاعدية
+// ============================================================
+async function getNextCourseId() {
+  const ref = doc(db, 'counters', 'main');
+  try {
+    const snap = await getDoc(ref);
+    let counters = { courses: 0 };
+    if (snap.exists()) counters = { ...counters, ...snap.data() };
+    counters.courses = (counters.courses || 0) + 1;
+    await setDoc(ref, counters, { merge: true });
+    return counters.courses;
+  } catch (e) {
+    console.error('counter error:', e);
+    return Date.now();
+  }
+}
+
+// ============================================================
+// 🎨 Render Courses
+// ============================================================
+function applyCourseFilters() {
+  const q = cleanInput(courseSearchQuery).toLowerCase();
+  let base = [...allCourses];
+
+  if (courseFilter === 'published') base = base.filter(c => c.status === 'published');
+  else if (courseFilter === 'draft') base = base.filter(c => c.status === 'draft');
+  else if (courseFilter === 'free') base = base.filter(c => c.type === 'free');
+  else if (courseFilter === 'paid') base = base.filter(c => c.type === 'paid');
+
+  if (q) {
+    base = base.filter(c =>
+      (c.name || '').toLowerCase().includes(q) ||
+      (c.description || '').toLowerCase().includes(q)
+    );
+  }
+
+  base.sort((a, b) => (b.id || 0) - (a.id || 0));
+  filteredCourses = base;
+  renderCourses();
+  updateCourseFilterCounts();
+}
+
+function updateCourseFilterCounts() {
+  $('courseFilterAll').textContent = allCourses.length;
+  $('courseFilterPublished').textContent = allCourses.filter(c => c.status === 'published').length;
+  $('courseFilterDraft').textContent = allCourses.filter(c => c.status === 'draft').length;
+  $('courseFilterFree').textContent = allCourses.filter(c => c.type === 'free').length;
+  $('courseFilterPaid').textContent = allCourses.filter(c => c.type === 'paid').length;
+}
+
+function renderCourses() {
+  const grid = $('coursesGrid');
+  grid.innerHTML = '';
+
+  if (filteredCourses.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-book"></i>
+        <h3>${allCourses.length === 0 ? 'لا توجد كورسات بعد' : 'لا توجد نتائج'}</h3>
+        <p>${allCourses.length === 0 ? 'ابدأ بإضافة كورس جديد' : 'جرّب البحث بكلمة أخرى'}</p>
+      </div>
+    `;
+    return;
+  }
+
+  filteredCourses.forEach(course => {
+    grid.appendChild(createCourseCard(course));
+  });
+}
+
+function createCourseCard(course) {
+  const card = document.createElement('div');
+  card.className = 'item-card';
+  if (selectedCourses.has(course.id)) card.classList.add('selected');
+
+  const isPublished = course.status === 'published';
+
+  let imageHtml = '<i class="fas fa-book"></i>';
+  let mediaClass = '';
+  if (course.mediaUrl) {
+    if (course.mediaType === 'video') {
+      imageHtml = `<video src="${escapeHtml(course.mediaUrl)}" preload="metadata" muted></video>`;
+      mediaClass = 'video';
+    } else {
+      imageHtml = `<img src="${escapeHtml(course.mediaUrl)}" alt="" loading="lazy" onerror="this.parentNode.innerHTML='<i class=\\'fas fa-book\\'></i>'">`;
+    }
+  }
+
+  const typeBadge = course.type === 'paid'
+    ? `<span class="badge paid"><i class="fas fa-dollar-sign"></i> مدفوع</span>`
+    : `<span class="badge free"><i class="fas fa-gift"></i> مجاني</span>`;
+
+  const gradeBadge = course.grade
+    ? `<span class="badge grade"><i class="fas fa-graduation-cap"></i> ${escapeHtml(course.grade)}</span>`
+    : '';
+
+  const mediaBadge = course.mediaUrl
+    ? (course.mediaType === 'video'
+      ? `<span class="badge video"><i class="fas fa-video"></i> فيديو</span>`
+      : `<span class="badge image"><i class="fas fa-image"></i> صورة</span>`)
+    : '';
+
+  const enrolledBadge = `<span class="badge enrolled"><i class="fas fa-users"></i> ${course.enrolledCount || 0} مسجل</span>`;
+
+  card.innerHTML = `
+    <div class="item-check" data-check><i class="fas fa-check"></i></div>
+    <div class="item-status ${isPublished ? 'published' : 'draft'}">
+      <i class="fas ${isPublished ? 'fa-eye' : 'fa-edit'}"></i>
+      <span>${isPublished ? 'منشور' : 'مسودة'}</span>
+    </div>
+
+    <div class="item-image ${mediaClass}">${imageHtml}</div>
+
+    <div class="item-body">
+      <div class="item-title">${escapeHtml(course.name)}</div>
+      ${course.description ? `<div class="item-desc">${escapeHtml(course.description)}</div>` : ''}
+
+      <div class="item-badges">
+        <span class="badge id">#${course.id}</span>
+        ${typeBadge}
+        ${gradeBadge}
+        ${mediaBadge}
+        ${enrolledBadge}
+      </div>
+    </div>
+
+    <div class="item-footer">
+      <button class="btn-icon-action ${isPublished ? 'unpublish' : 'publish'}" data-action="toggle-publish" title="${isPublished ? 'إلغاء النشر' : 'نشر'}">
+        <i class="fas ${isPublished ? 'fa-eye-slash' : 'fa-eye'}"></i>
+        <span>${isPublished ? 'إلغاء' : 'نشر'}</span>
+      </button>
+      <button class="btn-icon-action edit" data-action="edit" title="تعديل">
+        <i class="fas fa-pen"></i>
+        <span>تعديل</span>
+      </button>
+      <button class="btn-icon-action share" data-action="share" title="مشاركة">
+        <i class="fas fa-share-nodes"></i>
+        <span>مشاركة</span>
+      </button>
+      <button class="btn-icon-action delete" data-action="delete" title="حذف">
+        <i class="fas fa-trash-can"></i>
+        <span>حذف</span>
+      </button>
+    </div>
+  `;
+
+  card.querySelectorAll('[data-action]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      handleCourseAction(btn.dataset.action, course.id);
+    });
+  });
+
+  const check = card.querySelector('[data-check]');
+  check.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleCourseSelection(course.id);
+  });
+
+  card.addEventListener('click', () => {
+    if (document.body.classList.contains('selection-mode')) {
+      toggleCourseSelection(course.id);
+    } else {
+      handleCourseAction('edit', course.id);
+    }
+  });
+
+  return card;
+}
+
+// ============================================================
+// 🎯 Course Actions
+// ============================================================
+async function handleCourseAction(action, id) {
+  const course = allCourses.find(c => c.id === id);
+  if (!course) return;
+
+  switch (action) {
+    case 'toggle-publish':
+      await toggleCoursePublish(course);
+      break;
+    case 'edit':
+      openCourseModal(course);
+      break;
+    case 'share':
+      await shareCourse(course);
+      break;
+    case 'delete':
+      await deleteCourse(course);
+      break;
+  }
+}
+
+async function toggleCoursePublish(course) {
+  const newStatus = course.status === 'published' ? 'draft' : 'published';
+  const wasPublished = course.status === 'published';
+
+  const updated = allCourses.map(c =>
+    c.id === course.id ? { ...c, status: newStatus, updatedAt: new Date().toISOString() } : c
+  );
+
+  try {
+    await setDoc(doc(db, 'courses', 'all'), {
+      items: updated,
+      updatedAt: serverTimestamp()
+    });
+
+    if (newStatus === 'published' && !wasPublished) {
+      await notifyCoursePublished({ ...course, status: 'published' });
+    }
+
+    showToast(newStatus === 'published' ? '✅ تم نشر الكورس' : '📝 تم إلغاء النشر', 'success');
+  } catch (e) {
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+async function shareCourse(course) {
+  const url = `${location.origin}/course.html?id=${course.id}`;
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: course.name, url });
+      return;
+    } catch (e) {
+      if (e.name === 'AbortError') return;
+    }
+  }
+  try {
+    await navigator.clipboard.writeText(url);
+    showToast('📋 تم نسخ الرابط', 'success');
+  } catch (e) {
+    showToast(url, 'info');
+  }
+}
+
+async function deleteCourse(course) {
+  const c = await showConfirm({
+    title: 'حذف الكورس',
+    message: `هل تريد حذف "<strong>${escapeHtml(course.name)}</strong>"؟`,
+    icon: 'fa-trash',
+    iconType: 'danger',
+    okText: 'حذف',
+    okClass: 'btn-danger'
+  });
+  if (!c) return;
+
+  try {
+    const updated = allCourses.filter(c => c.id !== course.id);
+    await setDoc(doc(db, 'courses', 'all'), {
+      items: updated,
+      updatedAt: serverTimestamp()
+    });
+
+    // احذف أكواد الكورس المرتبطة
+    const remainingCodes = allCodes.filter(code => code.courseId !== course.id);
+    if (remainingCodes.length !== allCodes.length) {
+      await setDoc(doc(db, 'payment_codes', 'all'), {
+        items: remainingCodes,
+        updatedAt: serverTimestamp()
+      });
+    }
+
+    showToast('✅ تم حذف الكورس', 'success');
+  } catch (e) {
+    showToast('حدث خطأ', 'error');
+  }
+}
+
+// ============================================================
+// 📝 Course Modal
+// ============================================================
+function openCourseModal(course = null) {
+  editingCourseId = course ? course.id : null;
+  $('courseModalTitle').textContent = course ? 'تعديل الكورس' : 'إضافة كورس جديد';
+  $('courseModalIcon').className = course ? 'fas fa-pen' : 'fas fa-book';
+
+  $('courseName').value = course ? (course.name || '') : '';
+  $('courseDesc').value = course ? (course.description || '') : '';
+  $('courseNameCount').textContent = $('courseName').value.length;
+  $('courseDescCount').textContent = $('courseDesc').value.length;
+
+  $('courseGrade').value = course && course.grade ? course.grade : '';
+  $('courseType').value = course && course.type ? course.type : 'free';
+  $('courseEnrolledCount').value = course && course.enrolledCount ? course.enrolledCount : 0;
+  $('courseStatus').value = course && course.status ? course.status : 'published';
+  $('courseNotifyEnabled').checked = true;
+
+  // Media
+  courseImageMode = 'url';
+  courseImageBase64 = '';
+  courseImageUrlValue = course && course.mediaUrl ? course.mediaUrl : '';
+  courseMediaType = course && course.mediaType ? course.mediaType : 'image';
+
+  document.querySelectorAll('[data-course-img]').forEach(b => {
+    b.classList.toggle('active', b.dataset.courseImg === 'url');
+  });
+  document.querySelectorAll('#courseModal .tab-content-mini').forEach(c => c.classList.remove('active'));
+  $('courseImgUrlTab').classList.add('active');
+
+  $('courseImageUrl').value = courseImageUrlValue.startsWith('data:') ? '' : courseImageUrlValue;
+  $('courseImageFile').value = '';
+
+  updateCourseImagePreview(courseImageUrlValue);
+
+  $('courseError').classList.remove('show');
+  $('courseModal').classList.add('show');
+  setTimeout(() => $('courseName').focus(), 100);
+}
+
+function closeCourseModal() {
+  $('courseModal').classList.remove('show');
+  editingCourseId = null;
+}
+
+$('btnAddCourse').addEventListener('click', () => openCourseModal());
+$('courseModalClose').addEventListener('click', closeCourseModal);
+$('courseModalCancel').addEventListener('click', closeCourseModal);
+$('courseModal').addEventListener('click', (e) => {
+  if (e.target === $('courseModal')) closeCourseModal();
+});
+
+$('courseName').addEventListener('input', (e) => {
+  $('courseNameCount').textContent = e.target.value.length;
+});
+
+$('courseDesc').addEventListener('input', (e) => {
+  $('courseDescCount').textContent = e.target.value.length;
+});
+
+// Image tabs
+document.querySelectorAll('[data-course-img]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    courseImageMode = btn.dataset.courseImg;
+    document.querySelectorAll('[data-course-img]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#courseModal .tab-content-mini').forEach(c => c.classList.remove('active'));
+    $(`courseImg${courseImageMode === 'url' ? 'Url' : 'Upload'}Tab`).classList.add('active');
+  });
+});
+
+$('courseImageUrl').addEventListener('input', (e) => {
+  courseImageUrlValue = cleanInput(e.target.value);
+  // اكتشف نوع الوسائط
+  if (/\.(mp4|webm|ogg|mov)$/i.test(courseImageUrlValue) || courseImageUrlValue.startsWith('data:video')) {
+    courseMediaType = 'video';
+  } else {
+    courseMediaType = 'image';
+  }
+  updateCourseImagePreview(courseImageUrlValue);
+});
+
+$('courseImageFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) return showToast('حجم الملف أكبر من 2MB', 'error');
+
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    courseImageBase64 = ev.target.result;
+    if (file.type.startsWith('video/')) {
+      courseMediaType = 'video';
+    } else {
+      courseMediaType = 'image';
+    }
+    updateCourseImagePreview(courseImageBase64);
+  };
+  reader.readAsDataURL(file);
+});
+
+$('courseImageRemove').addEventListener('click', () => {
+  courseImageBase64 = '';
+  courseImageUrlValue = '';
+  $('courseImageUrl').value = '';
+  $('courseImageFile').value = '';
+  $('courseImagePreview').classList.remove('show');
+});
+
+function updateCourseImagePreview(src) {
+  if (!src) {
+    $('courseImagePreview').classList.remove('show');
+    return;
+  }
+
+  if (courseMediaType === 'video') {
+    $('courseImagePreviewContent').innerHTML = `<video src="${escapeHtml(src)}" controls preload="metadata"></video>`;
+  } else {
+    $('courseImagePreviewContent').innerHTML = `<img src="${escapeHtml(src)}" alt="" onerror="this.parentNode.innerHTML='<div style=&quot;padding:20px;text-align:center;color:var(--error);font-weight:700;&quot;>⚠️ تعذّر التحميل</div>'">`;
+  }
+  $('courseImagePreview').classList.add('show');
+}
+
+// Save Course
+$('courseModalSave').addEventListener('click', async () => {
+  const errEl = $('courseError');
+  errEl.classList.remove('show');
+
+  const name = cleanInput($('courseName').value);
+  const description = cleanInput($('courseDesc').value);
+  const grade = $('courseGrade').value;
+  const type = $('courseType').value;
+  const enrolledCount = parseInt($('courseEnrolledCount').value) || 0;
+  const status = $('courseStatus').value;
+  const notifyEnabled = $('courseNotifyEnabled').checked;
+
+  if (!name) return showError('الرجاء إدخال اسم الكورس');
+  if (name.length < 3) return showError('اسم الكورس قصير جداً');
+
+  let mediaUrl = '';
+  if (courseImageBase64) mediaUrl = courseImageBase64;
+  else if (courseImageUrlValue) mediaUrl = courseImageUrlValue;
+
+  const btn = $('courseModalSave');
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+  try {
+    const now = new Date().toISOString();
+    const wasPublished = editingCourseId
+      ? allCourses.find(c => c.id === editingCourseId)?.status === 'published'
+      : false;
+
+    if (editingCourseId) {
+      const updated = allCourses.map(c => {
+        if (c.id === editingCourseId) {
+          return {
+            ...c,
+            name, description, grade, type, enrolledCount, status,
+            mediaUrl,
+            mediaType: courseMediaType,
+            updatedAt: now
+          };
+        }
+        return c;
+      });
+      await setDoc(doc(db, 'courses', 'all'), { items: updated, updatedAt: serverTimestamp() });
+      showToast('✅ تم تعديل الكورس', 'success');
+
+      if (status === 'published' && !wasPublished && notifyEnabled) {
+        const updatedCourse = updated.find(c => c.id === editingCourseId);
+        if (updatedCourse) await notifyCoursePublished(updatedCourse);
+      }
+    } else {
+      const id = await getNextCourseId();
+      const newCourse = {
+        id, name, description, grade, type, enrolledCount, status,
+        mediaUrl,
+        mediaType: courseMediaType,
+        createdAt: now,
+        updatedAt: now,
+        createdBy: adminId
+      };
+
+      const updated = [...allCourses, newCourse];
+      await setDoc(doc(db, 'courses', 'all'), { items: updated, updatedAt: serverTimestamp() });
+      showToast('✅ تم إضافة الكورس', 'success');
+
+      if (status === 'published' && notifyEnabled) {
+        await notifyCoursePublished(newCourse);
+      }
+    }
+
+    closeCourseModal();
+  } catch (e) {
+    console.error(e);
+    showError('حدث خطأ: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+});
+
+function showError(msg) {
+  const errEl = $('courseError');
+  errEl.textContent = msg;
+  errEl.classList.add('show');
+}
+
+// ============================================================
+// 🔔 Notify Course Published
+// ============================================================
+async function notifyCoursePublished(course) {
+  try {
+    // احصل على قائمة الطلاب
+    const studentsSnap = await getDoc(doc(db, 'users', 'all'));
+    if (!studentsSnap.exists()) return;
+
+    const students = studentsSnap.data().items || [];
+    let recipients = [];
+
+    if (course.grade) {
+      recipients = students.filter(s => s.grade === course.grade).map(s => s.id);
+    } else {
+      recipients = students.map(s => s.id);
+    }
+
+    if (recipients.length === 0) return;
+
+    const notifId = 'notif_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+    const link = `${location.origin}/course.html?id=${course.id}`;
+
+    const notification = {
+      id: notifId,
+      title: '📚 كورس جديد: ' + course.name,
+      body: (course.description || 'تم إضافة كورس جديد').slice(0, 150) +
+        (course.type === 'paid' ? '\n\n💰 كورس مدفوع' : '\n\n🎁 كورس مجاني') +
+        '\n\n🔗 افتح الكورس: ' + link,
+      type: 'link',
+      url: link,
+      senderId: adminId,
+      senderName: adminName,
+      createdAt: new Date().toISOString(),
+      target: course.grade ? 'grade' : 'all',
+      targetLabel: course.grade || 'الجميع',
+      recipients: recipients,
+      recipientsCount: recipients.length
+    };
+
+    await setDoc(doc(db, 'notifications', notifId), notification);
+
+    // ضيف لكل مستخدم
+    for (const uid of recipients) {
+      try {
+        const userRef = doc(db, 'user_notifications', uid);
+        const uSnap = await getDoc(userRef);
+        let notifIds = [];
+        let readIds = [];
+        if (uSnap.exists()) {
+          notifIds = uSnap.data().notifIds || [];
+          readIds = uSnap.data().readIds || [];
+        }
+        if (!notifIds.includes(notifId)) {
+          notifIds.unshift(notifId);
+          if (notifIds.length > 100) notifIds = notifIds.slice(0, 100);
+        }
+        await setDoc(userRef, {
+          userId: uid,
+          notifIds,
+          readIds,
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+      } catch (e) {}
+    }
+
+    // آخر إشعار
+    await setDoc(doc(db, 'settings', 'lastNotification'), {
+      id: notifId,
+      title: notification.title,
+      body: notification.body,
+      type: 'link',
+      url: link,
+      createdAt: notification.createdAt,
+      senderName: adminName
+    });
+
+    console.log('✅ Course notification sent to', recipients.length, 'students');
+  } catch (e) {
+    console.error('notify error:', e);
+  }
+}
+
+// ============================================================
+// 🖱️ Course Selection
+// ============================================================
+function toggleCourseSelection(id) {
+  if (selectedCourses.has(id)) selectedCourses.delete(id);
+  else selectedCourses.add(id);
+  updateSelectionState();
+  renderCourses();
+}
+
+function updateSelectionState() {
+  const selected = currentTab === 'courses' ? selectedCourses : selectedCodes;
+  const count = selected.size;
+
+  if (count > 0) {
+    document.body.classList.add('selection-mode');
+    $('selectionBar').classList.add('show');
+    $('selectedCount').textContent = count;
+    $('selectedTypeText').textContent = currentTab === 'courses' ? 'كورس' : 'كود';
+  } else {
+    document.body.classList.remove('selection-mode');
+    $('selectionBar').classList.remove('show');
+  }
+}
+
+function clearSelection() {
+  selectedCourses.clear();
+  selectedCodes.clear();
+  updateSelectionState();
+  renderCourses();
+  renderCodes();
+}
+
+$('clearSelectionBtn').addEventListener('click', clearSelection);
+
+$('selectAllCourses').addEventListener('click', () => {
+  const allSelected = filteredCourses.every(c => selectedCourses.has(c.id));
+  if (allSelected) filteredCourses.forEach(c => selectedCourses.delete(c.id));
+  else filteredCourses.forEach(c => selectedCourses.add(c.id));
+  updateSelectionState();
+  renderCourses();
+});
+
+$('selectAllCodes').addEventListener('click', () => {
+  const allSelected = filteredCodes.every(c => selectedCodes.has(c.id));
+  if (allSelected) filteredCodes.forEach(c => selectedCodes.delete(c.id));
+  else filteredCodes.forEach(c => selectedCodes.add(c.id));
+  updateSelectionState();
+  renderCodes();
+});
+
+// Bulk Actions
+$('bulkDeleteBtn').addEventListener('click', async () => {
+  const selected = currentTab === 'courses' ? selectedCourses : selectedCodes;
+  if (selected.size === 0) return;
+
+  const c = await showConfirm({
+    title: 'حذف المحدد',
+    message: `سيتم حذف <strong>${selected.size}</strong> عنصر. هل أنت متأكد؟`,
+    icon: 'fa-trash',
+    iconType: 'danger',
+    okText: 'حذف الكل',
+    okClass: 'btn-danger'
+  });
+  if (!c) return;
+
+  try {
+    if (currentTab === 'courses') {
+      const updated = allCourses.filter(c => !selected.has(c.id));
+      await setDoc(doc(db, 'courses', 'all'), { items: updated, updatedAt: serverTimestamp() });
+    } else {
+      const updated = allCodes.filter(c => !selected.has(c.id));
+      await setDoc(doc(db, 'payment_codes', 'all'), { items: updated, updatedAt: serverTimestamp() });
+    }
+    showToast(`✅ تم حذف ${selected.size} عنصر`, 'success');
+    clearSelection();
+  } catch (e) {
+    showToast('حدث خطأ', 'error');
+  }
+});
+
+$('bulkPublishBtn').addEventListener('click', async () => {
+  if (currentTab !== 'courses') return showToast('مفيد للكورسات فقط', 'warning');
+  if (selectedCourses.size === 0) return;
+
+  try {
+    const updated = allCourses.map(c =>
+      selectedCourses.has(c.id) ? { ...c, status: 'published', updatedAt: new Date().toISOString() } : c
+    );
+    await setDoc(doc(db, 'courses', 'all'), { items: updated, updatedAt: serverTimestamp() });
+    showToast(`✅ تم نشر ${selectedCourses.size} كورس`, 'success');
+    clearSelection();
+  } catch (e) {
+    showToast('حدث خطأ', 'error');
+  }
+});
+
+$('bulkUnpublishBtn').addEventListener('click', async () => {
+  if (currentTab !== 'courses') return showToast('مفيد للكورسات فقط', 'warning');
+  if (selectedCourses.size === 0) return;
+
+  try {
+    const updated = allCourses.map(c =>
+      selectedCourses.has(c.id) ? { ...c, status: 'draft', updatedAt: new Date().toISOString() } : c
+    );
+    await setDoc(doc(db, 'courses', 'all'), { items: updated, updatedAt: serverTimestamp() });
+    showToast(`📝 تم إلغاء نشر ${selectedCourses.size} كورس`, 'success');
+    clearSelection();
+  } catch (e) {
+    showToast('حدث خطأ', 'error');
+  }
+});
+
+// ============================================================
+// 🔍 Search
+// ============================================================
+$('searchCourses').addEventListener('input', (e) => {
+  courseSearchQuery = e.target.value;
+  $('clearSearchCourses').classList.toggle('show', !!cleanInput(courseSearchQuery));
+  applyCourseFilters();
+});
+
+$('clearSearchCourses').addEventListener('click', () => {
+  $('searchCourses').value = '';
+  courseSearchQuery = '';
+  $('clearSearchCourses').classList.remove('show');
+  applyCourseFilters();
+});
+
+$('searchCodes').addEventListener('input', (e) => {
+  codeSearchQuery = e.target.value;
+  $('clearSearchCodes').classList.toggle('show', !!cleanInput(codeSearchQuery));
+  applyCodeFilters();
+});
+
+$('clearSearchCodes').addEventListener('click', () => {
+  $('searchCodes').value = '';
+  codeSearchQuery = '';
+  $('clearSearchCodes').classList.remove('show');
+  applyCodeFilters();
+});
+
+// Filters
+document.querySelectorAll('[data-course-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    courseFilter = btn.dataset.courseFilter;
+    document.querySelectorAll('[data-course-filter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyCourseFilters();
+  });
+});
+
+document.querySelectorAll('[data-code-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    codeFilter = btn.dataset.codeFilter;
+    document.querySelectorAll('[data-code-filter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyCodeFilters();
+  });
+});
+
+// ============================================================
+// 🎨 Render Codes
+// ============================================================
+function applyCodeFilters() {
+  const q = cleanInput(codeSearchQuery).toLowerCase();
+  let base = [...allCodes];
+
+  if (codeFilter === 'unused') base = base.filter(c => !c.used && !c.disabled);
+  else if (codeFilter === 'used') base = base.filter(c => c.used);
+  else if (codeFilter === 'disabled') base = base.filter(c => c.disabled);
+
+  if (q) {
+    base = base.filter(c =>
+      (c.code || '').toLowerCase().includes(q) ||
+      (c.userName || '').toLowerCase().includes(q) ||
+      (c.courseName || '').toLowerCase().includes(q)
+    );
+  }
+
+  base.sort((a, b) => {
+    const ta = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+    const tb = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+    return tb - ta;
+  });
+
+  filteredCodes = base;
+  renderCodes();
+  updateCodeFilterCounts();
+}
+
+function updateCodeFilterCounts() {
+  $('codeFilterAll').textContent = allCodes.length;
+  $('codeFilterUnused').textContent = allCodes.filter(c => !c.used && !c.disabled).length;
+  $('codeFilterUsed').textContent = allCodes.filter(c => c.used).length;
+  $('codeFilterDisabled').textContent = allCodes.filter(c => c.disabled).length;
+}
+
+function renderCodes() {
+  const grid = $('codesGrid');
+  grid.innerHTML = '';
+
+  if (filteredCodes.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-key"></i>
+        <h3>${allCodes.length === 0 ? 'لا توجد أكواد بعد' : 'لا توجد نتائج'}</h3>
+        <p>${allCodes.length === 0 ? 'اضغط "توليد أكواد" للبدء' : 'جرّب البحث بكلمة أخرى'}</p>
+      </div>
+    `;
+    return;
+  }
+
+  filteredCodes.forEach(code => {
+    grid.appendChild(createCodeCard(code));
+  });
+}
+
+function createCodeCard(code) {
+  const card = document.createElement('div');
+  card.className = 'code-card';
+  if (code.used) card.classList.add('used');
+  if (code.disabled) card.classList.add('disabled');
+  if (selectedCodes.has(code.id)) card.classList.add('selected');
+
+  let statusBadge = '';
+  if (code.disabled) {
+    statusBadge = `<span class="code-status-badge disabled"><i class="fas fa-ban"></i> معطّل</span>`;
+  } else if (code.used) {
+    statusBadge = `<span class="code-status-badge used"><i class="fas fa-lock"></i> مستخدم</span>`;
+  } else {
+    statusBadge = `<span class="code-status-badge unused"><i class="fas fa-check-circle"></i> متاح</span>`;
+  }
+
+  card.innerHTML = `
+    <div class="code-card-check" data-check><i class="fas fa-check"></i></div>
+    <div class="code-value" data-copy-code="${escapeHtml(code.code)}" title="اضغط للنسخ">
+      ${escapeHtml(code.code)}
+    </div>
+    ${statusBadge}
+    <div class="code-info">
+      <div class="code-info-row">
+        <i class="fas fa-user"></i>
+        <span>المستخدم: <strong>${escapeHtml(code.userName || 'غير محدد')}</strong></span>
+      </div>
+      <div class="code-info-row">
+        <i class="fas fa-book"></i>
+        <span>الكورس: <strong>${escapeHtml(code.courseName || '—')}</strong></span>
+      </div>
+      ${code.sentAt ? `
+        <div class="code-info-row">
+          <i class="fas fa-paper-plane"></i>
+          <span>أُرسل: <strong>${formatDate(code.sentAt)}</strong></span>
+        </div>
+      ` : ''}
+      ${code.usedAt ? `
+        <div class="code-info-row">
+          <i class="fas fa-check"></i>
+          <span>استُخدم: <strong>${formatDate(code.usedAt)}</strong></span>
+        </div>
+      ` : ''}
+    </div>
+    <div class="code-actions">
+      <button class="code-action-btn copy" data-action="copy" title="نسخ">
+        <i class="fas fa-copy"></i>
+        <span>نسخ</span>
+      </button>
+      <button class="code-action-btn share" data-action="share" title="مشاركة">
+        <i class="fas fa-share-nodes"></i>
+        <span>مشاركة</span>
+      </button>
+      <button class="code-action-btn toggle" data-action="toggle" title="${code.disabled ? 'تفعيل' : 'تعطيل'}">
+        <i class="fas ${code.disabled ? 'fa-check' : 'fa-ban'}"></i>
+        <span>${code.disabled ? 'تفعيل' : 'تعطيل'}</span>
+      </button>
+      <button class="code-action-btn delete" data-action="delete" title="حذف">
+        <i class="fas fa-trash-can"></i>
+        <span>حذف</span>
+      </button>
+    </div>
+  `;
+
+  card.querySelector('[data-copy-code]')?.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    try {
+      await navigator.clipboard.writeText(code.code);
+      showToast('📋 تم نسخ الكود', 'success');
+    } catch (e) {
+      showToast(code.code, 'info');
+    }
+  });
+
+  card.querySelectorAll('[data-action]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      handleCodeAction(btn.dataset.action, code.id);
+    });
+  });
+
+  const check = card.querySelector('[data-check]');
+  check?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleCodeSelection(code.id);
+  });
+
+  return card;
+}
+
+function formatDate(iso) {
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso);
+    const now = new Date();
+    const diff = (now - d) / 1000;
+    if (diff < 60) return 'الآن';
+    if (diff < 3600) return `قبل ${Math.floor(diff / 60)} دقيقة`;
+    if (diff < 86400) return `قبل ${Math.floor(diff / 3600)} ساعة`;
+    if (diff < 604800) return `قبل ${Math.floor(diff / 86400)} يوم`;
+    return d.toLocaleDateString('ar-EG', {
+      year: 'numeric', month: 'short', day: 'numeric'
+    });
+  } catch (e) { return '—'; }
+}
+
+function toggleCodeSelection(id) {
+  if (selectedCodes.has(id)) selectedCodes.delete(id);
+  else selectedCodes.add(id);
+  updateSelectionState();
+  renderCodes();
+}
+
+async function handleCodeAction(action, id) {
+  const code = allCodes.find(c => c.id === id);
+  if (!code) return;
+
+  if (action === 'copy') {
+    try {
+      await navigator.clipboard.writeText(code.code);
+      showToast('📋 تم نسخ الكود', 'success');
+    } catch (e) {
+      showToast(code.code, 'info');
+    }
+  } else if (action === 'share') {
+    const msg = `كود الدفع الخاص بك:\n\n${code.code}\n\nللكورس: ${code.courseName}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'كود دفع', text: msg });
+      } catch (e) {}
+    } else {
+      try {
+        await navigator.clipboard.writeText(msg);
+        showToast('📋 تم نسخ الكود', 'success');
+      } catch (e) {}
+    }
+  } else if (action === 'toggle') {
+    const updated = allCodes.map(c =>
+      c.id === id ? { ...c, disabled: !c.disabled, updatedAt: new Date().toISOString() } : c
+    );
+    try {
+      await setDoc(doc(db, 'payment_codes', 'all'), {
+        items: updated,
+        updatedAt: serverTimestamp()
+      });
+      showToast(code.disabled ? '✅ تم التفعيل' : '🚫 تم التعطيل', 'success');
+    } catch (e) {
+      showToast('حدث خطأ', 'error');
+    }
+  } else if (action === 'delete') {
+    const c = await showConfirm({
+      title: 'حذف الكود',
+      message: `هل تريد حذف الكود "<strong>${escapeHtml(code.code)}</strong>"؟`,
+      icon: 'fa-trash',
+      iconType: 'danger',
+      okText: 'حذف',
+      okClass: 'btn-danger'
+    });
+    if (!c) return;
+
+    try {
+      const updated = allCodes.filter(c => c.id !== id);
+      await setDoc(doc(db, 'payment_codes', 'all'), {
+        items: updated,
+        updatedAt: serverTimestamp()
+      });
+      showToast('✅ تم حذف الكود', 'success');
+    } catch (e) {
+      showToast('حدث خطأ', 'error');
+    }
+  }
+}
+
+// ============================================================
+// 🔑 Generate Codes Modal
+// ============================================================
+function openCodesModal() {
+  $('codesCourse').innerHTML = '<option value="">— اختر كورس —</option>';
+  allCourses.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.id;
+    opt.textContent = `#${c.id} — ${c.name}${c.type === 'paid' ? ' (مدفوع)' : ''}`;
+    $('codesCourse').appendChild(opt);
+  });
+
+  $('codesCount').value = 10;
+  $('codesMode').value = 'random';
+  $('codesManualInput').value = '';
+  $('codesManualWrapper').style.display = 'none';
+  $('codesTarget').value = 'all';
+  $('codesSpecificWrapper').style.display = 'none';
+  $('codesSelectedCount').textContent = '0';
+  $('codesNotifyEnabled').checked = true;
+  $('codesError').classList.remove('show');
+
+  codesSelectedUsers.clear();
+  codesTargetType = 'all';
+  codesMode = 'random';
+
+  $('codesModal').classList.add('show');
+}
+
+function closeCodesModal() {
+  $('codesModal').classList.remove('show');
+  codesSelectedUsers.clear();
+}
+
+$('btnGenerateCodes').addEventListener('click', openCodesModal);
+$('codesModalClose').addEventListener('click', closeCodesModal);
+$('codesModalCancel').addEventListener('click', closeCodesModal);
+$('codesModal').addEventListener('click', (e) => {
+  if (e.target === $('codesModal')) closeCodesModal();
+});
+
+$('codesMode').addEventListener('change', (e) => {
+  codesMode = e.target.value;
+  $('codesManualWrapper').style.display = codesMode === 'manual' ? 'block' : 'none';
+});
+
+$('codesTarget').addEventListener('change', (e) => {
+  codesTargetType = e.target.value;
+  $('codesSpecificWrapper').style.display = codesTargetType === 'specific' ? 'block' : 'none';
+  if (codesTargetType === 'specific') renderCodesUsersChips();
+});
+
+$('codesUserSearch').addEventListener('input', () => {
+  renderCodesUsersChips();
+});
+
+function renderCodesUsersChips() {
+  const container = $('codesUsersChips');
+  const q = cleanInput($('codesUserSearch').value).toLowerCase();
+
+  let list = [...allStudents];
+  if (q) {
+    list = list.filter(s =>
+      (s.fullName || '').toLowerCase().includes(q) ||
+      (s.username || '').toLowerCase().includes(q) ||
+      (s.code || '').toLowerCase().includes(q)
+    );
+  }
+
+  container.innerHTML = '';
+  if (list.length === 0) {
+    container.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-sub);font-size:12.5px;width:100%;font-weight:600;">لا توجد نتائج</div>`;
+    $('codesSelectedCount').textContent = codesSelectedUsers.size;
+    return;
+  }
+
+  list.slice(0, 100).forEach(user => {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'chip-select' + (codesSelectedUsers.has(user.id) ? ' selected' : '');
+    chip.textContent = user.fullName || user.username || 'مستخدم';
+    chip.addEventListener('click', () => {
+      if (codesSelectedUsers.has(user.id)) codesSelectedUsers.delete(user.id);
+      else codesSelectedUsers.add(user.id);
+      renderCodesUsersChips();
+    });
+    container.appendChild(chip);
+  });
+
+  $('codesSelectedCount').textContent = codesSelectedUsers.size;
+}
+
+// Generate Codes
+$('codesModalGenerate').addEventListener('click', async () => {
+  const errEl = $('codesError');
+  errEl.classList.remove('show');
+
+  const courseId = parseInt($('codesCourse').value);
+  const count = parseInt($('codesCount').value) || 0;
+  const target = $('codesTarget').value;
+
+  if (!courseId) return showErr('الرجاء اختيار كورس');
+  if (count < 1 || count > 100) return showErr('عدد الأكواد من 1 إلى 100');
+
+  const course = allCourses.find(c => c.id === courseId);
+  if (!course) return showErr('الكورس غير موجود');
+
+  // المستخدمون
+  let recipients = [];
+  if (target === 'all') {
+    recipients = allStudents.slice(0, count);
+  } else {
+    if (codesSelectedUsers.size === 0) return showErr('اختر مستخدمين');
+    recipients = allStudents.filter(s => codesSelectedUsers.has(s.id)).slice(0, count);
+  }
+
+  // إنشاء الأكواد
+  let codesToCreate = [];
+
+  if (codesMode === 'manual') {
+    const raw = $('codesManualInput').value;
+    const manualCodes = raw.split(/[\n,;]+/).map(c => cleanInput(c).toUpperCase()).filter(Boolean);
+    if (manualCodes.length === 0) return showErr('أدخل أكواد يدوية');
+    codesToCreate = manualCodes.slice(0, count).map((code, i) => ({
+      code,
+      user: recipients[i] || null
+    }));
+  } else {
+    // عشوائي
+    for (let i = 0; i < count; i++) {
+      codesToCreate.push({
+        code: generateRandomCode(),
+        user: recipients[i] || null
+      });
+    }
+  }
+
+  const btn = $('codesModalGenerate');
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التوليد...';
+
+  try {
+    const now = new Date().toISOString();
+    const newCodes = [];
+
+    for (const item of codesToCreate) {
+      const user = item.user;
+      const codeId = 'code_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+
+      const codeObj = {
+        id: codeId,
+        code: item.code,
+        courseId: course.id,
+        courseName: course.name,
+        userId: user ? user.id : null,
+        userName: user ? (user.fullName || user.username || 'مستخدم') : null,
+        userCode: user ? (user.code || null) : null,
+        used: false,
+        disabled: false,
+        sentAt: null,
+        usedAt: null,
+        createdAt: now,
+        createdBy: adminId
+      };
+
+      newCodes.push(codeObj);
+    }
+
+    const updated = [...allCodes, ...newCodes];
+    await setDoc(doc(db, 'payment_codes', 'all'), {
+      items: updated,
+      updatedAt: serverTimestamp()
+    });
+
+    // إرسال الإشعارات
+    if ($('codesNotifyEnabled').checked) {
+      for (const codeObj of newCodes) {
+        if (!codeObj.userId) continue;
+        try {
+          await sendCodeNotification(codeObj);
+          // حدّث وقت الإرسال
+          codeObj.sentAt = new Date().toISOString();
+        } catch (e) {
+          console.error('send notif error:', e);
+        }
+      }
+      // احفظ الـ sentAt
+      await setDoc(doc(db, 'payment_codes', 'all'), {
+        items: updated,
+        updatedAt: serverTimestamp()
+      });
+    }
+
+    showToast(`✅ تم توليد ${newCodes.length} كود`, 'success');
+    closeCodesModal();
+  } catch (e) {
+    console.error(e);
+    showErr('حدث خطأ: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+});
+
+function showErr(msg) {
+  const errEl = $('codesError');
+  errEl.textContent = msg;
+  errEl.classList.add('show');
+}
+
+function generateRandomCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 8; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+// ============================================================
+// 📤 Send Code Notification
+// ============================================================
+async function sendCodeNotification(codeObj) {
+  const notifId = 'notif_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+
+  const notification = {
+    id: notifId,
+    title: '🔑 كود الدفع الخاص بك',
+    body: `كودك لكورس "${codeObj.courseName}":\n\n${codeObj.code}\n\nاحتفظ بالكود — خاص بك فقط ولا يمكن استخدامه من شخص آخر.`,
+    type: 'none',
+    url: '',
+    senderId: adminId,
+    senderName: adminName,
+    createdAt: new Date().toISOString(),
+    target: 'custom',
+    targetLabel: 'كود خاص',
+    recipients: [codeObj.userId],
+    recipientsCount: 1
+  };
+
+  await setDoc(doc(db, 'notifications', notifId), notification);
+
+  const userRef = doc(db, 'user_notifications', codeObj.userId);
+  const uSnap = await getDoc(userRef);
+  let notifIds = [];
+  let readIds = [];
+  if (uSnap.exists()) {
+    notifIds = uSnap.data().notifIds || [];
+    readIds = uSnap.data().readIds || [];
+  }
+  if (!notifIds.includes(notifId)) {
+    notifIds.unshift(notifId);
+    if (notifIds.length > 100) notifIds = notifIds.slice(0, 100);
+  }
+
+  await setDoc(userRef, {
+    userId: codeObj.userId,
+    notifIds,
+    readIds,
+    updatedAt: serverTimestamp()
+  }, { merge: true });
+
+  // آخر إشعار
+  await setDoc(doc(db, 'settings', 'lastNotification'), {
+    id: notifId,
+    title: notification.title,
+    body: notification.body,
+    type: 'none',
+    createdAt: notification.createdAt,
+    senderName: adminName
+  });
+}
+
+// ============================================================
+// 📡 Load Data
+// ============================================================
+function startCoursesListener() {
+  onSnapshot(doc(db, 'courses', 'all'), (snap) => {
+    if (snap.exists()) {
+      allCourses = snap.data().items || [];
+    } else {
+      allCourses = [];
+    }
+    applyCourseFilters();
+    updateStats();
+  }, (err) => console.log('courses error:', err.message));
+}
+
+function startCodesListener() {
+  onSnapshot(doc(db, 'payment_codes', 'all'), (snap) => {
+    if (snap.exists()) {
+      allCodes = snap.data().items || [];
+    } else {
+      allCodes = [];
+    }
+    applyCodeFilters();
+    updateStats();
+  }, (err) => console.log('codes error:', err.message));
+}
+
+function startStudentsListener() {
+  onSnapshot(doc(db, 'users', 'all'), (snap) => {
+    if (snap.exists()) {
+      allStudents = snap.data().items || [];
+    } else {
+      allStudents = [];
+    }
+    if (codesTargetType === 'specific') renderCodesUsersChips();
+  }, (err) => console.log('students error:', err.message));
+}
+
+function startGradesListener() {
+  onSnapshot(doc(db, 'users', 'categories'), (snap) => {
+    if (snap.exists()) {
+      allGrades = snap.data().items || [];
+    } else {
+      allGrades = [];
+    }
+    const gradeSelect = $('courseGrade');
+    const currentVal = gradeSelect.value;
+    gradeSelect.innerHTML = '<option value="">— بدون فرقة —</option>';
+    allGrades.forEach(g => {
+      const opt = document.createElement('option');
+      opt.value = g;
+      opt.textContent = g;
+      gradeSelect.appendChild(opt);
+    });
+    gradeSelect.value = currentVal;
+  }, (err) => console.log('grades error:', err.message));
+}
+
+// ============================================================
+// 🚪 Logout
+// ============================================================
+async function handleLogout() {
+  const c = await showConfirm({
+    title: 'تسجيل الخروج',
+    message: 'هل تريد تسجيل الخروج؟',
+    icon: 'fa-sign-out-alt',
+    iconType: 'warning',
+    okText: 'خروج'
+  });
+  if (!c) return;
+  sessionStorage.clear();
+  window.location.replace('login.html');
+}
+
+$('logoutBtn').addEventListener('click', handleLogout);
+$('drawerLogoutBtn').addEventListener('click', () => {
+  closeDrawer();
+  setTimeout(handleLogout, 300);
+});
+
+// ============================================================
+// 📱 Drawer
+// ============================================================
+const drawer = $('drawer');
+const drawerOverlay = $('drawerOverlay');
+const menuBtn = $('menuBtn');
+const drawerClose = $('drawerClose');
+
+menuBtn?.addEventListener('click', () => {
+  drawer.classList.add('open');
+  drawerOverlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+});
+
+function closeDrawer() {
+  drawer.classList.remove('open');
+  drawerOverlay.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+drawerClose?.addEventListener('click', closeDrawer);
+drawerOverlay?.addEventListener('click', closeDrawer);
+
+// ============================================================
+// 🚀 Init
+// ============================================================
+requestAnimationFrame(() => document.body.classList.add('ready'));
+
+startCoursesListener();
+startCodesListener();
+startStudentsListener();
+startGradesListener();
+
+// ============================================================
+// 🛡️ Protection
+// ============================================================
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted && sessionStorage.getItem('meezan_logged_in') !== 'true') {
+    window.location.replace('login.html');
+  }
+});
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script>
+
+</body>
+</html>
