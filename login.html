@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0B3D2E">
+<title>ميزان | MEEZAN - تسجيل الدخول</title>
+<link rel="icon" type="image/png" href="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --primary: #0B3D2E;
+    --primary-light: #145A43;
+    --primary-lighter: #1E7A5A;
+    --accent: #C9A961;
+    --accent-light: #E0C888;
+    --bg-page: #F5F1E8;
+    --bg-card: #FFFFFF;
+    --bg-input: #F8FBF9;
+    --text-main: #0B3D2E;
+    --text-sub: #5A6B66;
+    --border: #E0E5E1;
+    --shadow: rgba(11, 61, 46, 0.15);
+    --error: #C0392B;
+    --success: #1E7A5A;
+  }
+
+  [data-theme="dark"] {
+    --primary: #C9A961;
+    --primary-light: #E0C888;
+    --primary-lighter: #F0DBA8;
+    --accent: #0B3D2E;
+    --accent-light: #145A43;
+    --bg-page: #0A1612;
+    --bg-card: #11201B;
+    --bg-input: #1A2C25;
+    --text-main: #F5F1E8;
+    --text-sub: #9BAEA6;
+    --border: #1E3A31;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --error: #E74C3C;
+    --success: #2ECC71;
+  }
+
+  html, body { height: 100%; font-family: 'Cairo', sans-serif; overflow-x: hidden; }
+
+  body {
+    background: var(--bg-page);
+    min-height: 100vh;
+    min-height: 100dvh;
+    color: var(--text-main);
+    display: flex;
+    opacity: 0;
+    transition: opacity 0.25s ease, background 0.4s ease;
+  }
+
+  body.ready { opacity: 1; }
+
+  .main-container { display: flex; width: 100%; min-height: 100vh; min-height: 100dvh; }
+
+  .brand-side {
+    flex: 1;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 60%, var(--primary-lighter) 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 40px; position: relative; overflow: hidden;
+    transition: background 0.4s ease;
+  }
+
+  .brand-side::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(201, 169, 97, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(201, 169, 97, 0.1) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  .brand-content { position: relative; z-index: 2; text-align: center; }
+
+  .brand-logo {
+    width: 180px; height: 180px; object-fit: contain; border-radius: 50%;
+    padding: 12px; background: rgba(255, 255, 255, 0.08);
+    border: 3px solid var(--accent);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 12px rgba(201, 169, 97, 0.1);
+    transition: transform 0.3s ease;
+  }
+
+  .brand-title {
+    font-size: 56px; font-weight: 900; color: #FFFFFF; margin-top: 32px;
+    letter-spacing: 2px; text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;
+  }
+
+  .brand-title .divider { color: var(--accent); font-weight: 300; font-size: 40px; opacity: 0.8; }
+  .brand-title .en { color: var(--accent-light); font-weight: 700; letter-spacing: 4px; }
+
+  .brand-tagline {
+    font-size: 16px; color: rgba(255, 255, 255, 0.85); margin-top: 14px;
+    font-weight: 400; letter-spacing: 1px;
+  }
+
+  .brand-decoration { margin-top: 28px; display: flex; align-items: center; justify-content: center; gap: 14px; }
+  .brand-decoration span { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+  .brand-decoration i { color: var(--accent); font-size: 24px; filter: drop-shadow(0 2px 8px rgba(201, 169, 97, 0.6)); }
+
+  .form-side {
+    flex: 1; background: var(--bg-card);
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px; transition: background 0.4s ease;
+  }
+
+  .form-wrapper { width: 100%; max-width: 400px; }
+  .form-header { text-align: center; margin-bottom: 32px; }
+  .form-header h2 { font-size: 26px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+  .form-header p { font-size: 14px; color: var(--text-sub); font-weight: 500; }
+
+  .form-group { margin-bottom: 20px; position: relative; }
+
+  .form-label {
+    display: block; font-size: 13px; font-weight: 700;
+    color: var(--text-main); margin-bottom: 8px; padding-right: 4px;
+  }
+
+  .input-wrapper { position: relative; }
+
+  .input-icon {
+    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+    color: var(--primary); font-size: 16px; pointer-events: none; z-index: 2;
+  }
+
+  .form-input {
+    width: 100%; padding: 15px 46px 15px 46px; font-size: 15px;
+    font-family: 'Cairo', sans-serif; border: 2px solid var(--border);
+    border-radius: 14px; background: var(--bg-input); color: var(--text-main);
+    transition: all 0.25s ease; outline: none; font-weight: 500;
+  }
+
+  .form-input:focus {
+    border-color: var(--primary); background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1);
+  }
+
+  [data-theme="dark"] .form-input:focus {
+    box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.15);
+  }
+
+  .form-input::placeholder { color: #A8B5B1; font-weight: 400; }
+
+  .toggle-password {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    background: transparent; border: none; color: var(--text-sub);
+    font-size: 16px; cursor: pointer; padding: 8px; border-radius: 8px;
+    transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+  }
+
+  .toggle-password:hover { color: var(--primary); background: rgba(11, 61, 46, 0.08); }
+
+  .login-btn {
+    width: 100%; padding: 16px; margin-top: 8px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-lighter) 100%);
+    color: #FFFFFF; border: none; border-radius: 14px;
+    font-size: 16px; font-weight: 700; font-family: 'Cairo', sans-serif;
+    cursor: pointer; transition: all 0.3s ease;
+    box-shadow: 0 10px 25px var(--shadow);
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+
+  [data-theme="dark"] .login-btn { color: var(--bg-page); }
+
+  .login-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 32px var(--shadow); }
+  .login-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+  .message {
+    padding: 12px 16px; border-radius: 12px; font-size: 13.5px;
+    margin-bottom: 16px; display: none; align-items: center; gap: 10px; font-weight: 600;
+  }
+
+  .message.show { display: flex; }
+
+  .message.error {
+    background: rgba(192, 57, 43, 0.1); color: var(--error);
+    border: 1px solid rgba(192, 57, 43, 0.3);
+  }
+
+  .message.success {
+    background: rgba(30, 122, 90, 0.1); color: var(--success);
+    border: 1px solid rgba(30, 122, 90, 0.3);
+  }
+
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2.5px solid rgba(255,255,255,0.3); border-top-color: #fff;
+    border-radius: 50%; animation: spin 0.7s linear infinite; display: none;
+  }
+
+  .spinner.show { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .form-footer {
+    text-align: center; margin-top: 24px; font-size: 12px;
+    color: var(--text-sub); font-weight: 500; line-height: 1.8;
+  }
+
+  .form-footer strong { color: var(--primary); font-weight: 800; }
+  [data-theme="dark"] .form-footer strong { color: var(--accent); }
+
+  .controls {
+    position: fixed; top: 20px; left: 20px;
+    display: flex; gap: 10px; z-index: 100;
+  }
+
+  .ctrl-btn {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--bg-card); border: 2px solid var(--border);
+    color: var(--primary); font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 20px var(--shadow);
+    transition: all 0.3s ease; text-decoration: none;
+  }
+
+  .ctrl-btn:hover { transform: scale(1.1); border-color: var(--accent); }
+
+  [data-theme="dark"] .ctrl-btn {
+    background: var(--primary); color: var(--bg-page); border-color: var(--accent);
+  }
+
+  .setup-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px; z-index: 10000; overflow-y: auto;
+  }
+
+  .setup-overlay.show { display: flex; }
+
+  .setup-modal {
+    background: var(--bg-card); border-radius: 24px;
+    padding: 36px 30px; max-width: 480px; width: 100%;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+    border-top: 6px solid var(--accent);
+    animation: modalPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 92vh; overflow-y: auto;
+  }
+
+  @keyframes modalPop {
+    from { opacity: 0; transform: scale(0.85) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .setup-header { text-align: center; margin-bottom: 22px; }
+
+  .setup-icon {
+    width: 70px; height: 70px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: 30px; margin: 0 auto 16px;
+    box-shadow: 0 10px 25px var(--shadow);
+  }
+
+  .setup-title { font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+  .setup-subtitle { font-size: 13.5px; color: var(--text-sub); line-height: 1.6; }
+
+  .setup-warning {
+    background: rgba(201, 169, 97, 0.12); border: 1.5px solid var(--accent);
+    border-radius: 12px; padding: 12px 14px;
+    font-size: 12.5px; color: var(--text-main); margin-bottom: 20px;
+    display: flex; gap: 10px; align-items: flex-start;
+    font-weight: 600; line-height: 1.6;
+  }
+
+  .setup-warning i { color: var(--accent); font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+
+  .setup-error {
+    background: rgba(192, 57, 43, 0.1); color: var(--error);
+    border: 1px solid rgba(192, 57, 43, 0.3);
+    padding: 10px 14px; border-radius: 10px;
+    font-size: 13px; font-weight: 600;
+    margin-bottom: 14px; display: none;
+  }
+
+  .setup-error.show { display: block; }
+
+  .setup-btn {
+    width: 100%; padding: 15px; margin-top: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff; border: none; border-radius: 12px;
+    font-family: 'Cairo', sans-serif; font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: all 0.25s ease;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+
+  [data-theme="dark"] .setup-btn { color: var(--bg-page); }
+
+  .setup-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 28px var(--shadow); }
+  .setup-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  @media (max-width: 900px) {
+    .main-container { flex-direction: column; }
+    .brand-side { padding: 30px 20px; min-height: auto; flex: 0 0 auto; }
+    .brand-logo { width: 100px; height: 100px; padding: 8px; }
+    .brand-title { font-size: 32px; margin-top: 16px; letter-spacing: 1px; }
+    .brand-title .divider { font-size: 24px; }
+    .brand-title .en { letter-spacing: 2px; }
+    .brand-tagline { font-size: 13px; margin-top: 8px; }
+    .brand-decoration { margin-top: 16px; }
+    .brand-decoration span { width: 40px; }
+    .brand-decoration i { font-size: 20px; }
+    .form-side { padding: 30px 20px 40px; flex: 1; align-items: flex-start; }
+    .form-wrapper { max-width: 100%; }
+    .form-header h2 { font-size: 22px; }
+    .controls { top: 14px; left: 14px; gap: 8px; }
+    .ctrl-btn { width: 42px; height: 42px; font-size: 16px; }
+    .setup-modal { padding: 28px 20px; }
+    .setup-title { font-size: 19px; }
+    .setup-icon { width: 60px; height: 60px; font-size: 26px; }
+  }
+
+  @media (max-width: 380px) {
+    .brand-logo { width: 84px; height: 84px; }
+    .brand-title { font-size: 26px; }
+    .brand-tagline { font-size: 12px; }
+    .form-input { padding: 13px 42px; font-size: 14px; }
+    .login-btn { padding: 14px; font-size: 15px; }
+  }
+
+  @media (min-width: 901px) and (max-width: 1200px) {
+    .brand-logo { width: 150px; height: 150px; }
+    .brand-title { font-size: 44px; }
+    .form-wrapper { max-width: 360px; }
+  }
+
+  @media (min-width: 1400px) {
+    .brand-logo { width: 220px; height: 220px; }
+    .brand-title { font-size: 64px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <button class="ctrl-btn" id="themeToggle" aria-label="تبديل الوضع">
+    <i class="fas fa-moon" id="themeIcon"></i>
+  </button>
+  <a href="login1.html" class="ctrl-btn" title="الإعدادات">
+    <i class="fas fa-cog"></i>
+  </a>
+</div>
+
+<div class="main-container">
+
+  <div class="brand-side">
+    <div class="brand-content">
+      <img src="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png" 
+           alt="MEEZAN Logo" class="brand-logo" id="logoImg">
+      <h1 class="brand-title">
+        <span id="siteNameAr">ميزان</span>
+        <span class="divider">|</span>
+        <span class="en" id="siteNameEn">MEEZAN</span>
+      </h1>
+      <p class="brand-tagline" id="tagline">منصة تعليمية إلكترونية متكاملة</p>
+      <div class="brand-decoration">
+        <span></span>
+        <i class="fas fa-scale-balanced"></i>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-side">
+    <div class="form-wrapper">
+      <div class="form-header">
+        <h2>تسجيل الدخول</h2>
+        <p id="formSubtitle">أدخل بياناتك للوصول إلى حسابك</p>
+      </div>
+
+      <div class="message error" id="errorMsg">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="errorText"></span>
+      </div>
+
+      <div class="message success" id="successMsg">
+        <i class="fas fa-check-circle"></i>
+        <span>تم تسجيل الدخول بنجاح! جاري التوجيه...</span>
+      </div>
+
+      <form id="loginForm" autocomplete="off">
+        <div class="form-group">
+          <label class="form-label">اسم المستخدم</label>
+          <div class="input-wrapper">
+            <i class="fas fa-user input-icon"></i>
+            <input type="text" 
+                   class="form-input" 
+                   id="username" 
+                   placeholder="ادخل اسم المستخدم" 
+                   autocomplete="off"
+                   autocorrect="off"
+                   autocapitalize="off"
+                   spellcheck="false"
+                   required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">كلمة السر</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" 
+                   class="form-input" 
+                   id="password" 
+                   placeholder="ادخل كلمة السر" 
+                   autocomplete="off"
+                   autocorrect="off"
+                   autocapitalize="off"
+                   spellcheck="false"
+                   required>
+            <button type="button" class="toggle-password" id="togglePassword">
+              <i class="fas fa-eye" id="eyeIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="login-btn" id="loginBtn">
+          <span class="spinner" id="spinner"></span>
+          <i class="fas fa-sign-in-alt" id="loginIcon"></i>
+          <span id="btnText">تسجيل الدخول</span>
+        </button>
+      </form>
+
+      <div class="form-footer">
+        <span id="copyrightText">
+          <strong><span id="footerNameAr">ميزان</span> | <span id="footerNameEn">MEEZAN</span></strong> © <span id="year"></span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="setup-overlay" id="setupOverlay">
+  <div class="setup-modal">
+    <div class="setup-header">
+      <div class="setup-icon"><i class="fas fa-shield-halved"></i></div>
+      <h2 class="setup-title">🔐 تأمين حسابك</h2>
+      <p class="setup-subtitle">
+        أنت تستخدم بيانات الدخول الافتراضية.<br>
+        يجب تغييرها الآن لحماية حسابك.
+      </p>
+    </div>
+
+    <div class="setup-warning">
+      <i class="fas fa-info-circle"></i>
+      <span>البيانات الحالية: <strong>admin / 123456</strong></span>
+    </div>
+
+    <div class="setup-error" id="setupError"></div>
+
+    <form id="setupForm" autocomplete="off">
+      <div class="form-group">
+        <label class="form-label">اسم المستخدم الجديد</label>
+        <div class="input-wrapper">
+          <i class="fas fa-user input-icon"></i>
+          <input type="text" class="form-input" id="newUsername" placeholder="ادخل اسم المستخدم الجديد" required minlength="3" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">كلمة السر الجديدة</label>
+        <div class="input-wrapper">
+          <i class="fas fa-lock input-icon"></i>
+          <input type="password" class="form-input" id="newPassword" placeholder="ادخل كلمة السر الجديدة" required minlength="6" autocomplete="off">
+          <button type="button" class="toggle-password" id="toggleNewPassword">
+            <i class="fas fa-eye" id="newEyeIcon"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label">تأكيد كلمة السر</label>
+        <div class="input-wrapper">
+          <i class="fas fa-lock input-icon"></i>
+          <input type="password" class="form-input" id="confirmPassword" placeholder="أعد كتابة كلمة السر" required minlength="6" autocomplete="off">
+        </div>
+      </div>
+    </form>
+
+    <button class="setup-btn" id="setupSaveBtn">
+      <i class="fas fa-check"></i> تأكيد التغيير والدخول
+    </button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+  getFirestore, doc, onSnapshot, setDoc, serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAmkCOrSaklhUiDdDfZCpSDQNmMYP-Gdw0",
+  authDomain: "qanon-c716d.firebaseapp.com",
+  projectId: "qanon-c716d",
+  storageBucket: "qanon-c716d.firebasestorage.app",
+  messagingSenderId: "757756130875",
+  appId: "1:757756130875:web:63c53534c6843e2a29ce1e",
+  measurementId: "G-8FZGTC779Y"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const $ = (id) => document.getElementById(id);
+
+// ============================================================
+// 🧹 دالة التنظيف الشاملة
+// ============================================================
+function cleanInput(value) {
+  if (typeof value !== 'string') return '';
+  return value
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .replace(/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/g, ' ')
+    .replace(/^\s+|\s+$/g, '')
+    .trim();
+}
+
+// ============================================================
+// 🔐 التشفير XOR + Base64
+// ============================================================
+const SECRET_KEY = 'MEEZAN_2026_SECRET_KEY_v1';
+
+function xorEncrypt(text, key) {
+  let result = '';
+  for (let i = 0; i < text.length; i++) {
+    result += String.fromCharCode(text.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+  }
+  return result;
+}
+
+function encryptPassword(password) {
+  try {
+    const xorResult = xorEncrypt(password, SECRET_KEY);
+    return btoa(unescape(encodeURIComponent(xorResult)));
+  } catch (e) { return ''; }
+}
+
+// ============================================================
+// 📅 حقوق النشر مع السنة التلقائية
+// ============================================================
+function buildCopyright(data) {
+  const year = new Date().getFullYear();
+  const nameAr = data.siteNameAr || 'ميزان';
+  const nameEn = data.siteNameEn || 'MEEZAN';
+
+  if (data.copyright) {
+    const customText = data.copyright
+      .replace(/©\s*\d{4}/g, `© ${year}`)
+      .replace(/\b20\d{2}\b/g, year);
+    return customText;
+  }
+
+  return `<strong>${nameAr} | ${nameEn}</strong> © ${year}`;
+}
+
+// ============================================================
+// العناصر
+// ============================================================
+const loginForm = $('loginForm');
+const usernameInput = $('username');
+const passwordInput = $('password');
+const togglePassword = $('togglePassword');
+const eyeIcon = $('eyeIcon');
+const loginBtn = $('loginBtn');
+const spinner = $('spinner');
+const loginIcon = $('loginIcon');
+const btnText = $('btnText');
+const errorMsg = $('errorMsg');
+const errorText = $('errorText');
+const successMsg = $('successMsg');
+const themeToggle = $('themeToggle');
+const themeIcon = $('themeIcon');
+
+const setupOverlay = $('setupOverlay');
+const newUsername = $('newUsername');
+const newPassword = $('newPassword');
+const confirmPassword = $('confirmPassword');
+const setupError = $('setupError');
+const setupSaveBtn = $('setupSaveBtn');
+const toggleNewPassword = $('toggleNewPassword');
+const newEyeIcon = $('newEyeIcon');
+
+// ============================================================
+// 🧹 تنظيف صامت عند مغادرة الحقل
+// ============================================================
+function silentClean(input) {
+  const cleaned = cleanInput(input.value);
+  if (input.value !== cleaned) input.value = cleaned;
+}
+
+usernameInput.addEventListener('blur', () => silentClean(usernameInput));
+passwordInput.addEventListener('blur', () => silentClean(passwordInput));
+
+[usernameInput, passwordInput].forEach(input => {
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      silentClean(input);
+      loginForm.requestSubmit();
+    }
+  });
+});
+
+// ============================================================
+// 🌙 الوضع الليلي / النهاري
+// ============================================================
+const savedTheme = localStorage.getItem('meezan_theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+updateThemeIcon(savedTheme);
+
+themeToggle.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('meezan_theme', next);
+  updateThemeIcon(next);
+});
+
+function updateThemeIcon(theme) {
+  themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+// ============================================================
+// 📦 الكاش
+// ============================================================
+const CACHE_KEY = 'meezan_settings_cache';
+
+function saveToCache(data) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ ...data, _cachedAt: Date.now() }));
+  } catch (e) {}
+}
+
+function loadFromCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+
+// ============================================================
+// 🎨 تطبيق الإعدادات
+// ============================================================
+function applySettings(data) {
+  if (!data) return;
+
+  if (data.logoUrl) {
+    const logoImg = $('logoImg');
+    if (logoImg.src !== data.logoUrl) logoImg.src = data.logoUrl;
+    const iconLink = document.querySelector('link[rel="icon"]');
+    if (iconLink && iconLink.href !== data.logoUrl) iconLink.href = data.logoUrl;
+  }
+
+  if (data.siteNameAr) {
+    $('siteNameAr').textContent = data.siteNameAr;
+    const footerAr = $('footerNameAr');
+    if (footerAr) footerAr.textContent = data.siteNameAr;
+  }
+  if (data.siteNameEn) {
+    $('siteNameEn').textContent = data.siteNameEn;
+    const footerEn = $('footerNameEn');
+    if (footerEn) footerEn.textContent = data.siteNameEn;
+  }
+
+  const nameAr = data.siteNameAr || 'ميزان';
+  const nameEn = data.siteNameEn || 'MEEZAN';
+  const newTitle = `${nameAr} | ${nameEn} - تسجيل الدخول`;
+  if (document.title !== newTitle) document.title = newTitle;
+
+  if (data.tagline) $('tagline').textContent = data.tagline;
+  if (data.formSubtitle) $('formSubtitle').textContent = data.formSubtitle;
+
+  const copyrightEl = $('copyrightText');
+  copyrightEl.innerHTML = buildCopyright(data);
+
+  applyColors(data);
+
+  if (data.registrationOpen === false) {
+    loginBtn.disabled = true;
+    btnText.textContent = 'التسجيل مغلق حالياً';
+    loginIcon.className = 'fas fa-lock';
+    showError('عذراً، تسجيل الدخول مغلق حالياً من قبل الإدارة');
+  }
+}
+
+function applyColors(data) {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  const rootStyle = document.documentElement.style;
+
+  rootStyle.removeProperty('--primary');
+  rootStyle.removeProperty('--accent');
+
+  if (currentTheme === 'light' && data.lightColorsEnabled === true) {
+    if (data.lightPrimary && /^#[0-9A-Fa-f]{6}$/.test(data.lightPrimary)) rootStyle.setProperty('--primary', data.lightPrimary);
+    if (data.lightAccent && /^#[0-9A-Fa-f]{6}$/.test(data.lightAccent)) rootStyle.setProperty('--accent', data.lightAccent);
+  } else if (currentTheme === 'dark' && data.darkColorsEnabled === true) {
+    if (data.darkPrimary && /^#[0-9A-Fa-f]{6}$/.test(data.darkPrimary)) rootStyle.setProperty('--primary', data.darkPrimary);
+    if (data.darkAccent && /^#[0-9A-Fa-f]{6}$/.test(data.darkAccent)) rootStyle.setProperty('--accent', data.darkAccent);
+  }
+}
+
+function showError(msg) {
+  errorText.textContent = msg;
+  errorMsg.classList.add('show');
+  successMsg.classList.remove('show');
+}
+
+function hideMessages() {
+  errorMsg.classList.remove('show');
+  successMsg.classList.remove('show');
+}
+
+function showSetupError(msg) {
+  setupError.textContent = msg;
+  setupError.classList.add('show');
+}
+
+// ============================================================
+// 1️⃣ الكاش أولاً
+// ============================================================
+let currentSettings = null;
+const cached = loadFromCache();
+if (cached) {
+  currentSettings = cached;
+  applySettings(cached);
+}
+requestAnimationFrame(() => document.body.classList.add('ready'));
+
+window.addEventListener('load', () => {
+  usernameInput.value = '';
+  passwordInput.value = '';
+});
+
+// ============================================================
+// 2️⃣ Real-time settings
+// ============================================================
+onSnapshot(doc(db, 'settings', 'login'), (snap) => {
+  if (!snap.exists()) return;
+  const data = snap.data();
+  currentSettings = data;
+  applySettings(data);
+  saveToCache(data);
+}, (err) => console.log('settings cache fallback:', err.message));
+
+new MutationObserver(() => {
+  if (currentSettings) {
+    applyColors(currentSettings);
+    const copyrightEl = $('copyrightText');
+    if (copyrightEl) copyrightEl.innerHTML = buildCopyright(currentSettings);
+  }
+}).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+setInterval(() => {
+  if (currentSettings) {
+    const copyrightEl = $('copyrightText');
+    if (copyrightEl) copyrightEl.innerHTML = buildCopyright(currentSettings);
+  }
+}, 3600000);
+
+// ============================================================
+// 3️⃣ عرض كلمة السر
+// ============================================================
+togglePassword.addEventListener('click', () => {
+  const isPwd = passwordInput.type === 'password';
+  passwordInput.type = isPwd ? 'text' : 'password';
+  eyeIcon.className = isPwd ? 'fas fa-eye-slash' : 'fas fa-eye';
+});
+
+toggleNewPassword.addEventListener('click', () => {
+  const isPwd = newPassword.type === 'password';
+  newPassword.type = isPwd ? 'text' : 'password';
+  newEyeIcon.className = isPwd ? 'fas fa-eye-slash' : 'fas fa-eye';
+});
+
+// ============================================================
+// 4️⃣ تسجيل الدخول — يقرأ من admins[] + الجذر
+// ============================================================
+let adminData = null;
+
+onSnapshot(doc(db, 'admin', 'main'), (snap) => {
+  if (!snap.exists()) {
+    adminData = null;
+    return;
+  }
+  const data = snap.data();
+  adminData = {
+    username: data.username || '',
+    passwordEncrypted: data.passwordEncrypted || '',
+    isFirstTime: data.isFirstTime === true,
+    admins: Array.isArray(data.admins) ? data.admins : []
+  };
+}, (err) => console.log('admin data error:', err.message));
+
+function waitForAdminData() {
+  return new Promise((resolve) => {
+    if (adminData) return resolve(adminData);
+    const interval = setInterval(() => {
+      if (adminData !== null) {
+        clearInterval(interval);
+        resolve(adminData);
+      }
+    }, 100);
+    setTimeout(() => { clearInterval(interval); resolve(adminData); }, 3000);
+  });
+}
+
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  hideMessages();
+
+  // 🧹 تنظيف صامت
+  const username = cleanInput(usernameInput.value);
+  const password = cleanInput(passwordInput.value);
+
+  usernameInput.value = username;
+  passwordInput.value = password;
+
+  if (!username || !password) {
+    showError('الرجاء إدخال اسم المستخدم وكلمة السر');
+    return;
+  }
+
+  loginBtn.disabled = true;
+  spinner.classList.add('show');
+  loginIcon.style.display = 'none';
+  btnText.textContent = 'جاري التحقق...';
+
+  try {
+    const admin = await waitForAdminData();
+
+    if (!admin) throw new Error('لم يتم العثور على بيانات المستخدم');
+
+    // 🔍 1) ابحث في مصفوفة admins أولاً
+    const foundUser = (admin.admins || []).find(
+      u => cleanInput(u.username).toLowerCase() === username.toLowerCase()
+    );
+
+    // 🔍 2) لو ما وجد → جرّب الجذر (للأدمن الأساسي)
+    let matchedUser = null;
+
+    if (foundUser) {
+      matchedUser = {
+        username: foundUser.username,
+        passwordEncrypted: foundUser.passwordEncrypted,
+        isMain: foundUser.isMain === true
+      };
+    } else if (cleanInput(admin.username).toLowerCase() === username.toLowerCase()) {
+      matchedUser = {
+        username: admin.username,
+        passwordEncrypted: admin.passwordEncrypted,
+        isMain: true
+      };
+    }
+
+    // ❌ لم يُوجد المستخدم
+    if (!matchedUser) throw new Error('اسم المستخدم غير صحيح');
+
+    // 🔐 3) تحقق من كلمة السر
+    const encryptedInput = encryptPassword(password);
+    if (encryptedInput !== matchedUser.passwordEncrypted) {
+      throw new Error('كلمة السر غير صحيحة');
+    }
+
+    // ✅ 4) هل يحتاج نافذة "غيّر بياناتك"؟
+    const isMainAdmin = matchedUser.isMain === true;
+    const needsFirstTimeSetup = isMainAdmin && admin.isFirstTime === true;
+
+    // ✅ نجح الدخول
+    spinner.classList.remove('show');
+    loginIcon.style.display = '';
+    btnText.textContent = 'تسجيل الدخول';
+    loginBtn.disabled = false;
+
+    // 🧹 تنظيف الحقول
+    usernameInput.value = '';
+    passwordInput.value = '';
+
+    sessionStorage.setItem('meezan_logged_in', 'true');
+    sessionStorage.setItem('meezan_username', username);
+
+    if (needsFirstTimeSetup) {
+      setupOverlay.classList.add('show');
+      newUsername.value = username;
+      return;
+    }
+
+    successMsg.classList.add('show');
+    setTimeout(() => window.location.replace('index.html'), 500);
+
+  } catch (err) {
+    spinner.classList.remove('show');
+    loginIcon.style.display = '';
+    btnText.textContent = 'تسجيل الدخول';
+    loginBtn.disabled = false;
+
+    passwordInput.value = '';
+    passwordInput.focus();
+
+    showError(err.message || 'حدث خطأ، حاول مرة أخرى');
+  }
+});
+
+// ============================================================
+// 5️⃣ حفظ البيانات الجديدة (نافذة أول مرة)
+// ============================================================
+setupSaveBtn.addEventListener('click', async () => {
+  setupError.classList.remove('show');
+
+  const newUser = cleanInput(newUsername.value);
+  const newPass = cleanInput(newPassword.value);
+  const confirmPass = cleanInput(confirmPassword.value);
+
+  newUsername.value = newUser;
+  newPassword.value = newPass;
+  confirmPassword.value = confirmPass;
+
+  if (!newUser || newUser.length < 3) return showSetupError('اسم المستخدم يجب أن يكون 3 أحرف على الأقل');
+  if (!newPass || newPass.length < 6) return showSetupError('كلمة السر يجب أن تكون 6 أحرف على الأقل');
+  if (newPass !== confirmPass) return showSetupError('كلمتا السر غير متطابقتين');
+  if (newPass === '123456') return showSetupError('لا يمكن استخدام كلمة السر الافتراضية');
+
+  setupSaveBtn.disabled = true;
+  setupSaveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+  try {
+    const encryptedPassword = encryptPassword(newPass);
+
+    // ✅ 1) جهّز البيانات للجذر
+    const updateData = {
+      username: newUser,
+      passwordEncrypted: encryptedPassword,
+      isFirstTime: false,
+      updatedAt: serverTimestamp()
+    };
+
+    // ✅ 2) حدّث مصفوفة admins
+    const adminsArray = Array.isArray(adminData?.admins) ? [...adminData.admins] : [];
+
+    if (adminsArray.length === 0) {
+      adminsArray.push({
+        id: 'admin_main_' + Date.now(),
+        username: newUser,
+        passwordEncrypted: encryptedPassword,
+        isMain: true,
+        createdAt: new Date().toISOString()
+      });
+    } else {
+      const mainIdx = adminsArray.findIndex(a => a.isMain === true);
+      if (mainIdx !== -1) {
+        adminsArray[mainIdx].username = newUser;
+        adminsArray[mainIdx].passwordEncrypted = encryptedPassword;
+        adminsArray[mainIdx].updatedAt = new Date().toISOString();
+      } else {
+        adminsArray.unshift({
+          id: 'admin_main_' + Date.now(),
+          username: newUser,
+          passwordEncrypted: encryptedPassword,
+          isMain: true,
+          createdAt: new Date().toISOString()
+        });
+      }
+    }
+
+    updateData.admins = adminsArray;
+
+    // ✅ 3) احفظ
+    await setDoc(doc(db, 'admin', 'main'), updateData, { merge: true });
+
+    localStorage.setItem('meezan_admin_username', newUser);
+
+    newUsername.value = '';
+    newPassword.value = '';
+    confirmPassword.value = '';
+
+    setupOverlay.classList.remove('show');
+    successMsg.classList.add('show');
+    setTimeout(() => window.location.replace('index.html'), 700);
+
+  } catch (err) {
+    console.error(err);
+    showSetupError('حدث خطأ أثناء الحفظ: ' + err.message);
+    setupSaveBtn.disabled = false;
+    setupSaveBtn.innerHTML = '<i class="fas fa-check"></i> تأكيد التغيير والدخول';
+  }
+});
+
+// ============================================================
+// 6️⃣ توجيه تلقائي
+// ============================================================
+setTimeout(() => {
+  if (sessionStorage.getItem('meezan_logged_in') === 'true') {
+    if (adminData && adminData.isFirstTime === false) {
+      window.location.replace('index.html');
+    }
+  }
+}, 1500);
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script>
+
+</body>
+</html>

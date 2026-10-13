@@ -1,0 +1,2187 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0B3D2E">
+<title>المشرفون | MEEZAN</title>
+<link rel="icon" type="image/png" href="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --primary: #0B3D2E;
+    --primary-light: #145A43;
+    --primary-lighter: #1E7A5A;
+    --accent: #C9A961;
+    --accent-light: #E0C888;
+    --bg-page: #F5F1E8;
+    --bg-card: #FFFFFF;
+    --bg-input: #F8FBF9;
+    --text-main: #0B3D2E;
+    --text-sub: #5A6B66;
+    --border: #E0E5E1;
+    --shadow: rgba(11, 61, 46, 0.15);
+    --error: #C0392B;
+    --success: #1E7A5A;
+    --warning: #E67E22;
+  }
+
+  [data-theme="dark"] {
+    --primary: #C9A961;
+    --primary-light: #E0C888;
+    --primary-lighter: #F0DBA8;
+    --accent: #0B3D2E;
+    --accent-light: #145A43;
+    --bg-page: #0A1612;
+    --bg-card: #11201B;
+    --bg-input: #1A2C25;
+    --text-main: #F5F1E8;
+    --text-sub: #9BAEA6;
+    --border: #1E3A31;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --error: #E74C3C;
+    --success: #2ECC71;
+    --warning: #F39C12;
+  }
+
+  html, body {
+    height: 100%;
+    font-family: 'Cairo', sans-serif;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--bg-page);
+    min-height: 100vh;
+    min-height: 100dvh;
+    color: var(--text-main);
+    opacity: 0;
+    transition: opacity 0.3s ease, background 0.4s ease;
+  }
+
+  body.ready { opacity: 1; }
+
+  /* ===== Topbar ===== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 20px var(--shadow);
+    transition: background 0.4s ease, border-color 0.4s ease;
+  }
+
+  .topbar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .topbar-logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: contain;
+    border: 2px solid var(--accent);
+    background: var(--bg-input);
+    padding: 3px;
+    flex-shrink: 0;
+  }
+
+  .topbar-title {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  [data-theme="dark"] .topbar-title { color: var(--accent); }
+
+  .topbar-title .divider {
+    color: var(--accent);
+    font-weight: 300;
+    opacity: 0.7;
+  }
+
+  .topbar-title .en {
+    color: var(--text-sub);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+
+  [data-theme="dark"] .topbar-title .en { color: var(--accent-light); }
+
+  .topbar-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .icon-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  [data-theme="dark"] .icon-btn:hover { color: var(--bg-page); }
+
+  .icon-btn.logout {
+    color: var(--error);
+    border-color: rgba(192, 57, 43, 0.3);
+  }
+
+  .icon-btn.logout:hover {
+    background: var(--error);
+    color: #fff;
+    border-color: var(--error);
+  }
+
+  .mobile-menu-btn {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 18px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .mobile-menu-btn:hover,
+  .mobile-menu-btn:active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+
+  /* ===== Container ===== */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 20px 40px;
+  }
+
+  /* ===== Page header ===== */
+  .page-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+
+  .back-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px var(--shadow);
+  }
+
+  [data-theme="dark"] .back-btn { color: var(--accent); }
+
+  .back-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    transform: translateX(4px);
+  }
+
+  [data-theme="dark"] .back-btn:hover { color: var(--bg-page); }
+
+  .page-title { flex: 1; min-width: 200px; }
+
+  .page-title h1 {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .page-title h1 i { color: var(--accent); font-size: 22px; }
+
+  .page-title p {
+    font-size: 13px;
+    color: var(--text-sub);
+    font-weight: 500;
+  }
+
+  /* ===== Stats ===== */
+  .stats-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    flex: 1;
+    min-width: 140px;
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 4px 14px var(--shadow);
+  }
+
+  .stat-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .stat-icon { color: var(--bg-page); }
+
+  .stat-info { min-width: 0; }
+
+  .stat-number {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--text-main);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-sub);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* ===== Actions ===== */
+  .actions-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .search-wrapper {
+    flex: 1;
+    min-width: 220px;
+    position: relative;
+  }
+
+  .search-wrapper i {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-sub);
+    font-size: 15px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 14px 46px 14px 46px;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    transition: all 0.25s ease;
+    outline: none;
+    font-weight: 500;
+    box-shadow: 0 4px 14px var(--shadow);
+  }
+
+  .search-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1), 0 4px 14px var(--shadow);
+  }
+
+  [data-theme="dark"] .search-input:focus {
+    box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.15), 0 4px 14px var(--shadow);
+  }
+
+  .search-clear {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(192, 57, 43, 0.1);
+    color: var(--error);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .search-clear:hover { background: var(--error); color: #fff; }
+  .search-clear.show { display: flex; }
+
+  .btn-add {
+    padding: 14px 22px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    box-shadow: 0 6px 18px var(--shadow);
+    white-space: nowrap;
+  }
+
+  [data-theme="dark"] .btn-add { color: var(--bg-page); }
+
+  .btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px var(--shadow);
+  }
+
+  /* ===== Admins Grid ===== */
+  .admins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+  }
+
+  .admin-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 18px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .admin-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px var(--shadow);
+  }
+
+  .admin-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(11, 61, 46, 0.25);
+  }
+
+  [data-theme="dark"] .admin-avatar { color: var(--bg-page); }
+
+  .admin-avatar.main-admin {
+    background: linear-gradient(135deg, #C9A961, #E0C888);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(201, 169, 97, 0.35);
+  }
+
+  .admin-info { flex: 1; min-width: 0; }
+
+  .admin-username {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .admin-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: rgba(201, 169, 97, 0.15);
+    color: var(--accent);
+    font-weight: 700;
+    border: 1px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .admin-badge { color: var(--accent); }
+
+  .admin-meta {
+    font-size: 11.5px;
+    color: var(--text-sub);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .admin-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+  .btn-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: var(--bg-input);
+    color: var(--text-sub);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .btn-icon:hover { transform: translateY(-2px); }
+  .btn-icon.edit:hover { background: var(--warning); color: #fff; border-color: var(--warning); }
+  .btn-icon.delete:hover { background: var(--error); color: #fff; border-color: var(--error); }
+
+  /* ===== Empty ===== */
+  .empty-state {
+    background: var(--bg-card);
+    border: 2px dashed var(--border);
+    border-radius: 20px;
+    padding: 60px 24px;
+    text-align: center;
+    color: var(--text-sub);
+    margin-top: 20px;
+  }
+
+  .empty-state i {
+    font-size: 48px;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: block;
+    opacity: 0.6;
+  }
+
+  .empty-state h3 {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .empty-state p { font-size: 13.5px; font-weight: 500; }
+
+  /* ===== Modal ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 10000;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal-box {
+    background: var(--bg-card);
+    border-radius: 22px;
+    padding: 30px 26px;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+    border-top: 6px solid var(--accent);
+    animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+
+  @keyframes modalPop {
+    from { opacity: 0; transform: scale(0.85) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 2px dashed var(--border);
+  }
+
+  .modal-header-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .modal-header-icon { color: var(--bg-page); }
+
+  .modal-header h2 {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  /* ===== Form ===== */
+  .form-group { margin-bottom: 18px; }
+
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .form-label .hint {
+    font-size: 11px;
+    color: var(--text-sub);
+    font-weight: 500;
+    margin-right: 6px;
+  }
+
+  .input-wrapper { position: relative; }
+
+  .input-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary);
+    font-size: 15px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 13px 44px 13px 46px;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    transition: all 0.25s ease;
+    outline: none;
+    font-weight: 500;
+  }
+
+  .form-input:focus {
+    border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1);
+  }
+
+  .toggle-password {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    border: none;
+    background: transparent;
+    color: var(--text-sub);
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .toggle-password:hover {
+    color: var(--primary);
+    background: rgba(11, 61, 46, 0.08);
+  }
+
+  .modal-error {
+    background: rgba(192, 57, 43, 0.1);
+    color: var(--error);
+    border: 1px solid rgba(192, 57, 43, 0.3);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: none;
+    line-height: 1.6;
+  }
+
+  .modal-error.show { display: block; }
+
+  .modal-info {
+    background: rgba(201, 169, 97, 0.1);
+    color: var(--text-main);
+    border: 1px solid rgba(201, 169, 97, 0.3);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.6;
+  }
+
+  .modal-info i { color: var(--accent); }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 2px dashed var(--border);
+  }
+
+  .modal-actions .btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+  }
+
+  .btn-cancel {
+    background: var(--bg-input);
+    color: var(--text-main);
+    border: 1.5px solid var(--border) !important;
+  }
+
+  .btn-cancel:hover { background: var(--bg-card); }
+
+  .btn-save {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    box-shadow: 0 6px 18px var(--shadow);
+  }
+
+  [data-theme="dark"] .btn-save { color: var(--bg-page); }
+
+  .btn-save:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px var(--shadow);
+  }
+
+  .btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* ===== Toast ===== */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background: var(--bg-card);
+    color: var(--text-main);
+    padding: 14px 24px;
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 99999;
+    transition: transform 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+    max-width: calc(100vw - 32px);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast.success { border-color: var(--success); }
+  .toast.success i { color: var(--success); }
+  .toast.error { border-color: var(--error); }
+  .toast.error i { color: var(--error); }
+  .toast.warning { border-color: var(--warning); }
+  .toast.warning i { color: var(--warning); }
+
+  /* ===== Drawer ===== */
+  .drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 998;
+  }
+
+  .drawer-overlay.show { opacity: 1; visibility: visible; }
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 88%;
+    max-width: 340px;
+    height: 100vh;
+    height: 100dvh;
+    background: var(--bg-card);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
+    transform: translateX(105%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-left: 1px solid var(--border);
+  }
+
+  .drawer.open { transform: translateX(0); }
+
+  .drawer-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 22px 20px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .drawer-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 80% 20%, rgba(201, 169, 97, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .drawer-header-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .drawer-logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: contain;
+    background: rgba(255,255,255,0.1);
+    padding: 4px;
+    border: 2px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .drawer-brand { flex: 1; min-width: 0; }
+
+  .drawer-brand-name {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .drawer-brand-name .divider { color: var(--accent); font-weight: 300; }
+
+  .drawer-brand-sub {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .drawer-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .drawer-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+  }
+
+  .drawer-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .drawer-section { margin-bottom: 22px; }
+  .drawer-section:last-child { margin-bottom: 0; }
+
+  .drawer-section-title {
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--text-sub);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    padding-right: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .drawer-section-title i { color: var(--accent); font-size: 12px; }
+
+  .drawer-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    width: 100%;
+    text-align: right;
+    position: relative;
+  }
+
+  .drawer-btn:hover,
+  .drawer-btn:active {
+    background: var(--bg-card);
+    border-color: var(--accent);
+    transform: translateX(-4px);
+  }
+
+  .drawer-btn-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .drawer-btn-icon { color: var(--bg-page); }
+
+  .drawer-btn-label {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .drawer-btn.external::after {
+    content: '\f08e';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 11px;
+    color: var(--accent);
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  .drawer-btn.logout-btn {
+    color: var(--error);
+    border-color: rgba(192, 57, 43, 0.3);
+    background: rgba(192, 57, 43, 0.05);
+  }
+
+  .drawer-btn.logout-btn .drawer-btn-icon {
+    background: linear-gradient(135deg, #C0392B, #E74C3C);
+  }
+
+  .drawer-btn.logout-btn:hover {
+    background: var(--error);
+    color: #fff;
+    border-color: var(--error);
+  }
+
+  .drawer-empty {
+    padding: 30px 20px;
+    text-align: center;
+    color: var(--text-sub);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .drawer-empty i {
+    font-size: 32px;
+    color: var(--accent);
+    opacity: 0.5;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 900px) {
+    .topbar-inner { padding: 12px 16px; gap: 10px; }
+    .topbar-logo { width: 40px; height: 40px; }
+    .topbar-title { font-size: 17px; }
+    .topbar-title .en { font-size: 13px; letter-spacing: 1.5px; }
+    .icon-btn { width: 38px; height: 38px; font-size: 15px; }
+
+    .container { padding: 20px 16px 40px; }
+    .page-title h1 { font-size: 19px; }
+    .back-btn { width: 42px; height: 42px; font-size: 16px; }
+
+    .admins-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  }
+
+  @media (max-width: 600px) {
+    .topbar-actions { display: none; }
+    .mobile-menu-btn { display: flex; }
+
+    .topbar-inner { padding: 10px 12px; gap: 8px; }
+    .topbar-logo { width: 36px; height: 36px; }
+    .topbar-title { font-size: 15px; gap: 4px; }
+    .topbar-title .divider { font-size: 14px; }
+    .topbar-title .en { display: none; }
+
+    .container { padding: 16px 12px 30px; }
+    .page-title h1 { font-size: 17px; }
+    .page-title p { font-size: 12px; }
+    .back-btn { width: 40px; height: 40px; font-size: 15px; }
+
+    .stats-bar { gap: 10px; }
+    .stat-card { padding: 14px; gap: 12px; min-width: 120px; }
+    .stat-icon { width: 40px; height: 40px; font-size: 17px; border-radius: 10px; }
+    .stat-number { font-size: 20px; }
+    .stat-label { font-size: 11px; }
+
+    .actions-bar { gap: 10px; }
+    .search-input { padding: 12px 42px 12px 42px; font-size: 13.5px; }
+    .search-wrapper i { right: 14px; font-size: 14px; }
+    .btn-add { padding: 12px 16px; font-size: 13.5px; width: 100%; justify-content: center; }
+
+    .admins-grid { grid-template-columns: 1fr; gap: 12px; }
+    .admin-card { padding: 16px; border-radius: 16px; gap: 12px; }
+    .admin-avatar { width: 50px; height: 50px; font-size: 20px; }
+    .admin-username { font-size: 15px; }
+    .admin-meta { font-size: 11px; }
+    .btn-icon { width: 34px; height: 34px; font-size: 13px; }
+
+    .modal-box { padding: 22px 18px; border-radius: 18px; }
+    .modal-header h2 { font-size: 17px; }
+    .modal-header-icon { width: 40px; height: 40px; font-size: 16px; }
+    .modal-actions { flex-direction: column-reverse; }
+
+    .drawer { width: 90%; max-width: 320px; }
+    .drawer-header { padding: 18px 16px; }
+    .drawer-logo { width: 46px; height: 46px; }
+    .drawer-brand-name { font-size: 16px; }
+    .drawer-content { padding: 16px 14px; }
+    .drawer-btn { padding: 12px 14px; gap: 12px; font-size: 14px; }
+    .drawer-btn-icon { width: 38px; height: 38px; font-size: 16px; border-radius: 10px; }
+  }
+
+  @media (max-width: 380px) {
+    .topbar-logo { width: 32px; height: 32px; }
+    .topbar-title { font-size: 14px; }
+    .mobile-menu-btn { width: 36px; height: 36px; font-size: 15px; }
+    .page-title h1 { font-size: 15.5px; }
+    .admin-avatar { width: 44px; height: 44px; font-size: 18px; }
+  }
+
+  @media (min-width: 601px) {
+    .mobile-menu-btn { display: none !important; }
+    .drawer, .drawer-overlay { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="topbar-brand">
+      <img src="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png" 
+           alt="MEEZAN" 
+           class="topbar-logo"
+           id="topbarLogo">
+      <div class="topbar-title">
+        <span id="topbarNameAr">ميزان</span>
+        <span class="divider">|</span>
+        <span class="en" id="topbarNameEn">MEEZAN</span>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <button class="icon-btn" id="themeToggle" title="الوضع الليلي/النهاري">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+      <a href="index1.html" class="icon-btn" title="الإعدادات">
+        <i class="fas fa-cog"></i>
+      </a>
+      <button class="icon-btn logout" id="logoutBtn" title="تسجيل الخروج">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="page-header">
+    <a href="index.html" class="back-btn" title="الرجوع للرئيسية">
+      <i class="fas fa-arrow-right"></i>
+    </a>
+    <div class="page-title">
+      <h1>
+        <i class="fas fa-user-shield"></i>
+        إدارة المشرفين
+      </h1>
+      <p>إضافة، تعديل، حذف، والبحث في المشرفين</p>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="stat-info">
+        <div class="stat-number" id="totalAdmins">0</div>
+        <div class="stat-label">إجمالي المشرفين</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-search"></i>
+      </div>
+      <div class="stat-info">
+        <div class="stat-number" id="visibleAdmins">0</div>
+        <div class="stat-label">ظاهرون حالياً</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <div class="search-wrapper">
+      <i class="fas fa-search"></i>
+      <input type="text" 
+             class="search-input" 
+             id="searchInput" 
+             placeholder="ابحث عن مشرف باسم المستخدم...">
+      <button class="search-clear" id="searchClear" aria-label="مسح البحث">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <button class="btn-add" id="btnAddAdmin">
+      <i class="fas fa-user-plus"></i>
+      إضافة مشرف جديد
+    </button>
+  </div>
+
+  <div class="admins-grid" id="adminsGrid"></div>
+
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <i class="fas fa-user-slash"></i>
+    <h3 id="emptyTitle">لا يوجد مشرفون</h3>
+    <p id="emptyMessage">اضغط "إضافة مشرف جديد" للبدء</p>
+  </div>
+
+</div>
+
+<!-- ===== Modal ===== -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-header-icon">
+        <i class="fas fa-user-plus" id="modalIcon"></i>
+      </div>
+      <h2 id="modalTitle">إضافة مشرف جديد</h2>
+    </div>
+
+    <div class="modal-error" id="modalError"></div>
+    <div class="modal-info" id="modalInfo" style="display:none;">
+      <i class="fas fa-info-circle"></i>
+      <span id="modalInfoText"></span>
+    </div>
+
+    <form id="adminForm" onsubmit="return false;">
+      <div class="form-group">
+        <label class="form-label">اسم المستخدم</label>
+        <div class="input-wrapper">
+          <i class="fas fa-user input-icon"></i>
+          <input type="text" 
+                 class="form-input" 
+                 id="adminUsername" 
+                 placeholder="أدخل اسم المستخدم"
+                 autocomplete="off"
+                 autocorrect="off"
+                 autocapitalize="off"
+                 spellcheck="false">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label">
+          كلمة السر
+          <span class="hint" id="passwordHint" style="display:none;">(اتركها فارغة للإبقاء على القديمة)</span>
+        </label>
+        <div class="input-wrapper">
+          <i class="fas fa-lock input-icon"></i>
+          <input type="password" 
+                 class="form-input" 
+                 id="adminPassword" 
+                 placeholder="أدخل كلمة السر"
+                 autocomplete="new-password">
+          <button type="button" class="toggle-password" id="toggleModalPassword">
+            <i class="fas fa-eye" id="modalEyeIcon"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="modalCancel">
+        <i class="fas fa-times"></i> إلغاء
+      </button>
+      <button class="btn btn-save" id="modalSave">
+        <i class="fas fa-check"></i> حفظ
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Drawer ===== -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<aside class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="drawer-header-content">
+      <img src="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png" 
+           alt="Logo" 
+           class="drawer-logo"
+           id="drawerLogo">
+      <div class="drawer-brand">
+        <div class="drawer-brand-name">
+          <span id="drawerNameAr">ميزان</span>
+          <span class="divider">|</span>
+          <span id="drawerNameEn">MEEZAN</span>
+        </div>
+        <div class="drawer-brand-sub" id="drawerSubtitle">منصة تعليمية</div>
+      </div>
+      <button class="drawer-close" id="drawerClose" aria-label="إغلاق">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="drawer-content">
+    <div class="drawer-section">
+      <div class="drawer-section-title">
+        <i class="fas fa-th-large"></i>
+        <span>الأقسام والخدمات</span>
+      </div>
+      <div id="drawerButtons"></div>
+    </div>
+
+    <div class="drawer-section">
+      <div class="drawer-section-title">
+        <i class="fas fa-cog"></i>
+        <span>التحكم</span>
+      </div>
+
+      <a href="index.html" class="drawer-btn">
+        <span class="drawer-btn-icon"><i class="fas fa-home"></i></span>
+        <span class="drawer-btn-label">الرئيسية</span>
+      </a>
+
+      <button class="drawer-btn" id="drawerThemeBtn">
+        <span class="drawer-btn-icon"><i class="fas fa-moon" id="drawerThemeIcon"></i></span>
+        <span class="drawer-btn-label" id="drawerThemeText">الوضع الليلي</span>
+      </button>
+
+      <a href="index1.html" class="drawer-btn">
+        <span class="drawer-btn-icon"><i class="fas fa-sliders"></i></span>
+        <span class="drawer-btn-label">الإعدادات</span>
+      </a>
+
+      <button class="drawer-btn logout-btn" id="drawerLogoutBtn">
+        <span class="drawer-btn-icon"><i class="fas fa-sign-out-alt"></i></span>
+        <span class="drawer-btn-label">تسجيل الخروج</span>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle" id="toastIcon"></i>
+  <span id="toastText"></span>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+  getFirestore, doc, onSnapshot, setDoc, serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAmkCOrSaklhUiDdDfZCpSDQNmMYP-Gdw0",
+  authDomain: "qanon-c716d.firebaseapp.com",
+  projectId: "qanon-c716d",
+  storageBucket: "qanon-c716d.firebasestorage.app",
+  messagingSenderId: "757756130875",
+  appId: "1:757756130875:web:63c53534c6843e2a29ce1e",
+  measurementId: "G-8FZGTC779Y"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const $ = (id) => document.getElementById(id);
+
+// ============================================================
+// 🔒 الحماية
+// ============================================================
+if (sessionStorage.getItem('meezan_logged_in') !== 'true') {
+  window.location.replace('login.html');
+}
+
+history.pushState(null, '', location.href);
+window.addEventListener('popstate', () => {
+  if (sessionStorage.getItem('meezan_logged_in') === 'true') {
+    history.pushState(null, '', location.href);
+  } else {
+    window.location.replace('login.html');
+  }
+});
+
+// ============================================================
+// 🧹 التنظيف
+// ============================================================
+function cleanInput(value) {
+  if (typeof value !== 'string') return '';
+  return value
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .replace(/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/g, ' ')
+    .replace(/^\s+|\s+$/g, '')
+    .trim();
+}
+
+// ============================================================
+// 🔐 التشفير + فك التشفير
+// ============================================================
+const SECRET_KEY = 'MEEZAN_2026_SECRET_KEY_v1';
+
+function xorEncrypt(text, key) {
+  let result = '';
+  for (let i = 0; i < text.length; i++) {
+    result += String.fromCharCode(text.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+  }
+  return result;
+}
+
+function encryptPassword(password) {
+  try {
+    const xorResult = xorEncrypt(password, SECRET_KEY);
+    return btoa(unescape(encodeURIComponent(xorResult)));
+  } catch (e) { return ''; }
+}
+
+function decryptPassword(encrypted) {
+  if (!encrypted) return '';
+  try {
+    const decoded = decodeURIComponent(escape(atob(encrypted)));
+    return xorEncrypt(decoded, SECRET_KEY);
+  } catch (e) { return ''; }
+}
+
+// ============================================================
+// 🌙 الوضع
+// ============================================================
+const savedTheme = localStorage.getItem('meezan_theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+updateThemeIcon(savedTheme);
+updateDrawerTheme(savedTheme);
+
+$('themeToggle').addEventListener('click', toggleTheme);
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('meezan_theme', next);
+  updateThemeIcon(next);
+  updateDrawerTheme(next);
+}
+
+function updateThemeIcon(theme) {
+  $('themeIcon').className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+function updateDrawerTheme(theme) {
+  const icon = $('drawerThemeIcon');
+  const text = $('drawerThemeText');
+  if (!icon || !text) return;
+  if (theme === 'dark') {
+    icon.className = 'fas fa-sun';
+    text.textContent = 'الوضع النهاري';
+  } else {
+    icon.className = 'fas fa-moon';
+    text.textContent = 'الوضع الليلي';
+  }
+}
+
+// ============================================================
+// 📦 الكاش
+// ============================================================
+const CACHE_SETTINGS = 'meezan_settings_cache';
+const CACHE_BUTTONS = 'meezan_buttons_cache';
+
+function loadCache(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+
+// ============================================================
+// 🎨 تطبيق الإعدادات
+// ============================================================
+let currentSettings = null;
+
+function applySettings(data) {
+  if (!data) return;
+
+  if (data.logoUrl) {
+    const logo = $('topbarLogo');
+    if (logo.src !== data.logoUrl) logo.src = data.logoUrl;
+    const drawerLogo = $('drawerLogo');
+    if (drawerLogo && drawerLogo.src !== data.logoUrl) drawerLogo.src = data.logoUrl;
+    const iconLink = document.querySelector('link[rel="icon"]');
+    if (iconLink && iconLink.href !== data.logoUrl) iconLink.href = data.logoUrl;
+  }
+
+  if (data.siteNameAr) {
+    $('topbarNameAr').textContent = data.siteNameAr;
+    const d = $('drawerNameAr'); if (d) d.textContent = data.siteNameAr;
+  }
+  if (data.siteNameEn) {
+    $('topbarNameEn').textContent = data.siteNameEn;
+    const d = $('drawerNameEn'); if (d) d.textContent = data.siteNameEn;
+  }
+  if (data.tagline) {
+    const d = $('drawerSubtitle'); if (d) d.textContent = data.tagline;
+  }
+
+  const nameAr = data.siteNameAr || 'ميزان';
+  const nameEn = data.siteNameEn || 'MEEZAN';
+  const newTitle = `المشرفون | ${nameAr} | ${nameEn}`;
+  if (document.title !== newTitle) document.title = newTitle;
+
+  applyColors(data);
+}
+
+function applyColors(data) {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  const rootStyle = document.documentElement.style;
+
+  rootStyle.removeProperty('--primary');
+  rootStyle.removeProperty('--accent');
+
+  if (currentTheme === 'light' && data.lightColorsEnabled === true) {
+    if (data.lightPrimary && /^#[0-9A-Fa-f]{6}$/.test(data.lightPrimary)) {
+      rootStyle.setProperty('--primary', data.lightPrimary);
+    }
+    if (data.lightAccent && /^#[0-9A-Fa-f]{6}$/.test(data.lightAccent)) {
+      rootStyle.setProperty('--accent', data.lightAccent);
+    }
+  } else if (currentTheme === 'dark' && data.darkColorsEnabled === true) {
+    if (data.darkPrimary && /^#[0-9A-Fa-f]{6}$/.test(data.darkPrimary)) {
+      rootStyle.setProperty('--primary', data.darkPrimary);
+    }
+    if (data.darkAccent && /^#[0-9A-Fa-f]{6}$/.test(data.darkAccent)) {
+      rootStyle.setProperty('--accent', data.darkAccent);
+    }
+  }
+}
+
+// ============================================================
+// 👥 حالة المشرفين
+// ============================================================
+let adminsData = [];             // قائمة كل المشرفين
+let filteredAdmins = [];         // بعد الفلترة
+let editingAdminId = null;       // لو بجاري تعديل
+let currentEditingPassword = ''; // كلمة السر القديمة أثناء التعديل
+let mainAdminData = null;        // بيانات الأدمن الأساسي (من جذر admin/main)
+let isMainAdminEditing = false;  // هل نعدّل الأدمن الأساسي الآن؟
+
+// ============================================================
+// 📊 عرض المشرفين
+// ============================================================
+function renderAdmins() {
+  const grid = $('adminsGrid');
+  const empty = $('emptyState');
+
+  grid.innerHTML = '';
+
+  const total = adminsData.length;
+  const visible = filteredAdmins.length;
+
+  $('totalAdmins').textContent = total;
+  $('visibleAdmins').textContent = visible;
+
+  if (total === 0) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+    $('emptyTitle').textContent = 'لا يوجد مشرفون';
+    $('emptyMessage').textContent = 'اضغط "إضافة مشرف جديد" للبدء';
+    return;
+  }
+
+  if (visible === 0) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+    $('emptyTitle').textContent = 'لا توجد نتائج';
+    $('emptyMessage').textContent = 'لم يتم العثور على مشرف بهذا الاسم';
+    return;
+  }
+
+  empty.style.display = 'none';
+  grid.style.display = 'grid';
+
+  filteredAdmins.forEach(admin => {
+    grid.appendChild(createAdminCard(admin));
+  });
+}
+
+function createAdminCard(admin) {
+  const card = document.createElement('div');
+  card.className = 'admin-card';
+
+  // أفاتار
+  const avatar = document.createElement('div');
+  avatar.className = 'admin-avatar' + (admin.isMain ? ' main-admin' : '');
+  avatar.textContent = (admin.username || '؟').charAt(0).toUpperCase();
+
+  // معلومات
+  const info = document.createElement('div');
+  info.className = 'admin-info';
+
+  const username = document.createElement('div');
+  username.className = 'admin-username';
+  username.innerHTML = `<span>${admin.username || 'غير معروف'}</span>` +
+    (admin.isMain ? '<span class="admin-badge">أساسي</span>' : '');
+
+  const meta = document.createElement('div');
+  meta.className = 'admin-meta';
+  meta.innerHTML = `<i class="fas fa-clock"></i> ${formatDate(admin.createdAt)}`;
+
+  info.appendChild(username);
+  info.appendChild(meta);
+
+  // أزرار
+  const actions = document.createElement('div');
+  actions.className = 'admin-actions';
+
+  const editBtn = document.createElement('button');
+  editBtn.className = 'btn-icon edit';
+  editBtn.title = 'تعديل';
+  editBtn.innerHTML = '<i class="fas fa-pen"></i>';
+  editBtn.addEventListener('click', () => openEditModal(admin.id));
+
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'btn-icon delete';
+  deleteBtn.title = admin.isMain ? 'لا يمكن حذف المشرف الأساسي' : 'حذف';
+  deleteBtn.innerHTML = '<i class="fas fa-trash-can"></i>';
+  deleteBtn.addEventListener('click', () => deleteAdmin(admin.id));
+  if (admin.isMain) {
+    deleteBtn.disabled = true;
+    deleteBtn.style.opacity = '0.4';
+    deleteBtn.style.cursor = 'not-allowed';
+  }
+
+  actions.appendChild(editBtn);
+  actions.appendChild(deleteBtn);
+
+  card.appendChild(avatar);
+  card.appendChild(info);
+  card.appendChild(actions);
+
+  return card;
+}
+
+function formatDate(ts) {
+  if (!ts) return 'غير محدد';
+  try {
+    const date = ts.toDate ? ts.toDate() : new Date(ts);
+    const now = new Date();
+    const diff = Math.floor((now - date) / 1000);
+
+    if (diff < 60) return 'الآن';
+    if (diff < 3600) return `منذ ${Math.floor(diff / 60)} دقيقة`;
+    if (diff < 86400) return `منذ ${Math.floor(diff / 3600)} ساعة`;
+    if (diff < 604800) return `منذ ${Math.floor(diff / 86400)} يوم`;
+
+    return date.toLocaleDateString('ar-EG', {
+      year: 'numeric', month: 'short', day: 'numeric'
+    });
+  } catch (e) { return 'غير محدد'; }
+}
+
+// ============================================================
+// 🔍 البحث
+// ============================================================
+const searchInput = $('searchInput');
+const searchClear = $('searchClear');
+
+function applySearch() {
+  const query = cleanInput(searchInput.value).toLowerCase();
+
+  const sortFn = (a, b) => {
+    if (a.isMain && !b.isMain) return -1;
+    if (!a.isMain && b.isMain) return 1;
+    return (a.username || '').localeCompare(b.username || '');
+  };
+
+  if (!query) {
+    searchClear.classList.remove('show');
+    filteredAdmins = [...adminsData].sort(sortFn);
+  } else {
+    searchClear.classList.add('show');
+    filteredAdmins = adminsData
+      .filter(a => (a.username || '').toLowerCase().includes(query))
+      .sort(sortFn);
+  }
+
+  renderAdmins();
+}
+
+searchInput.addEventListener('input', applySearch);
+searchClear.addEventListener('click', () => {
+  searchInput.value = '';
+  applySearch();
+});
+
+// ============================================================
+// ➕ Modal
+// ============================================================
+const adminModal = $('adminModal');
+const modalTitle = $('modalTitle');
+const modalIcon = $('modalIcon');
+const adminUsername = $('adminUsername');
+const adminPassword = $('adminPassword');
+const modalError = $('modalError');
+const modalInfo = $('modalInfo');
+const modalInfoText = $('modalInfoText');
+const modalSave = $('modalSave');
+const modalCancel = $('modalCancel');
+const toggleModalPassword = $('toggleModalPassword');
+const modalEyeIcon = $('modalEyeIcon');
+const passwordHint = $('passwordHint');
+
+function openAddModal() {
+  editingAdminId = null;
+  isMainAdminEditing = false;
+  currentEditingPassword = '';
+
+  modalTitle.textContent = 'إضافة مشرف جديد';
+  modalIcon.className = 'fas fa-user-plus';
+  adminUsername.value = '';
+  adminPassword.value = '';
+  adminPassword.type = 'password';
+  modalEyeIcon.className = 'fas fa-eye';
+  modalError.classList.remove('show');
+  modalInfo.style.display = 'none';
+  passwordHint.style.display = 'none';
+
+  adminModal.classList.add('show');
+  setTimeout(() => adminUsername.focus(), 100);
+}
+
+function openEditModal(id) {
+  // لو الأدمن الأساسي
+  let admin;
+  if (id === '__main__' && mainAdminData) {
+    admin = mainAdminData;
+    isMainAdminEditing = true;
+  } else {
+    admin = adminsData.find(a => a.id === id);
+    isMainAdminEditing = false;
+  }
+
+  if (!admin) return;
+
+  editingAdminId = id;
+
+  // 🔓 فك تشفير كلمة السر القديمة
+  currentEditingPassword = decryptPassword(admin.passwordEncrypted);
+
+  modalTitle.textContent = admin.isMain ? 'تعديل المشرف الأساسي' : 'تعديل المشرف';
+  modalIcon.className = 'fas fa-pen';
+  adminUsername.value = admin.username || '';
+  adminPassword.value = currentEditingPassword; // ✅ عرض كلمة السر الحقيقية
+  adminPassword.type = 'password';
+  modalEyeIcon.className = 'fas fa-eye';
+  modalError.classList.remove('show');
+  passwordHint.style.display = 'inline';
+
+  // لو الأدمن الأساسي → تنبيه
+  if (admin.isMain) {
+    modalInfo.style.display = 'flex';
+    modalInfoText.textContent = 'أنت تعدّل المشرف الأساسي — سيتم تحديث بيانات الدخول أيضاً';
+  } else {
+    modalInfo.style.display = 'none';
+  }
+
+  adminModal.classList.add('show');
+  setTimeout(() => adminUsername.focus(), 100);
+}
+
+function closeModal() {
+  adminModal.classList.remove('show');
+  editingAdminId = null;
+  currentEditingPassword = '';
+  isMainAdminEditing = false;
+  modalInfo.style.display = 'none';
+  passwordHint.style.display = 'none';
+}
+
+$('btnAddAdmin').addEventListener('click', openAddModal);
+modalCancel.addEventListener('click', closeModal);
+adminModal.addEventListener('click', (e) => {
+  if (e.target === adminModal) closeModal();
+});
+
+// عرض/إخفاء كلمة السر
+toggleModalPassword.addEventListener('click', () => {
+  const isPwd = adminPassword.type === 'password';
+  adminPassword.type = isPwd ? 'text' : 'password';
+  modalEyeIcon.className = isPwd ? 'fas fa-eye-slash' : 'fas fa-eye';
+});
+
+// Enter
+adminUsername.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); adminPassword.focus(); }
+});
+adminPassword.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); modalSave.click(); }
+});
+
+// Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && adminModal.classList.contains('show')) closeModal();
+});
+
+// ============================================================
+// 💾 حفظ (إضافة / تعديل)
+// ============================================================
+modalSave.addEventListener('click', async () => {
+  modalError.classList.remove('show');
+
+  const username = cleanInput(adminUsername.value);
+  const password = cleanInput(adminPassword.value);
+
+  // تحقق
+  if (!username) return showModalError('الرجاء إدخال اسم المستخدم');
+  if (username.length < 3) return showModalError('اسم المستخدم يجب أن يكون 3 أحرف على الأقل');
+  if (!/^[a-zA-Z0-9_\u0600-\u06FF]+$/.test(username)) {
+    return showModalError('اسم المستخدم يجب أن يحتوي على أحرف وأرقام فقط');
+  }
+
+  if (!editingAdminId) {
+    if (!password) return showModalError('الرجاء إدخال كلمة السر');
+  }
+  if (password && password.length < 6) {
+    return showModalError('كلمة السر يجب أن تكون 6 أحرف على الأقل');
+  }
+
+  // تحقق من التكرار
+  const duplicate = adminsData.find(a =>
+    a.id !== editingAdminId &&
+    (a.username || '').toLowerCase() === username.toLowerCase()
+  );
+  if (duplicate) return showModalError('اسم المستخدم موجود بالفعل');
+
+  modalSave.disabled = true;
+  modalSave.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+  // نسخة احتياطية
+  const backupAdmins = JSON.parse(JSON.stringify(adminsData));
+  const backupMain = mainAdminData ? { ...mainAdminData } : null;
+
+  try {
+    let updateData = {};
+
+    if (editingAdminId) {
+      // تعديل
+      if (isMainAdminEditing && mainAdminData) {
+        // ✅ تعديل الأدمن الأساسي (الاثنان معاً)
+        const newEncrypted = (password && password !== currentEditingPassword)
+          ? encryptPassword(password)
+          : mainAdminData.passwordEncrypted;
+
+        // 1) حدّث جذر المستند
+        updateData.username = username;
+        updateData.passwordEncrypted = newEncrypted;
+
+        // 2) حدّث داخل admins[]
+        const mainIdx = adminsData.findIndex(a => a.isMain === true);
+        if (mainIdx !== -1) {
+          adminsData[mainIdx].username = username;
+          adminsData[mainIdx].passwordEncrypted = newEncrypted;
+          adminsData[mainIdx].updatedAt = new Date().toISOString();
+        }
+      } else {
+        // تعديل مشرف عادي
+        const idx = adminsData.findIndex(a => a.id === editingAdminId);
+        if (idx !== -1) {
+          adminsData[idx].username = username;
+          adminsData[idx].updatedAt = new Date().toISOString();
+          if (password && password !== currentEditingPassword) {
+            adminsData[idx].passwordEncrypted = encryptPassword(password);
+          }
+        }
+      }
+    } else {
+      // إضافة جديدة
+      adminsData.push({
+        id: 'admin_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+        username,
+        passwordEncrypted: encryptPassword(password),
+        isMain: false,
+        createdAt: new Date().toISOString()
+      });
+    }
+
+    // ✅ احفظ الكل في admin/main
+    updateData.admins = adminsData;
+    updateData.updatedAt = serverTimestamp();
+
+    try {
+      await setDoc(doc(db, 'admin', 'main'), updateData, { merge: true });
+    } catch (fsErr) {
+      // فشل → رجّع النسخة الاحتياطية
+      adminsData = backupAdmins;
+      mainAdminData = backupMain;
+
+      let msg = 'فشل الحفظ في قاعدة البيانات';
+      if (fsErr.code === 'permission-denied') {
+        msg = '⛔ ليس لديك صلاحية! تحقق من Firestore Rules';
+      } else if (fsErr.code === 'unavailable') {
+        msg = '🌐 تعذّر الاتصال بالإنترنت';
+      } else {
+        msg = 'خطأ: ' + fsErr.message;
+      }
+      return showModalError(msg);
+    }
+
+    showToast(editingAdminId ? 'تم تعديل المشرف ✓' : 'تمت إضافة المشرف ✓', 'success');
+    closeModal();
+    applySearch();
+
+  } catch (err) {
+    console.error(err);
+    showModalError('حدث خطأ غير متوقع: ' + err.message);
+  } finally {
+    modalSave.disabled = false;
+    modalSave.innerHTML = '<i class="fas fa-check"></i> حفظ';
+  }
+});
+
+function showModalError(msg) {
+  modalError.textContent = msg;
+  modalError.classList.add('show');
+}
+
+// ============================================================
+// 🗑️ حذف
+// ============================================================
+async function deleteAdmin(id) {
+  const admin = adminsData.find(a => a.id === id);
+  if (!admin) return;
+
+  if (admin.isMain) {
+    showToast('لا يمكن حذف المشرف الأساسي', 'error');
+    return;
+  }
+
+  if (!confirm(`هل تريد حذف المشرف "${admin.username}"؟\n\nلا يمكن التراجع.`)) return;
+
+  const backupAdmins = JSON.parse(JSON.stringify(adminsData));
+
+  try {
+    adminsData = adminsData.filter(a => a.id !== id);
+
+    try {
+      await setDoc(doc(db, 'admin', 'main'), {
+        admins: adminsData,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    } catch (fsErr) {
+      adminsData = backupAdmins;
+      if (fsErr.code === 'permission-denied') {
+        showToast('⛔ ليس لديك صلاحية الحذف!', 'error');
+      } else {
+        showToast('حدث خطأ أثناء الحذف', 'error');
+      }
+      return;
+    }
+
+    showToast('تم حذف المشرف ✓', 'success');
+    applySearch();
+
+  } catch (err) {
+    console.error(err);
+    showToast('حدث خطأ غير متوقع', 'error');
+  }
+}
+
+// ============================================================
+// 📡 Real-time: الإعدادات
+// ============================================================
+const cachedSettings = loadCache(CACHE_SETTINGS);
+if (cachedSettings) {
+  currentSettings = cachedSettings;
+  applySettings(cachedSettings);
+}
+
+requestAnimationFrame(() => document.body.classList.add('ready'));
+
+onSnapshot(doc(db, 'settings', 'login'), (snap) => {
+  if (!snap.exists()) return;
+  const data = snap.data();
+  currentSettings = data;
+  applySettings(data);
+  try { localStorage.setItem(CACHE_SETTINGS, JSON.stringify({ ...data, _cachedAt: Date.now() })); } catch (e) {}
+}, (err) => console.log('settings error:', err.message));
+
+new MutationObserver(() => {
+  if (currentSettings) applyColors(currentSettings);
+}).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+// ============================================================
+// 📡 Real-time: admin/main
+// ============================================================
+onSnapshot(doc(db, 'admin', 'main'), (snap) => {
+  if (!snap.exists()) {
+    adminsData = [];
+    mainAdminData = null;
+    applySearch();
+    return;
+  }
+
+  const data = snap.data();
+
+  // ✅ احفظ بيانات الأدمن الأساسي
+  mainAdminData = {
+    id: '__main__',
+    username: data.username || 'admin',
+    passwordEncrypted: data.passwordEncrypted || '',
+    isMain: true,
+    createdAt: data.createdAt || null
+  };
+
+  // ✅ اقرأ قائمة المشرفين
+  let items = Array.isArray(data.admins) ? data.admins : [];
+
+  // ✅ تأكد من وجود الأدمن الأساسي في القائمة
+  const hasMain = items.some(a => a.isMain === true);
+  if (!hasMain) {
+    items.unshift(mainAdminData);
+  } else {
+    // ✅ مزامنة بيانات الأدمن الأساسي (من الجذر)
+    items = items.map(a => {
+      if (a.isMain === true) {
+        return {
+          ...a,
+          username: data.username || a.username,
+          passwordEncrypted: data.passwordEncrypted || a.passwordEncrypted
+        };
+      }
+      return a;
+    });
+  }
+
+  adminsData = items;
+  applySearch();
+
+}, (err) => console.log('admin/main error:', err.message));
+
+// ============================================================
+// 📱 Drawer
+// ============================================================
+const MOBILE_BUTTONS_LIMIT = 6;
+let drawerExpanded = false;
+
+const drawer = $('drawer');
+const drawerOverlay = $('drawerOverlay');
+const mobileMenuBtn = $('mobileMenuBtn');
+const drawerClose = $('drawerClose');
+const drawerButtons = $('drawerButtons');
+const drawerThemeBtn = $('drawerThemeBtn');
+const drawerLogoutBtn = $('drawerLogoutBtn');
+
+mobileMenuBtn?.addEventListener('click', () => {
+  drawer.classList.add('open');
+  drawerOverlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+});
+
+function closeDrawer() {
+  drawer.classList.remove('open');
+  drawerOverlay.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+drawerClose?.addEventListener('click', closeDrawer);
+drawerOverlay?.addEventListener('click', closeDrawer);
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+});
+
+drawerThemeBtn?.addEventListener('click', toggleTheme);
+
+drawerLogoutBtn?.addEventListener('click', () => {
+  closeDrawer();
+  setTimeout(() => {
+    if (confirm('هل تريد تسجيل الخروج؟')) {
+      sessionStorage.removeItem('meezan_logged_in');
+      sessionStorage.removeItem('meezan_username');
+      showToast('تم تسجيل الخروج...', 'success');
+      setTimeout(() => window.location.replace('login.html'), 500);
+    }
+  }, 300);
+});
+
+function renderDrawerButtons() {
+  if (!drawerButtons) return;
+
+  const cachedB = loadCache(CACHE_BUTTONS);
+  const buttons = (cachedB && Array.isArray(cachedB.items)) ? cachedB.items : [];
+
+  const visibleButtons = buttons
+    .filter(b => b && b.visible !== false && b.label)
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  drawerButtons.innerHTML = '';
+
+  if (!visibleButtons.length) {
+    drawerButtons.innerHTML = `
+      <div class="drawer-empty">
+        <i class="fas fa-inbox"></i>
+        <span>لا توجد أزرار</span>
+      </div>
+    `;
+    return;
+  }
+
+  const limit = drawerExpanded ? visibleButtons.length : MOBILE_BUTTONS_LIMIT;
+  const toShow = visibleButtons.slice(0, limit);
+  const remaining = visibleButtons.length - MOBILE_BUTTONS_LIMIT;
+
+  toShow.forEach(btn => {
+    const isExternal = btn.url && /^https?:\/\//i.test(btn.url);
+    const el = document.createElement('a');
+    el.className = 'drawer-btn' + (isExternal ? ' external' : '');
+    el.href = btn.url || 'javascript:void(0)';
+    if (isExternal) { el.target = '_blank'; el.rel = 'noopener noreferrer'; }
+    if (!btn.url) el.addEventListener('click', (e) => e.preventDefault());
+
+    const iconWrap = document.createElement('span');
+    iconWrap.className = 'drawer-btn-icon';
+    const icon = btn.icon || { type: 'fontawesome', value: 'fa-circle' };
+    if (icon.type === 'url' || icon.type === 'upload') {
+      iconWrap.innerHTML = `<img src="${icon.value}" alt="${btn.label}" loading="lazy" onerror="this.parentNode.innerHTML='<i class=\\'fas fa-circle\\'></i>'">`;
+    } else {
+      iconWrap.innerHTML = `<i class="fas ${icon.value}"></i>`;
+    }
+
+    const label = document.createElement('span');
+    label.className = 'drawer-btn-label';
+    label.textContent = btn.label;
+
+    el.appendChild(iconWrap);
+    el.appendChild(label);
+    drawerButtons.appendChild(el);
+  });
+
+  if (remaining > 0 || drawerExpanded) {
+    const more = document.createElement('button');
+    more.type = 'button';
+    more.className = 'drawer-show-more' + (drawerExpanded ? ' expanded' : '');
+    more.innerHTML = drawerExpanded
+      ? '<i class="fas fa-chevron-up"></i> عرض أقل'
+      : `<i class="fas fa-chevron-down"></i> عرض المزيد (${remaining})`;
+    more.addEventListener('click', () => {
+      drawerExpanded = !drawerExpanded;
+      renderDrawerButtons();
+    });
+    drawerButtons.appendChild(more);
+  }
+}
+
+renderDrawerButtons();
+onSnapshot(doc(db, 'settings', 'buttons'), () => renderDrawerButtons(), (e) => {});
+
+// ============================================================
+// 🚪 خروج
+// ============================================================
+$('logoutBtn').addEventListener('click', () => {
+  if (!confirm('هل تريد تسجيل الخروج؟')) return;
+  sessionStorage.removeItem('meezan_logged_in');
+  sessionStorage.removeItem('meezan_username');
+  showToast('تم تسجيل الخروج...', 'success');
+  setTimeout(() => window.location.replace('login.html'), 500);
+});
+
+// ============================================================
+// 🔔 Toast
+// ============================================================
+let toastTimeout;
+function showToast(text, type = 'success') {
+  const toast = $('toast');
+  const icon = $('toastIcon');
+  $('toastText').textContent = text;
+  toast.className = 'toast show ' + type;
+  const icons = {
+    success: 'fa-check-circle',
+    error: 'fa-times-circle',
+    warning: 'fa-exclamation-triangle'
+  };
+  icon.className = `fas ${icons[type] || icons.success}`;
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ============================================================
+// 🛡️ حماية
+// ============================================================
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted && sessionStorage.getItem('meezan_logged_in') !== 'true') {
+    window.location.replace('login.html');
+  }
+});
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script>
+
+</body>
+</html>

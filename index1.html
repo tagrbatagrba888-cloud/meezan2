@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0B3D2E">
+<title>إعدادات المنصة | MEEZAN</title>
+<link rel="icon" type="image/png" href="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --primary: #0B3D2E;
+    --primary-light: #145A43;
+    --primary-lighter: #1E7A5A;
+    --accent: #C9A961;
+    --accent-light: #E0C888;
+    --bg-page: #F5F1E8;
+    --bg-card: #FFFFFF;
+    --bg-input: #F8FBF9;
+    --text-main: #0B3D2E;
+    --text-sub: #5A6B66;
+    --border: #E0E5E1;
+    --shadow: rgba(11, 61, 46, 0.15);
+    --error: #C0392B;
+    --success: #1E7A5A;
+    --warning: #E67E22;
+  }
+
+  html, body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg-page);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== Header ===== */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 20px;
+    box-shadow: 0 4px 20px var(--shadow);
+    position: sticky; top: 0; z-index: 50;
+  }
+
+  .header-content {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+  }
+
+  .header-title { display: flex; align-items: center; gap: 14px; color: #fff; }
+
+  .header-logo {
+    width: 50px; height: 50px; object-fit: contain; border-radius: 50%;
+    background: rgba(255,255,255,0.1); padding: 4px; border: 2px solid var(--accent);
+  }
+
+  .header-title h1 { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
+  .header-title small { display: block; font-size: 11px; color: var(--accent-light); font-weight: 500; letter-spacing: 2px; }
+
+  .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .btn {
+    padding: 10px 18px; border-radius: 10px; border: none;
+    font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 700;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+    transition: all 0.25s ease; text-decoration: none; white-space: nowrap;
+  }
+
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+
+  .btn-success { background: var(--success); color: #fff; }
+  .btn-success:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(30, 122, 90, 0.3); }
+
+  .btn-ghost { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.25); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.25); }
+
+  .btn-danger { background: var(--error); color: #fff; }
+  .btn-danger:hover:not(:disabled) { opacity: 0.9; }
+
+  .btn-warning { background: var(--warning); color: #fff; }
+  .btn-warning:hover:not(:disabled) { opacity: 0.9; }
+
+  .btn-sm { padding: 8px 14px; font-size: 13px; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px 40px; }
+
+  .info-banner {
+    background: linear-gradient(135deg, rgba(201, 169, 97, 0.12), rgba(201, 169, 97, 0.05));
+    border: 1.5px solid var(--accent); border-radius: 14px;
+    padding: 14px 18px; margin-bottom: 22px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13.5px; font-weight: 600; color: var(--text-main);
+  }
+
+  .info-banner i { color: var(--accent); font-size: 20px; flex-shrink: 0; }
+
+  .card {
+    background: var(--bg-card); border-radius: 18px;
+    padding: 26px; margin-bottom: 22px;
+    box-shadow: 0 6px 24px var(--shadow); border: 1px solid var(--border);
+  }
+
+  .card-title {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; font-size: 18px; font-weight: 800; color: var(--text-main);
+    margin-bottom: 20px; padding-bottom: 16px;
+    border-bottom: 2px dashed var(--border); flex-wrap: wrap;
+  }
+
+  .card-title-left { display: flex; align-items: center; gap: 12px; }
+
+  .card-title i {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+
+  .card-save-btn {
+    padding: 10px 18px; border-radius: 10px; background: var(--success); color: #fff;
+    border: none; font-family: 'Cairo', sans-serif; font-size: 13.5px; font-weight: 700;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+    transition: all 0.25s ease; white-space: nowrap;
+  }
+
+  .card-save-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(30, 122, 90, 0.3); }
+  .card-save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .form-group { margin-bottom: 18px; }
+
+  .form-label {
+    display: block; font-size: 13px; font-weight: 700;
+    color: var(--text-main); margin-bottom: 8px;
+  }
+
+  .form-label .hint { font-size: 11px; color: var(--text-sub); font-weight: 500; margin-right: 6px; }
+
+  .form-input, .form-textarea, .form-select {
+    width: 100%; padding: 13px 16px; font-size: 14px;
+    font-family: 'Cairo', sans-serif; border: 2px solid var(--border);
+    border-radius: 12px; background: var(--bg-input); color: var(--text-main);
+    transition: all 0.25s ease; outline: none; font-weight: 500;
+  }
+
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
+    border-color: var(--primary); background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1);
+  }
+
+  /* ===== قسم الألوان ===== */
+  .color-section {
+    border-radius: 14px; padding: 20px; margin-bottom: 18px;
+    border: 2px solid var(--border); position: relative;
+  }
+
+  .color-section-title {
+    font-size: 14px; font-weight: 800; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 10px; border-bottom: 1px dashed var(--border);
+  }
+
+  .color-section-title i {
+    width: 30px; height: 30px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: #fff;
+  }
+
+  .color-section.light-mode { background: linear-gradient(135deg, #FFFBEE 0%, #F5F1E8 100%); border-color: #E0C888; }
+  .color-section.light-mode .color-section-title { color: #8B6914; border-color: #E0C888; }
+  .color-section.light-mode .color-section-title i { background: linear-gradient(135deg, #F39C12, #E0C888); }
+
+  .color-section.dark-mode { background: linear-gradient(135deg, #0A1612 0%, #11201B 100%); border-color: #C9A961; }
+  .color-section.dark-mode .color-section-title { color: #F5F1E8; border-color: #1E3A31; }
+  .color-section.dark-mode .color-section-title i { background: linear-gradient(135deg, #0B3D2E, #145A43); }
+  .color-section.dark-mode .form-label { color: #F5F1E8; }
+  .color-section.dark-mode .form-input { background: #1A2C25; border-color: #1E3A31; color: #F5F1E8; }
+  .color-section.dark-mode .color-swatch { background: #1A2C25; border-color: #1E3A31; }
+
+  .color-enable-toggle {
+    position: absolute; top: 18px; left: 18px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 700;
+  }
+
+  .color-enable-toggle input[type="checkbox"] {
+    width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary);
+  }
+
+  .color-section.light-mode .color-enable-toggle { color: #8B6914; }
+  .color-section.dark-mode .color-enable-toggle { color: #C9A961; }
+
+  .color-input-wrap { display: flex; align-items: center; gap: 12px; }
+
+  .color-swatch {
+    width: 52px; height: 52px; border-radius: 12px;
+    border: 2px solid var(--border); cursor: pointer;
+    padding: 4px; background: var(--bg-input);
+    transition: transform 0.2s; flex-shrink: 0;
+    position: relative; overflow: hidden;
+  }
+
+  .color-swatch:hover { transform: scale(1.05); }
+
+  .color-swatch.empty::after {
+    content: 'Ø'; position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: #999;
+    background: repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(153,153,153,0.15) 6px, rgba(153,153,153,0.15) 12px);
+    pointer-events: none; font-weight: 300;
+  }
+
+  input[type="color"] {
+    width: 100%; height: 100%; border: none; border-radius: 8px;
+    cursor: pointer; background: transparent;
+  }
+
+  .color-input-wrap .form-input {
+    flex: 1; font-family: 'Cairo', monospace; letter-spacing: 1px;
+    direction: ltr; text-align: left;
+  }
+
+  .btn-clear-color {
+    padding: 0; width: 38px; height: 38px; border-radius: 10px;
+    border: 2px solid var(--border); background: var(--bg-input);
+    color: var(--text-sub); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; transition: all 0.2s; flex-shrink: 0;
+  }
+
+  .btn-clear-color:hover { background: var(--error); color: #fff; border-color: var(--error); }
+
+  .logo-preview {
+    width: 130px; height: 130px; border-radius: 50%;
+    object-fit: contain; border: 3px solid var(--accent);
+    background: var(--bg-input); padding: 8px;
+    box-shadow: 0 8px 24px var(--shadow);
+  }
+
+  .logo-section { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .logo-controls { flex: 1; min-width: 260px; }
+
+  .tab-buttons {
+    display: flex; gap: 8px; margin-bottom: 14px;
+    background: var(--bg-input); padding: 4px;
+    border-radius: 12px; border: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    flex: 1; padding: 9px 12px; border: none; background: transparent;
+    border-radius: 9px; font-family: 'Cairo', sans-serif;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    color: var(--text-sub); transition: all 0.25s ease;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+
+  .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px var(--shadow); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .upload-area {
+    border: 2px dashed var(--border); border-radius: 12px;
+    padding: 20px; text-align: center; cursor: pointer;
+    transition: all 0.25s ease; background: var(--bg-input);
+    display: block;
+  }
+
+  .upload-area:hover { border-color: var(--primary); background: var(--bg-card); }
+  .upload-area i { font-size: 28px; color: var(--primary); margin-bottom: 8px; display: block; }
+  .upload-area p { font-size: 13px; color: var(--text-sub); font-weight: 600; }
+
+  .toggle-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; background: var(--bg-input);
+    border-radius: 12px; border: 1px solid var(--border);
+    margin-bottom: 12px; gap: 16px;
+  }
+
+  .toggle-info { flex: 1; }
+  .toggle-info strong { display: block; font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
+  .toggle-info small { font-size: 12px; color: var(--text-sub); font-weight: 500; }
+
+  .switch { position: relative; display: inline-block; width: 54px; height: 30px; flex-shrink: 0; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+
+  .slider {
+    position: absolute; cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #cbd5d1; transition: 0.3s; border-radius: 30px;
+  }
+
+  .slider:before {
+    position: absolute; content: "";
+    height: 22px; width: 22px; left: 4px; bottom: 4px;
+    background: #fff; transition: 0.3s; border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  .switch input:checked + .slider { background: var(--success); }
+  .switch input:checked + .slider:before { transform: translateX(-24px); }
+
+  /* ===== قسم الأزرار ===== */
+  .buttons-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  .buttons-header-info {
+    font-size: 13px;
+    color: var(--text-sub);
+    font-weight: 600;
+  }
+
+  .buttons-header-info strong { color: var(--primary); }
+
+  .btn-add-new {
+    padding: 12px 22px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    box-shadow: 0 6px 18px var(--shadow);
+  }
+
+  .btn-add-new:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px var(--shadow);
+  }
+
+  /* قائمة الأزرار */
+  .buttons-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+
+  .button-item {
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all 0.25s ease;
+    position: relative;
+  }
+
+  .button-item:hover {
+    border-color: var(--accent);
+    box-shadow: 0 6px 18px var(--shadow);
+  }
+
+  .button-item.hidden-item {
+    opacity: 0.55;
+    background: repeating-linear-gradient(45deg, var(--bg-input), var(--bg-input) 8px, rgba(150,150,150,0.06) 8px, rgba(150,150,150,0.06) 16px);
+  }
+
+  .button-item-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(11, 61, 46, 0.2);
+  }
+
+  .button-item-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  .button-item-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .button-item-label {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .button-item-url {
+    font-size: 11.5px;
+    color: var(--text-sub);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    direction: ltr;
+    text-align: right;
+  }
+
+  .button-item-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .btn-icon-action {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-sub);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .btn-icon-action:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn-icon-action.edit:hover { background: var(--warning); color: #fff; border-color: var(--warning); }
+  .btn-icon-action.hide:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .btn-icon-action.show:hover { background: var(--success); color: #fff; border-color: var(--success); }
+  .btn-icon-action.delete:hover { background: var(--error); color: #fff; border-color: var(--error); }
+
+  .empty-buttons {
+    padding: 40px 20px;
+    text-align: center;
+    background: var(--bg-input);
+    border: 2px dashed var(--border);
+    border-radius: 14px;
+    color: var(--text-sub);
+  }
+
+  .empty-buttons i {
+    font-size: 42px;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: block;
+    opacity: 0.7;
+  }
+
+  .empty-buttons p {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* ===== نافذة إضافة/تعديل زر ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 10000;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal-box {
+    background: var(--bg-card);
+    border-radius: 22px;
+    padding: 30px 26px;
+    max-width: 560px;
+    width: 100%;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+    border-top: 6px solid var(--accent);
+    animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+
+  @keyframes modalPop {
+    from { opacity: 0; transform: scale(0.85) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 2px dashed var(--border);
+  }
+
+  .modal-header-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .modal-header h2 {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  /* ===== اختيار الأيقونة ===== */
+  .icon-type-tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--bg-input);
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
+
+  .icon-type-btn {
+    flex: 1;
+    padding: 9px 8px;
+    border: none;
+    background: transparent;
+    border-radius: 9px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--text-sub);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .icon-type-btn.active {
+    background: var(--primary);
+    color: #fff;
+  }
+
+  .icon-type-content { display: none; }
+  .icon-type-content.active { display: block; }
+
+  /* شبكة أيقونات FontAwesome */
+  .icons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+    gap: 8px;
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 10px;
+    background: var(--bg-input);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .icon-option {
+    width: 100%;
+    aspect-ratio: 1;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background: var(--bg-card);
+    color: var(--primary);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    padding: 0;
+  }
+
+  .icon-option:hover {
+    border-color: var(--accent);
+    transform: scale(1.05);
+  }
+
+  .icon-option.selected {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px var(--shadow);
+  }
+
+  /* معاينة الأيقونة */
+  .icon-preview-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    background: var(--bg-input);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-top: 12px;
+  }
+
+  .icon-preview-display {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+    overflow: hidden;
+    box-shadow: 0 4px 12px var(--shadow);
+  }
+
+  .icon-preview-display img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  .icon-preview-text {
+    font-size: 12px;
+    color: var(--text-sub);
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  .icon-preview-text strong {
+    color: var(--text-main);
+    display: block;
+    margin-bottom: 2px;
+    font-size: 13px;
+  }
+
+  /* Modal Actions */
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 2px dashed var(--border);
+  }
+
+  .modal-actions .btn { flex: 1; justify-content: center; padding: 14px; }
+
+  /* ===== Toast ===== */
+  .toast {
+    position: fixed; top: 90px; left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--bg-card); color: var(--text-main);
+    padding: 14px 24px; border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    border: 1px solid var(--border);
+    font-weight: 700; font-size: 14px;
+    display: flex; align-items: center; gap: 10px;
+    z-index: 99999; transition: transform 0.4s ease, opacity 0.3s ease;
+    opacity: 0; max-width: 90vw;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast.success { border-color: var(--success); }
+  .toast.success i { color: var(--success); }
+  .toast.error { border-color: var(--error); }
+  .toast.error i { color: var(--error); }
+  .toast.warning { border-color: var(--warning); }
+  .toast.warning i { color: var(--warning); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 720px) {
+    .container { padding: 20px 14px 40px; }
+    .card { padding: 20px 16px; border-radius: 14px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .header-title h1 { font-size: 16px; }
+    .header-title small { font-size: 10px; }
+    .header-logo { width: 42px; height: 42px; }
+    .header { padding: 14px; }
+    .btn { padding: 9px 14px; font-size: 13px; }
+    .card-title { font-size: 15px; flex-direction: column; align-items: stretch; }
+    .card-save-btn { width: 100%; justify-content: center; }
+    .logo-preview { width: 100px; height: 100px; }
+    .logo-section { justify-content: center; }
+    .color-section { padding: 16px 14px; }
+    .color-enable-toggle { position: static; margin-bottom: 12px; justify-content: flex-end; }
+    .buttons-list { grid-template-columns: 1fr; }
+    .btn-add-new { width: 100%; justify-content: center; }
+    .modal-box { padding: 22px 16px; }
+    .modal-actions { flex-direction: column; }
+    .icons-grid { grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); max-height: 180px; }
+  }
+
+  @media (max-width: 400px) {
+    .header-actions .btn span { display: none; }
+    .header-actions .btn { padding: 9px 12px; }
+    .button-item { flex-wrap: wrap; }
+    .button-item-actions { width: 100%; justify-content: flex-end; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-content">
+    <div class="header-title">
+      <img src="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png" 
+           alt="MEEZAN" class="header-logo" id="headerLogo">
+      <div>
+        <h1>إعدادات المنصة</h1>
+        <small>MEEZAN CONTROL PANEL</small>
+      </div>
+    </div>
+    <div class="header-actions">
+      <a href="index.html" class="btn btn-ghost">
+        <i class="fas fa-home"></i>
+        <span>الرئيسية</span>
+      </a>
+      <a href="login1.html" class="btn btn-ghost">
+        <i class="fas fa-arrow-right"></i>
+        <span>إعدادات الدخول</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="info-banner">
+    <i class="fas fa-info-circle"></i>
+    <span>كل قسم له <strong>زر حفظ خاص</strong>. التعديلات لا تُطبَّق إلا بعد الحفظ.</span>
+  </div>
+
+  <!-- ============ 1. الأزرار ============ -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-title-left">
+        <i class="fas fa-th-large"></i>
+        <span>إدارة الأزرار</span>
+      </div>
+      <button class="card-save-btn" data-save="buttons">
+        <i class="fas fa-save"></i> حفظ الأزرار
+      </button>
+    </div>
+
+    <div class="buttons-header">
+      <div class="buttons-header-info">
+        الأزرار الظاهرة: <strong id="visibleCount">0</strong> من <strong id="totalCount">0</strong>
+      </div>
+      <button class="btn-add-new" id="btnAddNew">
+        <i class="fas fa-plus"></i> إضافة زر جديد
+      </button>
+    </div>
+
+    <div class="buttons-list" id="buttonsList">
+      <!-- تُملأ ديناميكياً -->
+    </div>
+  </div>
+
+  <!-- ============ 2. معلومات الموقع ============ -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-title-left">
+        <i class="fas fa-tag"></i>
+        <span>معلومات الموقع</span>
+      </div>
+      <button class="card-save-btn" data-save="info">
+        <i class="fas fa-save"></i> حفظ المعلومات
+      </button>
+    </div>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label class="form-label">اسم الموقع (عربي)</label>
+        <input type="text" class="form-input" id="siteNameAr" placeholder="ميزان">
+      </div>
+      <div class="form-group">
+        <label class="form-label">اسم الموقع (إنجليزي)</label>
+        <input type="text" class="form-input" id="siteNameEn" placeholder="MEEZAN" style="direction:ltr;text-align:left;">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">الشعار / الوصف أسفل الاسم</label>
+      <input type="text" class="form-input" id="tagline" placeholder="منصة تعليمية إلكترونية متكاملة">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">عنوان فرعي في الفورم (صفحة الدخول)</label>
+      <input type="text" class="form-input" id="formSubtitle" placeholder="أدخل بياناتك للوصول إلى حسابك">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">رسالة الترحيب في الصفحة الرئيسية</label>
+      <input type="text" class="form-input" id="welcomeMessage" placeholder="أهلاً بك في منصة ميزان التعليمية">
+    </div>
+
+    <div class="form-group" style="margin-bottom:0;">
+      <label class="form-label">حقوق النشر (السنة تتغير تلقائياً)</label>
+      <input type="text" class="form-input" id="copyright" placeholder="ميزان | MEEZAN © 2026">
+      <small style="font-size:11px;color:var(--text-sub);display:block;margin-top:6px;">
+        سيتم استبدال السنة تلقائياً بالسنة الحالية.
+      </small>
+    </div>
+  </div>
+
+  <!-- ============ 3. اللوجو ============ -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-title-left">
+        <i class="fas fa-image"></i>
+        <span>شعار الموقع (اللوجو)</span>
+      </div>
+      <button class="card-save-btn" data-save="logo">
+        <i class="fas fa-save"></i> حفظ اللوجو
+      </button>
+    </div>
+
+    <div class="logo-section">
+      <img src="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png" 
+           alt="Logo Preview" class="logo-preview" id="logoPreview">
+
+      <div class="logo-controls">
+        <div class="tab-buttons">
+          <button class="tab-btn active" data-tab="logoUrl" type="button">
+            <i class="fas fa-link"></i> رابط
+          </button>
+          <button class="tab-btn" data-tab="logoUpload" type="button">
+            <i class="fas fa-cloud-upload-alt"></i> رفع صورة
+          </button>
+        </div>
+
+        <div class="tab-content active" id="tab-logoUrl">
+          <input type="url" class="form-input" id="logoUrl" 
+                 placeholder="https://example.com/logo.png"
+                 style="direction:ltr;text-align:left;">
+        </div>
+
+        <div class="tab-content" id="tab-logoUpload">
+          <label class="upload-area" for="logoFile">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>اضغط لاختيار صورة من جهازك</p>
+            <p style="font-size:11px;opacity:0.7;margin-top:4px;">PNG, JPG, SVG · أقل من 1MB</p>
+          </label>
+          <input type="file" id="logoFile" accept="image/*" style="display:none;">
+          <p id="logoUploadStatus" style="font-size:12px;color:var(--success);font-weight:700;margin-top:8px;display:none;"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 4. الألوان ============ -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-title-left">
+        <i class="fas fa-palette"></i>
+        <span>ألوان الموقع</span>
+      </div>
+      <button class="card-save-btn" data-save="colors">
+        <i class="fas fa-save"></i> حفظ الألوان
+      </button>
+    </div>
+
+    <div class="color-section light-mode">
+      <label class="color-enable-toggle">
+        <input type="checkbox" id="lightColorsEnabled">
+        <span>تفعيل ألوان الوضع النهاري</span>
+      </label>
+
+      <div class="color-section-title">
+        <i class="fas fa-sun"></i>
+        <span>ألوان الوضع النهاري</span>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">اللون الأساسي <span class="hint">فارغ = بدون تغيير</span></label>
+          <div class="color-input-wrap">
+            <label class="color-swatch" id="lightPrimarySwatch">
+              <input type="color" id="lightPrimaryPicker">
+            </label>
+            <input type="text" class="form-input" id="lightPrimary" placeholder="فارغ = بدون تغيير" style="direction:ltr;">
+            <button type="button" class="btn-clear-color" data-target="lightPrimary">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">اللون الذهبي <span class="hint">فارغ = بدون تغيير</span></label>
+          <div class="color-input-wrap">
+            <label class="color-swatch" id="lightAccentSwatch">
+              <input type="color" id="lightAccentPicker">
+            </label>
+            <input type="text" class="form-input" id="lightAccent" placeholder="فارغ = بدون تغيير" style="direction:ltr;">
+            <button type="button" class="btn-clear-color" data-target="lightAccent">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="color-section dark-mode">
+      <label class="color-enable-toggle">
+        <input type="checkbox" id="darkColorsEnabled">
+        <span>تفعيل ألوان الوضع الليلي</span>
+      </label>
+
+      <div class="color-section-title">
+        <i class="fas fa-moon"></i>
+        <span>ألوان الوضع الليلي</span>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">اللون الأساسي <span class="hint">فارغ = بدون تغيير</span></label>
+          <div class="color-input-wrap">
+            <label class="color-swatch" id="darkPrimarySwatch">
+              <input type="color" id="darkPrimaryPicker">
+            </label>
+            <input type="text" class="form-input" id="darkPrimary" placeholder="فارغ = بدون تغيير" style="direction:ltr;">
+            <button type="button" class="btn-clear-color" data-target="darkPrimary">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">اللون الذهبي <span class="hint">فارغ = بدون تغيير</span></label>
+          <div class="color-input-wrap">
+            <label class="color-swatch" id="darkAccentSwatch">
+              <input type="color" id="darkAccentPicker">
+            </label>
+            <input type="text" class="form-input" id="darkAccent" placeholder="فارغ = بدون تغيير" style="direction:ltr;">
+            <button type="button" class="btn-clear-color" data-target="darkAccent">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0;margin-top:18px;">
+      <label class="form-label">المظهر الافتراضي</label>
+      <select class="form-select" id="defaultTheme">
+        <option value="light">الوضع النهاري</option>
+        <option value="dark">الوضع الليلي</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ============ 5. التحكم ============ -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-title-left">
+        <i class="fas fa-shield-halved"></i>
+        <span>التحكم في التسجيل</span>
+      </div>
+      <button class="card-save-btn" data-save="control">
+        <i class="fas fa-save"></i> حفظ التحكم
+      </button>
+    </div>
+
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <strong>فتح / غلق تسجيل الدخول</strong>
+        <small>عند الإغلاق لن يستطيع أحد الدخول للمنصة</small>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="registrationOpen">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row" style="margin-bottom:0;">
+      <div class="toggle-info">
+        <strong>تذكر الجلسة</strong>
+        <small>البقاء مسجلاً حتى بعد إغلاق المتصفح</small>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="rememberSession">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ نافذة إضافة/تعديل زر ============ -->
+<div class="modal-overlay" id="buttonModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-header-icon">
+        <i class="fas fa-plus" id="modalIcon"></i>
+      </div>
+      <h2 id="modalTitle">إضافة زر جديد</h2>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">اسم الزر</label>
+      <input type="text" class="form-input" id="btnLabel" placeholder="مثال: المسؤولين" maxlength="30">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">الرابط / التحويل</label>
+      <input type="text" class="form-input" id="btnUrl" placeholder="admins.html أو https://example.com" style="direction:ltr;text-align:left;">
+      <small style="font-size:11px;color:var(--text-sub);display:block;margin-top:6px;">
+        رابط داخلي مثل <code>admins.html</code> أو خارجي مثل <code>https://...</code>
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">نوع الأيقونة</label>
+      <div class="icon-type-tabs">
+        <button type="button" class="icon-type-btn active" data-icon-type="fontawesome">
+          <i class="fas fa-icons"></i> أيقونات
+        </button>
+        <button type="button" class="icon-type-btn" data-icon-type="url">
+          <i class="fas fa-link"></i> رابط
+        </button>
+        <button type="button" class="icon-type-btn" data-icon-type="upload">
+          <i class="fas fa-cloud-upload-alt"></i> رفع
+        </button>
+      </div>
+
+      <!-- FontAwesome -->
+      <div class="icon-type-content active" id="iconType-fontawesome">
+        <div class="icons-grid" id="iconsGrid"></div>
+        <input type="hidden" id="selectedIcon" value="fa-circle">
+      </div>
+
+      <!-- URL -->
+      <div class="icon-type-content" id="iconType-url">
+        <input type="url" class="form-input" id="iconUrl" placeholder="https://example.com/icon.png" style="direction:ltr;text-align:left;">
+      </div>
+
+      <!-- Upload -->
+      <div class="icon-type-content" id="iconType-upload">
+        <label class="upload-area" for="iconFile">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>اضغط لاختيار صورة</p>
+          <p style="font-size:11px;opacity:0.7;margin-top:4px;">PNG, JPG, SVG · أقل من 500KB</p>
+        </label>
+        <input type="file" id="iconFile" accept="image/*" style="display:none;">
+        <p id="iconUploadStatus" style="font-size:12px;color:var(--success);font-weight:700;margin-top:8px;display:none;"></p>
+      </div>
+
+      <!-- معاينة -->
+      <div class="icon-preview-box">
+        <div class="icon-preview-display" id="iconPreviewDisplay">
+          <i class="fas fa-circle"></i>
+        </div>
+        <div class="icon-preview-text">
+          <strong>معاينة الأيقونة</strong>
+          <span id="iconPreviewInfo">اختر أيقونة أو أضف رابطاً</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="modalCancel" style="background: var(--bg-input); color: var(--text-main); border: 1.5px solid var(--border);">
+        <i class="fas fa-times"></i> إلغاء
+      </button>
+      <button class="btn btn-success" id="modalSave">
+        <i class="fas fa-check"></i> حفظ
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle" id="toastIcon"></i>
+  <span id="toastText"></span>
+</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+  getFirestore, doc, getDoc, setDoc, serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAmkCOrSaklhUiDdDfZCpSDQNmMYP-Gdw0",
+  authDomain: "qanon-c716d.firebaseapp.com",
+  projectId: "qanon-c716d",
+  storageBucket: "qanon-c716d.firebasestorage.app",
+  messagingSenderId: "757756130875",
+  appId: "1:757756130875:web:63c53534c6843e2a29ce1e",
+  measurementId: "G-8FZGTC779Y"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const $ = (id) => document.getElementById(id);
+
+// ============================================================
+// 🧹 دالة التنظيف
+// ============================================================
+function cleanInput(value) {
+  if (typeof value !== 'string') return '';
+  return value
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .replace(/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/g, ' ')
+    .replace(/^\s+|\s+$/g, '')
+    .trim();
+}
+
+// ============================================================
+// 📋 قائمة الأيقونات الجاهزة (100+)
+// ============================================================
+const FONT_AWESOME_ICONS = [
+  // المستخدمون والمجموعات
+  'fa-user', 'fa-users', 'fa-user-tie', 'fa-user-shield', 'fa-user-graduate',
+  'fa-user-cog', 'fa-user-plus', 'fa-user-minus', 'fa-user-check', 'fa-user-clock',
+  'fa-users-gear', 'fa-users-viewfinder', 'fa-user-doctor', 'fa-user-nurse',
+  'fa-children', 'fa-person', 'fa-people-group', 'fa-people-arrows',
+  
+  // التعليم
+  'fa-graduation-cap', 'fa-book', 'fa-book-open', 'fa-bookmark', 'fa-book-reader',
+  'fa-school', 'fa-chalkboard', 'fa-chalkboard-user', 'fa-pencil', 'fa-pen',
+  'fa-pen-to-square', 'fa-pen-ruler', 'fa-ruler', 'fa-clipboard', 'fa-clipboard-list',
+  'fa-clipboard-check', 'fa-file-pen', 'fa-file-signature', 'fa-file-lines',
+  'fa-award', 'fa-certificate', 'fa-trophy', 'fa-medal', 'fa-star',
+  'fa-microscope', 'fa-flask', 'fa-atom', 'fa-calculator',
+  
+  // الملفات والمحتوى
+  'fa-file', 'fa-file-pdf', 'fa-file-word', 'fa-file-excel', 'fa-file-powerpoint',
+  'fa-file-image', 'fa-file-video', 'fa-file-audio', 'fa-file-zipper',
+  'fa-folder', 'fa-folder-open', 'fa-folder-plus', 'fa-folder-tree',
+  'fa-folder-closed', 'fa-database', 'fa-hdd', 'fa-server',
+  
+  // التواصل
+  'fa-envelope', 'fa-envelope-open', 'fa-comments', 'fa-comment', 'fa-comment-dots',
+  'fa-message', 'fa-phone', 'fa-phone-volume', 'fa-mobile', 'fa-mobile-screen',
+  'fa-bell', 'fa-bell-ring', 'fa-at', 'fa-inbox', 'fa-paper-plane',
+  
+  // الوسائط
+  'fa-camera', 'fa-camera-retro', 'fa-video', 'fa-film', 'fa-photo-film',
+  'fa-music', 'fa-headphones', 'fa-microphone', 'fa-volume-high', 'fa-play',
+  'fa-play-circle', 'fa-pause', 'fa-stop', 'fa-forward', 'fa-backward',
+  'fa-image', 'fa-images', 'fa-icons', 'fa-palette', 'fa-brush',
+  
+  // التكنولوجيا
+  'fa-desktop', 'fa-laptop', 'fa-tablet', 'fa-tv', 'fa-keyboard',
+  'fa-mouse', 'fa-print', 'fa-robot', 'fa-microchip', 'fa-code',
+  'fa-terminal', 'fa-wifi', 'fa-network-wired', 'fa-cloud', 'fa-cloud-arrow-up',
+  'fa-cloud-arrow-down', 'fa-download', 'fa-upload', 'fa-link', 'fa-globe',
+  
+  // الإعدادات والأدوات
+  'fa-cog', 'fa-gear', 'fa-gears', 'fa-sliders', 'fa-tools', 'fa-screwdriver-wrench',
+  'fa-wrench', 'fa-hammer', 'fa-filter', 'fa-magnifying-glass', 'fa-search',
+  'fa-qrcode', 'fa-barcode', 'fa-ellipsis', 'fa-ellipsis-vertical',
+  'fa-bars', 'fa-list', 'fa-list-check', 'fa-table-list', 'fa-grid',
+  'fa-table-cells', 'fa-table-cells-large',
+  
+  // البيانات والإحصاء
+  'fa-chart-bar', 'fa-chart-line', 'fa-chart-pie', 'fa-chart-area',
+  'fa-chart-column', 'fa-chart-simple', 'fa-chart-gantt', 'fa-analytics',
+  'fa-square-poll-vertical', 'fa-square-poll-horizontal',
+  
+  // التنقل والأسهم
+  'fa-arrow-right', 'fa-arrow-left', 'fa-arrow-up', 'fa-arrow-down',
+  'fa-arrow-right-from-bracket', 'fa-arrow-left-from-bracket',
+  'fa-circle-arrow-right', 'fa-circle-arrow-left', 'fa-angles-right', 'fa-angles-left',
+  'fa-angle-right', 'fa-angle-left', 'fa-chevron-right', 'fa-chevron-left',
+  'fa-house', 'fa-home', 'fa-door-open', 'fa-door-closed',
+  
+  // الأمان
+  'fa-lock', 'fa-unlock', 'fa-key', 'fa-shield', 'fa-shield-halved',
+  'fa-shield-check', 'fa-fingerprint', 'fa-eye', 'fa-eye-slash',
+  'fa-user-lock', 'fa-lock-open', 'fa-vault', 'fa-safe',
+  
+  // عام
+  'fa-plus', 'fa-minus', 'fa-times', 'fa-check', 'fa-check-circle',
+  'fa-xmark', 'fa-xmark-circle', 'fa-exclamation-circle', 'fa-exclamation-triangle',
+  'fa-info-circle', 'fa-question-circle', 'fa-circle-question', 'fa-circle-info',
+  'fa-star', 'fa-heart', 'fa-bookmark', 'fa-tag', 'fa-tags',
+  'fa-thumbtack', 'fa-flag', 'fa-fire', 'fa-bolt', 'fa-lightbulb',
+  
+  // الوقت والتاريخ
+  'fa-clock', 'fa-calendar', 'fa-calendar-days', 'fa-calendar-check',
+  'fa-calendar-plus', 'fa-calendar-xmark', 'fa-hourglass', 'fa-stopwatch',
+  
+  // الحسابات والتجارة
+  'fa-credit-card', 'fa-wallet', 'fa-money-bill', 'fa-coins', 'fa-cart-shopping',
+  'fa-bag-shopping', 'fa-store', 'fa-receipt', 'fa-tag', 'fa-hand-holding-dollar',
+  
+  // النقل والموقع
+  'fa-location-dot', 'fa-map', 'fa-map-location-dot', 'fa-map-pin',
+  'fa-location-arrow', 'fa-compass', 'fa-route', 'fa-globe',
+  
+  // الطبيعة والعلوم
+  'fa-leaf', 'fa-tree', 'fa-seedling', 'fa-fire', 'fa-water',
+  'fa-sun', 'fa-moon', 'fa-cloud', 'fa-star', 'fa-bolt',
+  
+  // الرياضة والصحة
+  'fa-dumbbell', 'fa-futbol', 'fa-basketball', 'fa-football', 'fa-person-running',
+  'fa-heart-pulse', 'fa-stethoscope', 'fa-pills', 'fa-notes-medical', 'fa-syringe',
+  
+  // الإعلام
+  'fa-newspaper', 'fa-bullhorn', 'fa-rss', 'fa-tower-broadcast', 'fa-podcast',
+  
+  // أخرى مفيدة
+  'fa-plus-circle', 'fa-minus-circle', 'fa-circle-plus', 'fa-circle-minus',
+  'fa-pen-nib', 'fa-paintbrush', 'fa-highlighter', 'fa-eraser',
+  'fa-puzzle-piece', 'fa-cubes', 'fa-cube', 'fa-shapes', 'fa-layer-group',
+  'fa-object-group', 'fa-object-ungroup', 'fa-shuffle', 'fa-arrows-rotate',
+  'fa-rotate', 'fa-rotate-right', 'fa-repeat', 'fa-arrows-spin',
+  'fa-share', 'fa-share-nodes', 'fa-reply', 'fa-forward',
+  'fa-thumbs-up', 'fa-thumbs-down', 'fa-hand', 'fa-hand-peace', 'fa-hands-clapping',
+  'fa-fire-flame-curved', 'fa-certificate', 'fa-crown', 'fa-gem', 'fa-diamond'
+];
+
+// ============================================================
+// 📋 الإعدادات الافتراضية
+// ============================================================
+const DEFAULT_SETTINGS = {
+  siteNameAr: 'ميزان',
+  siteNameEn: 'MEEZAN',
+  tagline: 'منصة تعليمية إلكترونية متكاملة',
+  formSubtitle: 'أدخل بياناتك للوصول إلى حسابك',
+  welcomeMessage: 'أهلاً بك في منصة ميزان التعليمية',
+  copyright: 'ميزان | MEEZAN © 2026',
+  logoUrl: 'https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png',
+  lightPrimary: '',
+  lightAccent: '',
+  lightColorsEnabled: false,
+  darkPrimary: '',
+  darkAccent: '',
+  darkColorsEnabled: false,
+  defaultTheme: 'light',
+  registrationOpen: true,
+  rememberSession: true
+};
+
+const DEFAULT_BUTTONS = [
+  {
+    id: 'btn_admins_' + Date.now(),
+    label: 'المسؤولين',
+    url: 'admins.html',
+    icon: { type: 'fontawesome', value: 'fa-user-shield' },
+    visible: true,
+    order: 1
+  },
+  {
+    id: 'btn_users_' + (Date.now() + 1),
+    label: 'المستخدمين',
+    url: 'users.html',
+    icon: { type: 'fontawesome', value: 'fa-users' },
+    visible: true,
+    order: 2
+  }
+];
+
+// ============================================================
+// 📦 حالة الصفحة
+// ============================================================
+let buttonsData = [];
+let editingButtonId = null;
+let selectedIconValue = 'fa-circle';
+let selectedIconType = 'fontawesome';
+let uploadedIconBase64 = '';
+
+// ============================================================
+// 🎨 تحديث شكل مربع اللون
+// ============================================================
+function updateSwatchVisual(textInput, swatchEl) {
+  if (!textInput || !swatchEl) return;
+  const val = cleanInput(textInput.value);
+  if (val && /^#[0-9A-Fa-f]{6}$/.test(val)) {
+    swatchEl.classList.remove('empty');
+    swatchEl.style.background = val;
+  } else {
+    swatchEl.classList.add('empty');
+    swatchEl.style.background = '';
+  }
+}
+
+function refreshAllSwatches() {
+  updateSwatchVisual($('lightPrimary'), $('lightPrimarySwatch'));
+  updateSwatchVisual($('lightAccent'), $('lightAccentSwatch'));
+  updateSwatchVisual($('darkPrimary'), $('darkPrimarySwatch'));
+  updateSwatchVisual($('darkAccent'), $('darkAccentSwatch'));
+}
+
+// ============================================================
+// 🔔 Toast
+// ============================================================
+let toastTimeout;
+function showToast(text, type = 'success') {
+  const toast = $('toast');
+  const icon = $('toastIcon');
+  $('toastText').textContent = text;
+  toast.className = 'toast show ' + type;
+  const icons = {
+    success: 'fa-check-circle',
+    error: 'fa-times-circle',
+    warning: 'fa-exclamation-triangle'
+  };
+  icon.className = `fas ${icons[type] || icons.success}`;
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ============================================================
+// 🖼️ بناء شبكة الأيقونات
+// ============================================================
+function buildIconsGrid() {
+  const grid = $('iconsGrid');
+  grid.innerHTML = '';
+  FONT_AWESOME_ICONS.forEach(icon => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'icon-option';
+    btn.dataset.icon = icon;
+    btn.innerHTML = `<i class="fas ${icon}"></i>`;
+    btn.title = icon;
+    btn.addEventListener('click', () => selectIcon(icon));
+    grid.appendChild(btn);
+  });
+}
+
+function selectIcon(iconName) {
+  selectedIconValue = iconName;
+  selectedIconType = 'fontawesome';
+  document.querySelectorAll('.icon-option').forEach(el => el.classList.remove('selected'));
+  document.querySelector(`.icon-option[data-icon="${iconName}"]`)?.classList.add('selected');
+  updateIconPreview();
+}
+
+// ============================================================
+// 👁️ تحديث معاينة الأيقونة
+// ============================================================
+function updateIconPreview() {
+  const display = $('iconPreviewDisplay');
+  const info = $('iconPreviewInfo');
+
+  if (selectedIconType === 'fontawesome') {
+    display.innerHTML = `<i class="fas ${selectedIconValue}"></i>`;
+    info.textContent = `أيقونة: ${selectedIconValue}`;
+  } else if (selectedIconType === 'url') {
+    const url = cleanInput($('iconUrl').value);
+    if (url) {
+      display.innerHTML = `<img src="${url}" alt="icon">`;
+      info.textContent = 'صورة من رابط';
+    } else {
+      display.innerHTML = `<i class="fas fa-link"></i>`;
+      info.textContent = 'أدخل رابط الصورة';
+    }
+  } else if (selectedIconType === 'upload') {
+    if (uploadedIconBase64) {
+      display.innerHTML = `<img src="${uploadedIconBase64}" alt="icon">`;
+      info.textContent = 'صورة مرفوعة';
+    } else {
+      display.innerHTML = `<i class="fas fa-cloud-upload-alt"></i>`;
+      info.textContent = 'ارفع صورة';
+    }
+  }
+}
+
+// ============================================================
+// 🔄 تبديل تبويبات نوع الأيقونة
+// ============================================================
+document.querySelectorAll('.icon-type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const type = btn.dataset.iconType;
+    selectedIconType = type;
+
+    document.querySelectorAll('.icon-type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.querySelectorAll('.icon-type-content').forEach(c => c.classList.remove('active'));
+    document.getElementById(`iconType-${type}`).classList.add('active');
+
+    updateIconPreview();
+  });
+});
+
+// معاينة رابط الأيقونة
+$('iconUrl').addEventListener('input', () => {
+  if (selectedIconType === 'url') updateIconPreview();
+});
+
+// رفع أيقونة
+$('iconFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (file.size > 500 * 1024) {
+    showToast('حجم الصورة أكبر من 500KB', 'error');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    uploadedIconBase64 = ev.target.result;
+    $('iconUploadStatus').textContent = `✅ تم تحميل: ${file.name}`;
+    $('iconUploadStatus').style.display = 'block';
+    updateIconPreview();
+  };
+  reader.readAsDataURL(file);
+});
+
+// ============================================================
+// 🔘 عرض قائمة الأزرار
+// ============================================================
+function renderButtonsList() {
+  const list = $('buttonsList');
+  list.innerHTML = '';
+
+  if (!buttonsData.length) {
+    list.innerHTML = `
+      <div class="empty-buttons">
+        <i class="fas fa-inbox"></i>
+        <p>لا توجد أزرار بعد. اضغط "إضافة زر جديد" للبدء.</p>
+      </div>
+    `;
+    updateCounts();
+    return;
+  }
+
+  // رتّب حسب order
+  buttonsData.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  buttonsData.forEach((btn) => {
+    const item = document.createElement('div');
+    item.className = 'button-item' + (btn.visible === false ? ' hidden-item' : '');
+
+    // الأيقونة
+    const iconWrap = document.createElement('div');
+    iconWrap.className = 'button-item-icon';
+    const icon = btn.icon || { type: 'fontawesome', value: 'fa-circle' };
+    if (icon.type === 'url' || icon.type === 'upload') {
+      iconWrap.innerHTML = `<img src="${icon.value}" alt="${btn.label}" onerror="this.parentNode.innerHTML='<i class=\\'fas fa-circle\\'></i>'">`;
+    } else {
+      iconWrap.innerHTML = `<i class="fas ${icon.value}"></i>`;
+    }
+
+    // المعلومات
+    const info = document.createElement('div');
+    info.className = 'button-item-info';
+    info.innerHTML = `
+      <div class="button-item-label">${btn.label}</div>
+      <div class="button-item-url">${btn.url || 'بدون رابط'}</div>
+    `;
+
+    // الأزرار
+    const actions = document.createElement('div');
+    actions.className = 'button-item-actions';
+
+    // تعديل
+    const editBtn = document.createElement('button');
+    editBtn.className = 'btn-icon-action edit';
+    editBtn.title = 'تعديل';
+    editBtn.innerHTML = '<i class="fas fa-pen"></i>';
+    editBtn.addEventListener('click', () => openEditModal(btn.id));
+
+    // إخفاء / إظهار
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'btn-icon-action ' + (btn.visible === false ? 'show' : 'hide');
+    toggleBtn.title = btn.visible === false ? 'إظهار' : 'إخفاء';
+    toggleBtn.innerHTML = btn.visible === false
+      ? '<i class="fas fa-eye"></i>'
+      : '<i class="fas fa-eye-slash"></i>';
+    toggleBtn.addEventListener('click', () => toggleVisibility(btn.id));
+
+    // حذف
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn-icon-action delete';
+    deleteBtn.title = 'حذف';
+    deleteBtn.innerHTML = '<i class="fas fa-trash-can"></i>';
+    deleteBtn.addEventListener('click', () => deleteButton(btn.id));
+
+    actions.appendChild(editBtn);
+    actions.appendChild(toggleBtn);
+    actions.appendChild(deleteBtn);
+
+    item.appendChild(iconWrap);
+    item.appendChild(info);
+    item.appendChild(actions);
+
+    list.appendChild(item);
+  });
+
+  updateCounts();
+}
+
+function updateCounts() {
+  const visible = buttonsData.filter(b => b.visible !== false).length;
+  $('visibleCount').textContent = visible;
+  $('totalCount').textContent = buttonsData.length;
+}
+
+// ============================================================
+// ➕ فتح نافذة إضافة زر
+// ============================================================
+$('btnAddNew').addEventListener('click', () => {
+  editingButtonId = null;
+  $('modalTitle').textContent = 'إضافة زر جديد';
+  $('modalIcon').className = 'fas fa-plus';
+  $('btnLabel').value = '';
+  $('btnUrl').value = '';
+  $('iconUrl').value = '';
+  $('iconFile').value = '';
+  $('iconUploadStatus').style.display = 'none';
+  uploadedIconBase64 = '';
+  selectedIconValue = 'fa-circle';
+  selectedIconType = 'fontawesome';
+
+  // إعادة تعيين التبويبات
+  document.querySelectorAll('.icon-type-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.icon-type-btn[data-icon-type="fontawesome"]').classList.add('active');
+  document.querySelectorAll('.icon-type-content').forEach(c => c.classList.remove('active'));
+  $('iconType-fontawesome').classList.add('active');
+
+  document.querySelectorAll('.icon-option').forEach(el => el.classList.remove('selected'));
+  updateIconPreview();
+
+  $('buttonModal').classList.add('show');
+});
+
+// ============================================================
+// ✏️ فتح نافذة تعديل زر
+// ============================================================
+function openEditModal(id) {
+  const btn = buttonsData.find(b => b.id === id);
+  if (!btn) return;
+
+  editingButtonId = id;
+  $('modalTitle').textContent = 'تعديل الزر';
+  $('modalIcon').className = 'fas fa-pen';
+
+  $('btnLabel').value = btn.label || '';
+  $('btnUrl').value = btn.url || '';
+
+  const icon = btn.icon || { type: 'fontawesome', value: 'fa-circle' };
+  selectedIconType = icon.type || 'fontawesome';
+
+  // إعادة تعيين التبويبات
+  document.querySelectorAll('.icon-type-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.icon-type-btn[data-icon-type="${selectedIconType}"]`)?.classList.add('active');
+  document.querySelectorAll('.icon-type-content').forEach(c => c.classList.remove('active'));
+  $(`iconType-${selectedIconType}`)?.classList.add('active');
+
+  // إعادة تعيين
+  $('iconUrl').value = '';
+  $('iconFile').value = '';
+  uploadedIconBase64 = '';
+  document.querySelectorAll('.icon-option').forEach(el => el.classList.remove('selected'));
+
+  if (selectedIconType === 'fontawesome') {
+    selectedIconValue = icon.value;
+    document.querySelector(`.icon-option[data-icon="${icon.value}"]`)?.classList.add('selected');
+  } else if (selectedIconType === 'url') {
+    $('iconUrl').value = icon.value;
+  } else if (selectedIconType === 'upload') {
+    uploadedIconBase64 = icon.value;
+    $('iconUploadStatus').textContent = '✅ صورة محمّلة';
+    $('iconUploadStatus').style.display = 'block';
+  }
+
+  updateIconPreview();
+  $('buttonModal').classList.add('show');
+}
+
+// ============================================================
+// ❌ إغلاق النافذة
+// ============================================================
+$('modalCancel').addEventListener('click', () => {
+  $('buttonModal').classList.remove('show');
+});
+
+$('buttonModal').addEventListener('click', (e) => {
+  if (e.target === $('buttonModal')) {
+    $('buttonModal').classList.remove('show');
+  }
+});
+
+// ============================================================
+// 💾 حفظ الزر (إضافة أو تعديل)
+// ============================================================
+$('modalSave').addEventListener('click', () => {
+  const label = cleanInput($('btnLabel').value);
+  const url = cleanInput($('btnUrl').value);
+
+  if (!label) {
+    showToast('الرجاء إدخال اسم الزر', 'error');
+    return;
+  }
+
+  // تحديد الأيقونة النهائية
+  let finalIcon = { type: 'fontawesome', value: 'fa-circle' };
+  if (selectedIconType === 'fontawesome') {
+    finalIcon = { type: 'fontawesome', value: selectedIconValue };
+  } else if (selectedIconType === 'url') {
+    const iconUrl = cleanInput($('iconUrl').value);
+    if (!iconUrl) {
+      showToast('الرجاء إدخال رابط الأيقونة', 'error');
+      return;
+    }
+    finalIcon = { type: 'url', value: iconUrl };
+  } else if (selectedIconType === 'upload') {
+    if (!uploadedIconBase64) {
+      showToast('الرجاء رفع صورة الأيقونة', 'error');
+      return;
+    }
+    finalIcon = { type: 'upload', value: uploadedIconBase64 };
+  }
+
+  if (editingButtonId) {
+    // تعديل
+    const idx = buttonsData.findIndex(b => b.id === editingButtonId);
+    if (idx !== -1) {
+      buttonsData[idx] = {
+        ...buttonsData[idx],
+        label,
+        url,
+        icon: finalIcon
+      };
+    }
+    showToast('تم تعديل الزر ✓', 'success');
+  } else {
+    // إضافة
+    const newOrder = buttonsData.length > 0
+      ? Math.max(...buttonsData.map(b => b.order || 0)) + 1
+      : 1;
+
+    buttonsData.push({
+      id: 'btn_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+      label,
+      url,
+      icon: finalIcon,
+      visible: true,
+      order: newOrder
+    });
+    showToast('تمت إضافة الزر ✓', 'success');
+  }
+
+  $('buttonModal').classList.remove('show');
+  renderButtonsList();
+});
+
+// ============================================================
+// 🔄 تبديل الظهور
+// ============================================================
+function toggleVisibility(id) {
+  const idx = buttonsData.findIndex(b => b.id === id);
+  if (idx === -1) return;
+
+  buttonsData[idx].visible = !buttonsData[idx].visible;
+  showToast(
+    buttonsData[idx].visible ? 'تم الإظهار ✓' : 'تم الإخفاء ✓',
+    'success'
+  );
+  renderButtonsList();
+}
+
+// ============================================================
+// 🗑️ حذف زر
+// ============================================================
+function deleteButton(id) {
+  const btn = buttonsData.find(b => b.id === id);
+  if (!btn) return;
+
+  if (!confirm(`هل تريد حذف الزر "${btn.label}"؟`)) return;
+
+  buttonsData = buttonsData.filter(b => b.id !== id);
+  showToast('تم حذف الزر', 'success');
+  renderButtonsList();
+}
+
+// ============================================================
+// 📥 تحميل الإعدادات من Firebase
+// ============================================================
+async function loadSettings() {
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'login'));
+    if (snap.exists()) {
+      const data = snap.data();
+      fillSettingsFields({ ...DEFAULT_SETTINGS, ...data });
+    } else {
+      fillSettingsFields(DEFAULT_SETTINGS);
+    }
+  } catch (e) {
+    console.error('خطأ في التحميل:', e);
+    fillSettingsFields(DEFAULT_SETTINGS);
+  }
+}
+
+function fillSettingsFields(data) {
+  $('siteNameAr').value = data.siteNameAr || '';
+  $('siteNameEn').value = data.siteNameEn || '';
+  $('tagline').value = data.tagline || '';
+  $('formSubtitle').value = data.formSubtitle || '';
+  $('welcomeMessage').value = data.welcomeMessage || '';
+  $('copyright').value = data.copyright || '';
+  $('logoUrl').value = data.logoUrl || '';
+  $('lightPrimary').value = data.lightPrimary || '';
+  $('lightAccent').value = data.lightAccent || '';
+  $('lightColorsEnabled').checked = data.lightColorsEnabled === true;
+  $('darkPrimary').value = data.darkPrimary || '';
+  $('darkAccent').value = data.darkAccent || '';
+  $('darkColorsEnabled').checked = data.darkColorsEnabled === true;
+  $('defaultTheme').value = data.defaultTheme || 'light';
+  $('registrationOpen').checked = data.registrationOpen !== false;
+  $('rememberSession').checked = data.rememberSession !== false;
+
+  if (data.logoUrl) $('logoPreview').src = data.logoUrl;
+
+  refreshAllSwatches();
+}
+
+// ============================================================
+// 📥 تحميل الأزرار من Firebase
+// ============================================================
+async function loadButtons() {
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'buttons'));
+    if (snap.exists()) {
+      const data = snap.data();
+      buttonsData = Array.isArray(data.items) ? data.items : [];
+    } else {
+      // أول مرة → أنشئ الأزرار الافتراضية
+      buttonsData = [...DEFAULT_BUTTONS];
+      // احفظها مباشرة
+      await setDoc(doc(db, 'settings', 'buttons'), {
+        items: buttonsData,
+        updatedAt: serverTimestamp()
+      });
+    }
+  } catch (e) {
+    console.error('خطأ في تحميل الأزرار:', e);
+    buttonsData = [...DEFAULT_BUTTONS];
+  }
+  renderButtonsList();
+}
+
+// ============================================================
+// 💾 حفظ الأقسام
+// ============================================================
+async function saveSection(section, btn) {
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+  try {
+    let dataToSave = {};
+
+    if (section === 'buttons') {
+      // حفظ الأزرار في مستند منفصل
+      await setDoc(doc(db, 'settings', 'buttons'), {
+        items: buttonsData,
+        updatedAt: serverTimestamp()
+      });
+      showToast('تم حفظ الأزرار ✓', 'success');
+    } else {
+      if (section === 'info') {
+        dataToSave = {
+          siteNameAr: cleanInput($('siteNameAr').value),
+          siteNameEn: cleanInput($('siteNameEn').value),
+          tagline: cleanInput($('tagline').value),
+          formSubtitle: cleanInput($('formSubtitle').value),
+          welcomeMessage: cleanInput($('welcomeMessage').value),
+          copyright: cleanInput($('copyright').value)
+        };
+      } else if (section === 'logo') {
+        dataToSave = {
+          logoUrl: cleanInput($('logoUrl').value)
+        };
+      } else if (section === 'colors') {
+        dataToSave = {
+          lightPrimary: cleanInput($('lightPrimary').value),
+          lightAccent: cleanInput($('lightAccent').value),
+          lightColorsEnabled: $('lightColorsEnabled').checked,
+          darkPrimary: cleanInput($('darkPrimary').value),
+          darkAccent: cleanInput($('darkAccent').value),
+          darkColorsEnabled: $('darkColorsEnabled').checked,
+          defaultTheme: $('defaultTheme').value
+        };
+      } else if (section === 'control') {
+        dataToSave = {
+          registrationOpen: $('registrationOpen').checked,
+          rememberSession: $('rememberSession').checked
+        };
+      }
+
+      await setDoc(doc(db, 'settings', 'login'), {
+        ...dataToSave,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+
+      const names = {
+        info: 'معلومات الموقع',
+        logo: 'اللوجو',
+        colors: 'الألوان',
+        control: 'التحكم'
+      };
+      showToast(`تم حفظ ${names[section]} ✓`, 'success');
+    }
+  } catch (e) {
+    console.error('خطأ في الحفظ:', e);
+    showToast('حدث خطأ أثناء الحفظ', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+}
+
+// ربط أزرار الحفظ
+document.querySelectorAll('[data-save]').forEach(btn => {
+  btn.addEventListener('click', () => saveSection(btn.dataset.save, btn));
+});
+
+// ============================================================
+// 🔗 ربط الألوان
+// ============================================================
+function bindColorPicker(pickerId, textId, swatchId) {
+  const picker = $(pickerId);
+  const text = $(textId);
+  const swatch = $(swatchId);
+
+  picker.addEventListener('input', () => {
+    text.value = picker.value;
+    updateSwatchVisual(text, swatch);
+  });
+
+  text.addEventListener('input', () => {
+    const v = cleanInput(text.value);
+    if (/^#[0-9A-Fa-f]{6}$/.test(v)) picker.value = v;
+    updateSwatchVisual(text, swatch);
+  });
+}
+
+bindColorPicker('lightPrimaryPicker', 'lightPrimary', 'lightPrimarySwatch');
+bindColorPicker('lightAccentPicker', 'lightAccent', 'lightAccentSwatch');
+bindColorPicker('darkPrimaryPicker', 'darkPrimary', 'darkPrimarySwatch');
+bindColorPicker('darkAccentPicker', 'darkAccent', 'darkAccentSwatch');
+
+// أزرار مسح اللون
+document.querySelectorAll('.btn-clear-color').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetId = btn.dataset.target;
+    const input = $(targetId);
+    if (input) {
+      input.value = '';
+      const pickerMap = {
+        lightPrimary: 'lightPrimaryPicker',
+        lightAccent: 'lightAccentPicker',
+        darkPrimary: 'darkPrimaryPicker',
+        darkAccent: 'darkAccentPicker'
+      };
+      const pickerId = pickerMap[targetId];
+      if (pickerId) $(pickerId).value = '#000000';
+      refreshAllSwatches();
+    }
+  });
+});
+
+// ============================================================
+// 🖼️ تبويبات اللوجو
+// ============================================================
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(`tab-${tab}`).classList.add('active');
+  });
+});
+
+$('logoUrl').addEventListener('input', () => {
+  const url = cleanInput($('logoUrl').value);
+  if (url) $('logoPreview').src = url;
+});
+
+$('logoFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (file.size > 1024 * 1024) {
+    showToast('حجم الصورة أكبر من 1MB', 'error');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const dataUrl = ev.target.result;
+    $('logoPreview').src = dataUrl;
+    $('logoUploadStatus').textContent = `✅ تم تحميل: ${file.name}`;
+    $('logoUploadStatus').style.display = 'block';
+    $('logoUrl').value = dataUrl;
+  };
+  reader.readAsDataURL(file);
+});
+
+// ============================================================
+// 🚀 التشغيل
+// ============================================================
+buildIconsGrid();
+loadSettings();
+loadButtons();
+</script>
+
+</body>
+</html>

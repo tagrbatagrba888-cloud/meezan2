@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0B3D2E">
+<title>إعدادات صفحة المستخدمين | MEEZAN</title>
+<link rel="icon" type="image/png" href="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --primary: #0B3D2E;
+    --primary-light: #145A43;
+    --primary-lighter: #1E7A5A;
+    --accent: #C9A961;
+    --accent-light: #E0C888;
+    --bg-page: #F5F1E8;
+    --bg-card: #FFFFFF;
+    --bg-input: #F8FBF9;
+    --text-main: #0B3D2E;
+    --text-sub: #5A6B66;
+    --border: #E0E5E1;
+    --shadow: rgba(11, 61, 46, 0.15);
+    --error: #C0392B;
+    --success: #1E7A5A;
+    --warning: #E67E22;
+    --info: #2980B9;
+  }
+
+  [data-theme="dark"] {
+    --primary: #C9A961;
+    --primary-light: #E0C888;
+    --primary-lighter: #F0DBA8;
+    --accent: #0B3D2E;
+    --accent-light: #145A43;
+    --bg-page: #0A1612;
+    --bg-card: #11201B;
+    --bg-input: #1A2C25;
+    --text-main: #F5F1E8;
+    --text-sub: #9BAEA6;
+    --border: #1E3A31;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --error: #E74C3C;
+    --success: #2ECC71;
+    --warning: #F39C12;
+    --info: #3498DB;
+  }
+
+  html, body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg-page);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== Header ===== */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 20px;
+    box-shadow: 0 4px 20px var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .header-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #fff;
+  }
+
+  .header-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    padding: 4px;
+    border: 2px solid var(--accent);
+  }
+
+  .header-title h1 { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
+  .header-title small { display: block; font-size: 11px; color: var(--accent-light); font-weight: 500; letter-spacing: 2px; }
+
+  .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+
+  .btn-success { background: var(--success); color: #fff; }
+  .btn-success:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(30, 122, 90, 0.3); }
+
+  .btn-ghost { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.25); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.25); }
+
+  .btn-danger { background: var(--error); color: #fff; }
+  .btn-danger:hover:not(:disabled) { opacity: 0.9; }
+
+  .btn-warning { background: var(--warning); color: #fff; }
+  .btn-warning:hover:not(:disabled) { opacity: 0.9; }
+
+  .btn-sm { padding: 8px 14px; font-size: 13px; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+  /* ===== Container ===== */
+  .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px 40px; }
+
+  .info-banner {
+    background: linear-gradient(135deg, rgba(201, 169, 97, 0.12), rgba(201, 169, 97, 0.05));
+    border: 1.5px solid var(--accent);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .info-banner i { color: var(--accent); font-size: 20px; flex-shrink: 0; }
+
+  /* ===== Card ===== */
+  .card {
+    background: var(--bg-card);
+    border-radius: 18px;
+    padding: 26px;
+    margin-bottom: 22px;
+    box-shadow: 0 6px 24px var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  .card-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px dashed var(--border);
+    flex-wrap: wrap;
+  }
+
+  .card-title-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .card-title i {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+
+  .card-save-btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: var(--success);
+    color: #fff;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .card-save-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(30, 122, 90, 0.3);
+  }
+
+  .card-save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ===== Form ===== */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .form-group { margin-bottom: 18px; }
+
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .form-label .hint { font-size: 11px; color: var(--text-sub); font-weight: 500; margin-right: 6px; }
+
+  .form-input, .form-textarea, .form-select {
+    width: 100%;
+    padding: 13px 16px;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    transition: all 0.25s ease;
+    outline: none;
+    font-weight: 500;
+  }
+
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
+    border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1);
+  }
+
+  .form-textarea { resize: vertical; min-height: 70px; }
+
+  /* ===== Color Section ===== */
+  .color-section {
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 18px;
+    border: 2px solid var(--border);
+    position: relative;
+  }
+
+  .color-section-title {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .color-section-title i {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .color-section.light-mode {
+    background: linear-gradient(135deg, #FFFBEE 0%, #F5F1E8 100%);
+    border-color: #E0C888;
+  }
+
+  .color-section.light-mode .color-section-title { color: #8B6914; border-color: #E0C888; }
+  .color-section.light-mode .color-section-title i { background: linear-gradient(135deg, #F39C12, #E0C888); }
+
+  .color-section.dark-mode {
+    background: linear-gradient(135deg, #0A1612 0%, #11201B 100%);
+    border-color: #C9A961;
+  }
+
+  .color-section.dark-mode .color-section-title { color: #F5F1E8; border-color: #1E3A31; }
+  .color-section.dark-mode .color-section-title i { background: linear-gradient(135deg, #0B3D2E, #145A43); }
+  .color-section.dark-mode .form-label { color: #F5F1E8; }
+  .color-section.dark-mode .form-label .hint { color: #9BAEA6; }
+
+  .color-section.dark-mode .color-input-wrap .form-input {
+    background: #1A2C25;
+    border-color: #1E3A31;
+    color: #F5F1E8;
+  }
+
+  .color-section.dark-mode .color-input-wrap .form-input:focus {
+    border-color: #C9A961;
+    box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.15);
+  }
+
+  .color-section.dark-mode .color-swatch { background: #1A2C25; border-color: #1E3A31; }
+
+  .color-enable-toggle {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .color-enable-toggle input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary);
+  }
+
+  .color-section.light-mode .color-enable-toggle { color: #8B6914; }
+  .color-section.dark-mode .color-enable-toggle { color: #C9A961; }
+
+  .color-input-wrap { display: flex; align-items: center; gap: 12px; }
+
+  .color-swatch {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    cursor: pointer;
+    padding: 4px;
+    background: var(--bg-input);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .color-swatch:hover { transform: scale(1.05); }
+
+  .color-swatch.empty::after {
+    content: 'Ø';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #999;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 6px,
+      rgba(153, 153, 153, 0.15) 6px,
+      rgba(153, 153, 153, 0.15) 12px
+    );
+    pointer-events: none;
+    font-weight: 300;
+  }
+
+  input[type="color"] {
+    width: 100%; height: 100%;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: transparent;
+  }
+
+  .color-input-wrap .form-input {
+    flex: 1;
+    font-family: 'Cairo', monospace;
+    letter-spacing: 1px;
+    direction: ltr;
+    text-align: left;
+  }
+
+  .btn-clear-color {
+    padding: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: var(--bg-input);
+    color: var(--text-sub);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .btn-clear-color:hover { background: var(--error); color: #fff; border-color: var(--error); }
+
+  /* ===== Logo ===== */
+  .logo-preview {
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    object-fit: contain;
+    border: 3px solid var(--accent);
+    background: var(--bg-input);
+    padding: 8px;
+    box-shadow: 0 8px 24px var(--shadow);
+  }
+
+  .logo-section { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .logo-controls { flex: 1; min-width: 260px; }
+
+  .tab-buttons {
+    display: flex; gap: 8px; margin-bottom: 14px;
+    background: var(--bg-input); padding: 4px;
+    border-radius: 12px; border: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    flex: 1; padding: 9px 12px; border: none; background: transparent;
+    border-radius: 9px; font-family: 'Cairo', sans-serif;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    color: var(--text-sub); transition: all 0.25s ease;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+
+  .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px var(--shadow); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .upload-area {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: var(--bg-input);
+    display: block;
+  }
+
+  .upload-area:hover { border-color: var(--primary); background: var(--bg-card); }
+  .upload-area i { font-size: 28px; color: var(--primary); margin-bottom: 8px; display: block; }
+  .upload-area p { font-size: 13px; color: var(--text-sub); font-weight: 600; }
+
+  /* ===== Toggle Switch ===== */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--bg-input);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 12px;
+    gap: 16px;
+    transition: all 0.25s ease;
+  }
+
+  .toggle-row:hover {
+    border-color: var(--accent);
+    background: var(--bg-card);
+  }
+
+  .toggle-info { flex: 1; }
+  .toggle-info strong { display: block; font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 3px; }
+  .toggle-info small { font-size: 12px; color: var(--text-sub); font-weight: 500; }
+
+  .switch { position: relative; display: inline-block; width: 54px; height: 30px; flex-shrink: 0; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #cbd5d1;
+    transition: 0.3s;
+    border-radius: 30px;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 22px; width: 22px;
+    left: 4px; bottom: 4px;
+    background: #fff;
+    transition: 0.3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  .switch input:checked + .slider { background: var(--success); }
+  .switch input:checked + .slider:before { transform: translateX(-24px); }
+
+  /* ===== History Bar ===== */
+  .history-bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 22px;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 14px var(--shadow);
+    flex-wrap: wrap;
+  }
+
+  .history-bar .label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-sub);
+    margin-left: 6px;
+  }
+
+  .hist-btn {
+    padding: 8px 14px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--bg-input);
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.25s ease;
+  }
+
+  .hist-btn:hover:not(:disabled) {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  .hist-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--bg-input);
+    color: var(--text-sub);
+    border: 1px solid var(--border);
+  }
+
+  /* ===== Danger Zone ===== */
+  .danger-zone {
+    background: linear-gradient(135deg, rgba(192, 57, 43, 0.08), rgba(192, 57, 43, 0.03));
+    border: 2px solid rgba(192, 57, 43, 0.3);
+    border-radius: 18px;
+    padding: 24px;
+    margin-top: 30px;
+  }
+
+  .danger-zone-title {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 17px; font-weight: 800; color: var(--error);
+    margin-bottom: 16px; padding-bottom: 14px;
+    border-bottom: 2px dashed rgba(192, 57, 43, 0.3);
+  }
+
+  .danger-zone-title i {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: var(--error); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+
+  .danger-zone-desc { font-size: 13.5px; color: var(--text-sub); margin-bottom: 16px; line-height: 1.7; }
+
+  /* ===== Toast ===== */
+  .toast {
+    position: fixed; top: 90px; left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--bg-card); color: var(--text-main);
+    padding: 14px 24px; border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    border: 1px solid var(--border);
+    font-weight: 700; font-size: 14px;
+    display: flex; align-items: center; gap: 10px;
+    z-index: 99999; transition: transform 0.4s ease, opacity 0.3s ease;
+    opacity: 0; max-width: 90vw;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast.success { border-color: var(--success); }
+  .toast.success i { color: var(--success); }
+  .toast.error { border-color: var(--error); }
+  .toast.error i { color: var(--error); }
+  .toast.warning { border-color: var(--warning); }
+  .toast.warning i { color: var(--warning); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 720px) {
+    .container { padding: 20px 14px 40px; }
+    .card { padding: 20px 16px; border-radius: 14px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .header-title h1 { font-size: 16px; }
+    .header-title small { font-size: 10px; }
+    .header-logo { width: 42px; height: 42px; }
+    .header { padding: 14px; }
+    .btn { padding: 9px 14px; font-size: 13px; }
+    .card-title { font-size: 15px; flex-direction: column; align-items: stretch; }
+    .card-save-btn { width: 100%; justify-content: center; }
+    .logo-preview { width: 100px; height: 100px; }
+    .logo-section { justify-content: center; }
+    .color-section { padding: 16px 14px; }
+    .color-enable-toggle { position: static; margin-bottom: 12px; justify-content: flex-end; }
+    .history-bar { padding: 10px 12px; }
+    .hist-btn { padding: 7px 11px; font-size: 12px; }
+    .info-banner { font-size: 12.5px; padding: 12px 14px; }
+    .danger-zone { padding: 18px 14px; }
+  }
+
+  @media (max-width: 400px) {
+    .header-actions .btn span { display: none; }
+    .header-actions .btn { padding: 9px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-content">
+    <div class="header-title">
+      <img src="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png" 
+           alt="MEEZAN" class="header-logo" id="headerLogo">
+      <div>
+        <h1>إعدادات صفحة المستخدمين</h1>
+        <small>MEEZAN USER LOGIN SETTINGS</small>
+      </div>
+    </div>
+    <div class="header-actions">
+      <a href="login.html" class="btn btn-ghost">
+        <i class="fas fa-arrow-right"></i>
+        <span>صفحة الدخول</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="info-banner">
+    <i class="fas fa-info-circle"></i>
+    <span>كل قسم له <strong>زر حفظ خاص</strong>. التعديلات لا تُطبَّق إلا بعد الضغط على "حفظ".</span>
+  </div>
+
+  <!-- History Bar -->
+  <div class="history-bar">
+    <span class="label"><i class="fas fa-clock-rotate-left"></i> سجل التعديلات:</span>
+    <button class="hist-btn" id="undoBtn" disabled title="Ctrl+Z">
+      <i class="fas fa-rotate-left"></i> تراجع
+    </button>
+    <button class="hist-btn" id="redoBtn" disabled title="Ctrl+Y">
+      <i class="fas fa-rotate-right"></i> إعادة
+    </button>
+    <span class="badge" id="historyBadge">0 خلف · 0 أمام</span>
+  </div>
+
+  <!-- ============ 1. معلومات الموقع ============ -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-title-left">
+        <i class="fas fa-tag"></i>
+        <span>معلومات الموقع</span>
+      </div>
+      <button class="card-save-btn" data-save="info">
+        <i class="fas fa-save"></i> حفظ المعلومات
+      </button>
+    </div>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label class="form-label">اسم الموقع (عربي)</label>
+        <input type="text" class="form-input" id="siteNameAr" placeholder="ميزان">
+      </div>
+      <div class="form-group">
+        <label class="form-label">اسم الموقع (إنجليزي)</label>
+        <input type="text" class="form-input" id="siteNameEn" placeholder="MEEZAN" style="direction:ltr;text-align:left;">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">الشعار / الوصف أسفل الاسم</label>
+      <input type="text" class="form-input" id="tagline" placeholder="منصة تعليمية إلكترونية متكاملة">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">عنوان فرعي في الفورم</label>
+      <input type="text" class="form-input" id="formSubtitle" placeholder="أدخل بياناتك للوصول إلى حسابك">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">رسالة الترحيب (بعد الدخول)</label>
+      <input type="text" class="form-input" id="welcomeMessage" placeholder="أهلاً بك في منصة ميزان">
+    </div>
+
+    <div class="form-group" style="margin-bottom:0;">
+      <label class="form-label">حقوق النشر <span class="hint">(السنة تتغير تلقائياً)</span></label>
+      <input type="text" class="form-input" id="copyright" placeholder="ميزان | MEEZAN © 2026">
+      <small style="font-size:11px;color:var(--text-sub);display:block;margin-top:6px;">
+        سيتم استبدال السنة تلقائياً بالسنة الحالية.
+      </small>
+    </div>
+  </div>
+
+  <!-- ============ 2. اللوجو ============ -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-title-left">
+        <i class="fas fa-image"></i>
+        <span>شعار الموقع (اللوجو)</span>
+      </div>
+      <button class="card-save-btn" data-save="logo">
+        <i class="fas fa-save"></i> حفظ اللوجو
+      </button>
+    </div>
+
+    <div class="logo-section">
+      <img src="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png" 
+           alt="Logo Preview" class="logo-preview" id="logoPreview">
+
+      <div class="logo-controls">
+        <div class="tab-buttons">
+          <button class="tab-btn active" data-tab="logoUrl" type="button">
+            <i class="fas fa-link"></i> رابط
+          </button>
+          <button class="tab-btn" data-tab="logoUpload" type="button">
+            <i class="fas fa-cloud-upload-alt"></i> رفع صورة
+          </button>
+        </div>
+
+        <div class="tab-content active" id="tab-logoUrl">
+          <input type="url" class="form-input" id="logoUrl" 
+                 placeholder="https://example.com/logo.png"
+                 style="direction:ltr;text-align:left;">
+        </div>
+
+        <div class="tab-content" id="tab-logoUpload">
+          <label class="upload-area" for="logoFile">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>اضغط لاختيار صورة من جهازك</p>
+            <p style="font-size:11px;opacity:0.7;margin-top:4px;">PNG, JPG, SVG · أقل من 1MB</p>
+          </label>
+          <input type="file" id="logoFile" accept="image/*" style="display:none;">
+          <p id="logoUploadStatus" style="font-size:12px;color:var(--success);font-weight:700;margin-top:8px;display:none;"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 3. الألوان ============ -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-title-left">
+        <i class="fas fa-palette"></i>
+        <span>ألوان الموقع</span>
+      </div>
+      <button class="card-save-btn" data-save="colors">
+        <i class="fas fa-save"></i> حفظ الألوان
+      </button>
+    </div>
+
+    <!-- الوضع النهاري -->
+    <div class="color-section light-mode">
+      <label class="color-enable-toggle">
+        <input type="checkbox" id="lightColorsEnabled">
+        <span>تفعيل ألوان الوضع النهاري</span>
+      </label>
+
+      <div class="color-section-title">
+        <i class="fas fa-sun"></i>
+        <span>ألوان الوضع النهاري</span>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">اللون الأساسي <span class="hint">فارغ = بدون تغيير</span></label>
+          <div class="color-input-wrap">
+            <label class="color-swatch" id="lightPrimarySwatch">
+              <input type="color" id="lightPrimaryPicker">
+            </label>
+            <input type="text" class="form-input" id="lightPrimary" placeholder="فارغ = بدون تغيير" style="direction:ltr;">
+            <button type="button" class="btn-clear-color" data-target="lightPrimary">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">اللون الذهبي <span class="hint">فارغ = بدون تغيير</span></label>
+          <div class="color-input-wrap">
+            <label class="color-swatch" id="lightAccentSwatch">
+              <input type="color" id="lightAccentPicker">
+            </label>
+            <input type="text" class="form-input" id="lightAccent" placeholder="فارغ = بدون تغيير" style="direction:ltr;">
+            <button type="button" class="btn-clear-color" data-target="lightAccent">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- الوضع الليلي -->
+    <div class="color-section dark-mode">
+      <label class="color-enable-toggle">
+        <input type="checkbox" id="darkColorsEnabled">
+        <span>تفعيل ألوان الوضع الليلي</span>
+      </label>
+
+      <div class="color-section-title">
+        <i class="fas fa-moon"></i>
+        <span>ألوان الوضع الليلي</span>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">اللون الأساسي <span class="hint">فارغ = بدون تغيير</span></label>
+          <div class="color-input-wrap">
+            <label class="color-swatch" id="darkPrimarySwatch">
+              <input type="color" id="darkPrimaryPicker">
+            </label>
+            <input type="text" class="form-input" id="darkPrimary" placeholder="فارغ = بدون تغيير" style="direction:ltr;">
+            <button type="button" class="btn-clear-color" data-target="darkPrimary">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">اللون الذهبي <span class="hint">فارغ = بدون تغيير</span></label>
+          <div class="color-input-wrap">
+            <label class="color-swatch" id="darkAccentSwatch">
+              <input type="color" id="darkAccentPicker">
+            </label>
+            <input type="text" class="form-input" id="darkAccent" placeholder="فارغ = بدون تغيير" style="direction:ltr;">
+            <button type="button" class="btn-clear-color" data-target="darkAccent">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0;margin-top:18px;">
+      <label class="form-label">المظهر الافتراضي</label>
+      <select class="form-select" id="defaultTheme">
+        <option value="light">الوضع النهاري</option>
+        <option value="dark">الوضع الليلي</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ============ 4. التحكم في التسجيل ============ -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-title-left">
+        <i class="fas fa-shield-halved"></i>
+        <span>التحكم في التسجيل</span>
+      </div>
+      <button class="card-save-btn" data-save="registration">
+        <i class="fas fa-save"></i> حفظ التحكم
+      </button>
+    </div>
+
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <strong><i class="fas fa-user-graduate" style="color:var(--info);margin-left:6px;"></i> تسجيل دخول الطلاب</strong>
+        <small>عند الإغلاق، لا يمكن للطلاب تسجيل الدخول</small>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="studentLoginEnabled" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <strong><i class="fas fa-chalkboard-user" style="color:var(--warning);margin-left:6px;"></i> تسجيل دخول المعلمين</strong>
+        <small>عند الإغلاق، لا يمكن للمعلمين تسجيل الدخول</small>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="teacherLoginEnabled" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <strong><i class="fas fa-user-plus" style="color:var(--success);margin-left:6px;"></i> إنشاء حساب الطلاب</strong>
+        <small>عند الإغلاق، لا يمكن للطلاب إنشاء حسابات جديدة</small>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="studentRegisterEnabled" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row" style="margin-bottom:0;">
+      <div class="toggle-info">
+        <strong><i class="fas fa-chalkboard" style="color:var(--info);margin-left:6px;"></i> إنشاء حساب المعلمين</strong>
+        <small>عند الإغلاق، لا يمكن للمعلمين إنشاء حسابات جديدة</small>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="teacherRegisterEnabled" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ============ 5. الرقم القومي ============ -->
+  <div class="card">
+    <div class="card-title">
+      <div class="card-title-left">
+        <i class="fas fa-id-card"></i>
+        <span>الرقم القومي</span>
+      </div>
+      <button class="card-save-btn" data-save="nationalId">
+        <i class="fas fa-save"></i> حفظ
+      </button>
+    </div>
+
+    <div class="toggle-row" style="margin-bottom:0;">
+      <div class="toggle-info">
+        <strong>تفعيل الرقم القومي في إنشاء الحساب</strong>
+        <small>عند التفعيل، يظهر حقل الرقم القومي في نموذج إنشاء الحساب — وعند إدخاله يُحدَّد تاريخ الميلاد تلقائياً</small>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="nationalIdEnabled">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ============ Danger Zone ============ -->
+  <div class="danger-zone">
+    <div class="danger-zone-title">
+      <i class="fas fa-triangle-exclamation"></i>
+      <span>منطقة الخطر</span>
+    </div>
+
+    <p class="danger-zone-desc">
+      ⚠️ هذه العمليات لا يمكن التراجع عنها. تأكد قبل التنفيذ.
+    </p>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-warning" id="resetBtn">
+        <i class="fas fa-rotate-left"></i> إعادة ضبط الحقول
+      </button>
+      <button class="btn btn-danger" id="deleteDbBtn">
+        <i class="fas fa-trash-can"></i> حذف قاعدة البيانات نهائياً
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle" id="toastIcon"></i>
+  <span id="toastText"></span>
+</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+  getFirestore, doc, onSnapshot, setDoc, deleteDoc, serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAmkCOrSaklhUiDdDfZCpSDQNmMYP-Gdw0",
+  authDomain: "qanon-c716d.firebaseapp.com",
+  projectId: "qanon-c716d",
+  storageBucket: "qanon-c716d.firebasestorage.app",
+  messagingSenderId: "757756130875",
+  appId: "1:757756130875:web:63c53534c6843e2a29ce1e",
+  measurementId: "G-8FZGTC779Y"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const $ = (id) => document.getElementById(id);
+
+const SETTINGS_REF = doc(db, 'settings', 'login_user');
+
+// ============================================================
+// 🧹 التنظيف
+// ============================================================
+function cleanInput(value) {
+  if (typeof value !== 'string') return '';
+  return value
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .replace(/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/g, ' ')
+    .replace(/^\s+|\s+$/g, '')
+    .trim();
+}
+
+// ============================================================
+// 🎨 حالة الصفحة
+// ============================================================
+let currentSettings = null;
+let isLoadingValues = false;
+
+// ============================================================
+// 📋 الإعدادات الافتراضية
+// ============================================================
+const DEFAULT_SETTINGS = {
+  siteNameAr: 'ميزان',
+  siteNameEn: 'MEEZAN',
+  tagline: 'منصة تعليمية إلكترونية متكاملة',
+  formSubtitle: 'أدخل بياناتك للوصول إلى حسابك',
+  welcomeMessage: 'أهلاً بك في منصة ميزان التعليمية',
+  copyright: 'ميزان | MEEZAN © 2026',
+  logoUrl: 'https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png',
+  lightPrimary: '',
+  lightAccent: '',
+  lightColorsEnabled: false,
+  darkPrimary: '',
+  darkAccent: '',
+  darkColorsEnabled: false,
+  defaultTheme: 'light',
+  studentLoginEnabled: true,
+  teacherLoginEnabled: true,
+  studentRegisterEnabled: true,
+  teacherRegisterEnabled: true,
+  nationalIdEnabled: false
+};
+
+// ============================================================
+// 🎨 تحديث شكل مربع اللون
+// ============================================================
+function updateSwatchVisual(textInput, swatchEl) {
+  if (!textInput || !swatchEl) return;
+  const val = cleanInput(textInput.value);
+  if (val && /^#[0-9A-Fa-f]{6}$/.test(val)) {
+    swatchEl.classList.remove('empty');
+    swatchEl.style.background = val;
+  } else {
+    swatchEl.classList.add('empty');
+    swatchEl.style.background = '';
+  }
+}
+
+function refreshAllSwatches() {
+  updateSwatchVisual($('lightPrimary'), $('lightPrimarySwatch'));
+  updateSwatchVisual($('lightAccent'), $('lightAccentSwatch'));
+  updateSwatchVisual($('darkPrimary'), $('darkPrimarySwatch'));
+  updateSwatchVisual($('darkAccent'), $('darkAccentSwatch'));
+}
+
+// ============================================================
+// 📊 حالة التعديلات — History
+// ============================================================
+const history = {
+  past: [],
+  present: null,
+  future: [],
+  maxSize: 50,
+
+  init(state) {
+    this.present = JSON.parse(JSON.stringify(state));
+    this.past = [];
+    this.future = [];
+    this.updateUI();
+  },
+
+  record(newState) {
+    const str = JSON.stringify(newState);
+    if (JSON.stringify(this.present) === str) return;
+    this.past.push(JSON.parse(JSON.stringify(this.present)));
+    if (this.past.length > this.maxSize) this.past.shift();
+    this.present = JSON.parse(str);
+    this.future = [];
+    this.updateUI();
+  },
+
+  undo() {
+    if (this.past.length === 0) return null;
+    this.future.unshift(JSON.parse(JSON.stringify(this.present)));
+    this.present = this.past.pop();
+    this.updateUI();
+    return JSON.parse(JSON.stringify(this.present));
+  },
+
+  redo() {
+    if (this.future.length === 0) return null;
+    this.past.push(JSON.parse(JSON.stringify(this.present)));
+    this.present = this.future.shift();
+    this.updateUI();
+    return JSON.parse(JSON.stringify(this.present));
+  },
+
+  updateUI() {
+    $('undoBtn').disabled = this.past.length === 0;
+    $('redoBtn').disabled = this.future.length === 0;
+    $('historyBadge').textContent = `${this.past.length} خلف · ${this.future.length} أمام`;
+  }
+};
+
+// ============================================================
+// 📥 قراءة الحالة من الحقول
+// ============================================================
+function getCurrentState() {
+  return {
+    siteNameAr: $('siteNameAr').value.trim(),
+    siteNameEn: $('siteNameEn').value.trim(),
+    tagline: $('tagline').value.trim(),
+    formSubtitle: $('formSubtitle').value.trim(),
+    welcomeMessage: $('welcomeMessage').value.trim(),
+    copyright: $('copyright').value.trim(),
+    logoUrl: $('logoUrl').value.trim(),
+    lightPrimary: cleanInput($('lightPrimary').value),
+    lightAccent: cleanInput($('lightAccent').value),
+    lightColorsEnabled: $('lightColorsEnabled').checked,
+    darkPrimary: cleanInput($('darkPrimary').value),
+    darkAccent: cleanInput($('darkAccent').value),
+    darkColorsEnabled: $('darkColorsEnabled').checked,
+    defaultTheme: $('defaultTheme').value,
+    studentLoginEnabled: $('studentLoginEnabled').checked,
+    teacherLoginEnabled: $('teacherLoginEnabled').checked,
+    studentRegisterEnabled: $('studentRegisterEnabled').checked,
+    teacherRegisterEnabled: $('teacherRegisterEnabled').checked,
+    nationalIdEnabled: $('nationalIdEnabled').checked
+  };
+}
+
+// ============================================================
+// 📤 تعيين القيم في الحقول
+// ============================================================
+function setFieldValues(state) {
+  if (!state) return;
+  isLoadingValues = true;
+
+  $('siteNameAr').value = state.siteNameAr || '';
+  $('siteNameEn').value = state.siteNameEn || '';
+  $('tagline').value = state.tagline || '';
+  $('formSubtitle').value = state.formSubtitle || '';
+  $('welcomeMessage').value = state.welcomeMessage || '';
+  $('copyright').value = state.copyright || '';
+  $('logoUrl').value = state.logoUrl || '';
+
+  $('lightPrimary').value = state.lightPrimary || '';
+  $('lightAccent').value = state.lightAccent || '';
+  $('lightColorsEnabled').checked = state.lightColorsEnabled === true;
+  if (state.lightPrimary && /^#[0-9A-Fa-f]{6}$/.test(state.lightPrimary)) {
+    $('lightPrimaryPicker').value = state.lightPrimary;
+  }
+  if (state.lightAccent && /^#[0-9A-Fa-f]{6}$/.test(state.lightAccent)) {
+    $('lightAccentPicker').value = state.lightAccent;
+  }
+
+  $('darkPrimary').value = state.darkPrimary || '';
+  $('darkAccent').value = state.darkAccent || '';
+  $('darkColorsEnabled').checked = state.darkColorsEnabled === true;
+  if (state.darkPrimary && /^#[0-9A-Fa-f]{6}$/.test(state.darkPrimary)) {
+    $('darkPrimaryPicker').value = state.darkPrimary;
+  }
+  if (state.darkAccent && /^#[0-9A-Fa-f]{6}$/.test(state.darkAccent)) {
+    $('darkAccentPicker').value = state.darkAccent;
+  }
+
+  $('defaultTheme').value = state.defaultTheme || 'light';
+
+  $('studentLoginEnabled').checked = state.studentLoginEnabled !== false;
+  $('teacherLoginEnabled').checked = state.teacherLoginEnabled !== false;
+  $('studentRegisterEnabled').checked = state.studentRegisterEnabled !== false;
+  $('teacherRegisterEnabled').checked = state.teacherRegisterEnabled !== false;
+  $('nationalIdEnabled').checked = state.nationalIdEnabled === true;
+
+  if (state.logoUrl) {
+    $('logoPreview').src = state.logoUrl;
+    $('headerLogo').src = state.logoUrl;
+  }
+
+  refreshAllSwatches();
+  setTimeout(() => { isLoadingValues = false; }, 100);
+}
+
+// ============================================================
+// 📡 تحميل من Firebase
+// ============================================================
+async function loadSettings() {
+  try {
+    const snap = await new Promise((resolve) => {
+      onSnapshot(SETTINGS_REF, (s) => resolve(s), { once: true });
+    });
+
+    let data = { ...DEFAULT_SETTINGS };
+    if (snap.exists()) {
+      data = { ...DEFAULT_SETTINGS, ...snap.data() };
+    }
+
+    setFieldValues(data);
+    history.init(data);
+    setTimeout(attachFieldListeners, 300);
+
+  } catch (e) {
+    console.error('خطأ في التحميل:', e);
+    setFieldValues(DEFAULT_SETTINGS);
+    history.init(DEFAULT_SETTINGS);
+    setTimeout(attachFieldListeners, 300);
+  }
+}
+
+// ============================================================
+// 📡 Real-time من Firebase
+// ============================================================
+onSnapshot(SETTINGS_REF, (snap) => {
+  if (!snap.exists()) return;
+  const data = { ...DEFAULT_SETTINGS, ...snap.data() };
+
+  // لا تحدّث الحقول إلا لو المستخدم ما بيعدّل
+  if (!document.activeElement || document.activeElement.tagName !== 'INPUT') {
+    setFieldValues(data);
+    history.init(data);
+  }
+}, (err) => console.log('settings error:', err.message));
+
+// ============================================================
+// 🔗 ربط الأحداث
+// ============================================================
+let recordTimeout;
+
+function attachFieldListeners() {
+  const allFields = [
+    'siteNameAr', 'siteNameEn', 'tagline', 'formSubtitle', 'welcomeMessage', 'copyright',
+    'logoUrl', 'lightPrimary', 'lightAccent', 'lightColorsEnabled',
+    'darkPrimary', 'darkAccent', 'darkColorsEnabled', 'defaultTheme',
+    'studentLoginEnabled', 'teacherLoginEnabled',
+    'studentRegisterEnabled', 'teacherRegisterEnabled', 'nationalIdEnabled'
+  ];
+
+  allFields.forEach(id => {
+    const el = $(id);
+    if (!el) return;
+
+    el.addEventListener('input', () => {
+      if (isLoadingValues) return;
+      clearTimeout(recordTimeout);
+      recordTimeout = setTimeout(() => {
+        history.record(getCurrentState());
+        // Real-time: حدّث Firestore مباشرة عند أي تغيير
+        saveToFirestore(true);
+      }, 400);
+    });
+
+    el.addEventListener('change', () => {
+      if (isLoadingValues) return;
+      clearTimeout(recordTimeout);
+      recordTimeout = setTimeout(() => {
+        history.record(getCurrentState());
+        saveToFirestore(true);
+      }, 200);
+    });
+  });
+}
+
+// ============================================================
+// 💾 الحفظ في Firestore
+// ============================================================
+async function saveToFirestore(silent = false) {
+  try {
+    const state = getCurrentState();
+    await setDoc(SETTINGS_REF, {
+      ...state,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    if (!silent) {
+      showToast('تم الحفظ بنجاح ✓', 'success');
+    }
+  } catch (err) {
+    console.error('خطأ في الحفظ:', err);
+    if (!silent) {
+      showToast('حدث خطأ أثناء الحفظ', 'error');
+    }
+  }
+}
+
+// ============================================================
+// 💾 حفظ قسم محدد
+// ============================================================
+async function saveSection(section, btn) {
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+  try {
+    const state = getCurrentState();
+    let partialData = {};
+
+    if (section === 'info') {
+      partialData = {
+        siteNameAr: state.siteNameAr,
+        siteNameEn: state.siteNameEn,
+        tagline: state.tagline,
+        formSubtitle: state.formSubtitle,
+        welcomeMessage: state.welcomeMessage,
+        copyright: state.copyright
+      };
+    } else if (section === 'logo') {
+      partialData = { logoUrl: state.logoUrl };
+    } else if (section === 'colors') {
+      partialData = {
+        lightPrimary: state.lightPrimary,
+        lightAccent: state.lightAccent,
+        lightColorsEnabled: state.lightColorsEnabled,
+        darkPrimary: state.darkPrimary,
+        darkAccent: state.darkAccent,
+        darkColorsEnabled: state.darkColorsEnabled,
+        defaultTheme: state.defaultTheme
+      };
+    } else if (section === 'registration') {
+      partialData = {
+        studentLoginEnabled: state.studentLoginEnabled,
+        teacherLoginEnabled: state.teacherLoginEnabled,
+        studentRegisterEnabled: state.studentRegisterEnabled,
+        teacherRegisterEnabled: state.teacherRegisterEnabled
+      };
+    } else if (section === 'nationalId') {
+      partialData = { nationalIdEnabled: state.nationalIdEnabled };
+    }
+
+    await setDoc(SETTINGS_REF, {
+      ...partialData,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    showToast('تم الحفظ بنجاح ✓', 'success');
+
+  } catch (err) {
+    console.error('خطأ في الحفظ:', err);
+    showToast('حدث خطأ أثناء الحفظ', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+}
+
+// ربط أزرار الحفظ
+document.querySelectorAll('[data-save]').forEach(btn => {
+  btn.addEventListener('click', () => saveSection(btn.dataset.save, btn));
+});
+
+// ============================================================
+// 🎨 ربط الألوان
+// ============================================================
+function bindColorPicker(pickerId, textId, swatchId) {
+  const picker = $(pickerId);
+  const text = $(textId);
+  const swatch = $(swatchId);
+
+  picker.addEventListener('input', () => {
+    if (isLoadingValues) return;
+    text.value = picker.value;
+    updateSwatchVisual(text, swatch);
+  });
+
+  text.addEventListener('input', () => {
+    if (isLoadingValues) return;
+    const v = cleanInput(text.value);
+    if (/^#[0-9A-Fa-f]{6}$/.test(v)) picker.value = v;
+    updateSwatchVisual(text, swatch);
+  });
+}
+
+bindColorPicker('lightPrimaryPicker', 'lightPrimary', 'lightPrimarySwatch');
+bindColorPicker('lightAccentPicker', 'lightAccent', 'lightAccentSwatch');
+bindColorPicker('darkPrimaryPicker', 'darkPrimary', 'darkPrimarySwatch');
+bindColorPicker('darkAccentPicker', 'darkAccent', 'darkAccentSwatch');
+
+// أزرار مسح اللون
+document.querySelectorAll('.btn-clear-color').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetId = btn.dataset.target;
+    const input = $(targetId);
+    if (input) {
+      input.value = '';
+      const pickerMap = {
+        lightPrimary: 'lightPrimaryPicker',
+        lightAccent: 'lightAccentPicker',
+        darkPrimary: 'darkPrimaryPicker',
+        darkAccent: 'darkAccentPicker'
+      };
+      const pickerId = pickerMap[targetId];
+      if (pickerId) $(pickerId).value = '#000000';
+      refreshAllSwatches();
+    }
+  });
+});
+
+// ============================================================
+// 🖼️ تبويبات اللوجو
+// ============================================================
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    $(`tab-${tab}`).classList.add('active');
+  });
+});
+
+$('logoUrl').addEventListener('input', () => {
+  const url = cleanInput($('logoUrl').value);
+  if (url) {
+    $('logoPreview').src = url;
+    $('headerLogo').src = url;
+  }
+});
+
+$('logoFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (file.size > 1024 * 1024) {
+    showToast('حجم الصورة أكبر من 1MB', 'error');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const dataUrl = ev.target.result;
+    $('logoPreview').src = dataUrl;
+    $('headerLogo').src = dataUrl;
+    $('logoUploadStatus').textContent = `✅ تم تحميل الصورة: ${file.name}`;
+    $('logoUploadStatus').style.display = 'block';
+    $('logoUrl').value = dataUrl;
+    history.record(getCurrentState());
+  };
+  reader.readAsDataURL(file);
+});
+
+// ============================================================
+// ↩️ Undo / Redo
+// ============================================================
+$('undoBtn').addEventListener('click', () => {
+  const state = history.undo();
+  if (state) {
+    setFieldValues(state);
+    saveToFirestore(true);
+    showToast('تم التراجع خطوة للخلف', 'warning');
+  } else {
+    showToast('لا يوجد تعديل سابق', 'warning');
+  }
+});
+
+$('redoBtn').addEventListener('click', () => {
+  const state = history.redo();
+  if (state) {
+    setFieldValues(state);
+    saveToFirestore(true);
+    showToast('تم التقدم خطوة للأمام', 'success');
+  } else {
+    showToast('لا يوجد تعديل لاحق', 'warning');
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+    e.preventDefault();
+    $('undoBtn').click();
+  }
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+    e.preventDefault();
+    $('redoBtn').click();
+  }
+});
+
+// ============================================================
+// 🔄 إعادة ضبط الحقول
+// ============================================================
+$('resetBtn').addEventListener('click', () => {
+  if (!confirm('هل تريد إرجاع جميع الحقول للقيم الافتراضية؟\n\n⚠️ لن يتم الحفظ — تحتاج للضغط على "حفظ" لتفعيل التغييرات.')) return;
+  setFieldValues(DEFAULT_SETTINGS);
+  history.record(DEFAULT_SETTINGS);
+  showToast('تم إرجاع الحقول الافتراضية — اضغط "حفظ" لتفعيلها', 'warning');
+});
+
+// ============================================================
+// 🗑️ حذف قاعدة البيانات
+// ============================================================
+$('deleteDbBtn').addEventListener('click', async () => {
+  if (!confirm('⚠️ سيتم حذف إعدادات صفحة المستخدمين نهائياً!\n\nهل أنت متأكد؟')) return;
+  if (!confirm('🔴 تأكيد نهائي: لا يمكن التراجع!')) return;
+  if (prompt('للتأكيد النهائي، اكتب كلمة: حذف') !== 'حذف') {
+    showToast('تم إلغاء الحذف', 'warning');
+    return;
+  }
+
+  const btn = $('deleteDbBtn');
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحذف...';
+
+  try {
+    await deleteDoc(SETTINGS_REF);
+    setFieldValues(DEFAULT_SETTINGS);
+    history.init(DEFAULT_SETTINGS);
+    showToast('تم حذف الإعدادات نهائياً', 'success');
+  } catch (err) {
+    console.error(err);
+    showToast('حدث خطأ أثناء الحذف', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+});
+
+// ============================================================
+// 🔔 Toast
+// ============================================================
+let toastTimeout;
+function showToast(text, type = 'success') {
+  const toast = $('toast');
+  const icon = $('toastIcon');
+  $('toastText').textContent = text;
+  toast.className = 'toast show ' + type;
+  const icons = {
+    success: 'fa-check-circle',
+    error: 'fa-times-circle',
+    warning: 'fa-exclamation-triangle'
+  };
+  icon.className = `fas ${icons[type] || icons.success}`;
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ============================================================
+// 🚀 Init
+// ============================================================
+loadSettings();
+refreshAllSwatches();
+</script>
+
+</body>
+</html>

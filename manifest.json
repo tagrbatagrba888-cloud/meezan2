@@ -1,0 +1,27 @@
+{
+  "name": "ميزان | MEEZAN",
+  "short_name": "MEEZAN",
+  "description": "منصة ميزان التعليمية الإلكترونية",
+  "start_url": "/login.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a5c4a",
+  "theme_color": "#0a5c4a",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

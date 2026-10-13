@@ -1,0 +1,2691 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0B3D2E">
+<title>إدارة الإشعارات | MEEZAN</title>
+<link rel="icon" type="image/png" href="https://i.ibb.co/ymXPqr46/file-00000000af0c820aa687a3c3181a6a24.png">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --primary: #0B3D2E;
+    --primary-light: #145A43;
+    --primary-lighter: #1E7A5A;
+    --accent: #C9A961;
+    --accent-light: #E0C888;
+    --bg-page: #F5F1E8;
+    --bg-card: #FFFFFF;
+    --bg-input: #F8FBF9;
+    --text-main: #0B3D2E;
+    --text-sub: #5A6B66;
+    --border: #E0E5E1;
+    --shadow: rgba(11, 61, 46, 0.15);
+    --error: #C0392B;
+    --success: #1E7A5A;
+    --warning: #E67E22;
+    --info: #2980B9;
+  }
+
+  [data-theme="dark"] {
+    --primary: #C9A961;
+    --primary-light: #E0C888;
+    --primary-lighter: #F0DBA8;
+    --accent: #0B3D2E;
+    --accent-light: #145A43;
+    --bg-page: #0A1612;
+    --bg-card: #11201B;
+    --bg-input: #1A2C25;
+    --text-main: #F5F1E8;
+    --text-sub: #9BAEA6;
+    --border: #1E3A31;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --error: #E74C3C;
+    --success: #2ECC71;
+    --warning: #F39C12;
+    --info: #3498DB;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg-page);
+    min-height: 100vh;
+    color: var(--text-main);
+    opacity: 0;
+    transition: opacity 0.3s ease, background 0.4s ease;
+    overflow-x: hidden;
+  }
+
+  body.ready { opacity: 1; }
+
+  /* ============================================================
+     الهيدر
+     ============================================================ */
+  .header {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 20px var(--shadow);
+    position: relative;
+    z-index: 50;
+  }
+
+  .header-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .back-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .back-btn { color: var(--accent); }
+
+  .back-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    transform: translateX(-3px);
+  }
+
+  [data-theme="dark"] .back-btn:hover { color: var(--bg-page); }
+
+  .header-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .header-title i { color: var(--accent); font-size: 22px; }
+
+  .header-title h1 {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header-title small {
+    display: block;
+    font-size: 11px;
+    color: var(--text-sub);
+    font-weight: 600;
+    letter-spacing: 1.5px;
+  }
+
+  .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--primary);
+    font-size: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .icon-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  [data-theme="dark"] .icon-btn:hover { color: var(--bg-page); }
+
+  .icon-btn.logout {
+    color: var(--error);
+    border-color: rgba(192, 57, 43, 0.3);
+  }
+
+  .icon-btn.logout:hover {
+    background: var(--error);
+    color: #fff;
+    border-color: var(--error);
+  }
+
+  /* ============================================================
+     Container
+     ============================================================ */
+  .container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 24px 20px 100px;
+  }
+
+  /* ============================================================
+     Tabs
+     ============================================================ */
+  .main-tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--bg-card);
+    padding: 6px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 14px var(--shadow);
+    margin-bottom: 22px;
+    overflow-x: auto;
+  }
+
+  .main-tabs::-webkit-scrollbar { display: none; }
+
+  .main-tab {
+    flex: 1;
+    min-width: 120px;
+    padding: 13px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14.5px;
+    font-weight: 800;
+    cursor: pointer;
+    color: var(--text-sub);
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    position: relative;
+  }
+
+  .main-tab:hover {
+    color: var(--text-main);
+    background: var(--bg-input);
+  }
+
+  .main-tab.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    box-shadow: 0 6px 16px var(--shadow);
+  }
+
+  [data-theme="dark"] .main-tab.active { color: var(--bg-page); }
+
+  .main-tab i { font-size: 16px; }
+
+  .main-tab .tab-count {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 800;
+    background: rgba(255, 255, 255, 0.25);
+    min-width: 22px;
+    text-align: center;
+  }
+
+  .main-tab:not(.active) .tab-count {
+    background: var(--bg-card);
+    color: var(--text-sub);
+    border: 1px solid var(--border);
+  }
+
+  /* ============================================================
+     Section Content
+     ============================================================ */
+  .section-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .section-content.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============================================================
+     Toolbar
+     ============================================================ */
+  .toolbar {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 14px var(--shadow);
+    border: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .search-wrapper {
+    flex: 1;
+    min-width: 220px;
+    position: relative;
+  }
+
+  .search-wrapper i {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-sub);
+    font-size: 15px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 13px 44px 13px 44px;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    outline: none;
+    font-weight: 500;
+    transition: all 0.25s ease;
+  }
+
+  .search-input:focus {
+    border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1);
+  }
+
+  [data-theme="dark"] .search-input:focus {
+    box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.15);
+  }
+
+  .search-clear {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    border: none;
+    background: rgba(192, 57, 43, 0.1);
+    color: var(--error);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+
+  .search-clear:hover { background: var(--error); color: #fff; }
+  .search-clear.show { display: flex; }
+
+  /* ============================================================
+     Buttons
+     ============================================================ */
+  .btn {
+    padding: 13px 22px;
+    border-radius: 12px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    box-shadow: 0 6px 18px var(--shadow);
+  }
+
+  [data-theme="dark"] .btn-primary { color: var(--bg-page); }
+
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px var(--shadow);
+  }
+
+  .btn-warning {
+    background: linear-gradient(135deg, var(--warning), #F39C12);
+    color: #fff;
+  }
+
+  .btn-warning:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(230, 126, 34, 0.4);
+  }
+
+  .btn-info {
+    background: linear-gradient(135deg, var(--info), #3498DB);
+    color: #fff;
+  }
+
+  .btn-info:hover:not(:disabled) {
+    transform: translateY(-2px);
+  }
+
+  .btn-cancel {
+    background: var(--bg-input);
+    color: var(--text-main);
+    border: 1.5px solid var(--border) !important;
+  }
+
+  .btn-cancel:hover {
+    background: var(--bg-card);
+    transform: translateY(-2px);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  /* ============================================================
+     شبكة المستخدمين
+     ============================================================ */
+  .users-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .user-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .user-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px var(--shadow);
+  }
+
+  .user-card.selected {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, rgba(11, 61, 46, 0.05), rgba(201, 169, 97, 0.05));
+    box-shadow: 0 6px 20px var(--shadow);
+  }
+
+  [data-theme="dark"] .user-card.selected {
+    background: linear-gradient(135deg, rgba(201, 169, 97, 0.08), rgba(224, 200, 136, 0.03));
+  }
+
+  .user-check {
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    border: 2px solid var(--border);
+    background: var(--bg-input);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: transparent;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .user-card.selected .user-check {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    border-color: var(--primary);
+    color: #fff;
+  }
+
+  [data-theme="dark"] .user-card.selected .user-check { color: var(--bg-page); }
+
+  .user-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 2px solid var(--accent);
+  }
+
+  [data-theme="dark"] .user-avatar { color: var(--bg-page); }
+
+  .user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .user-info { flex: 1; min-width: 0; }
+
+  .user-name {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .user-meta {
+    font-size: 11.5px;
+    color: var(--text-sub);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .user-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .user-meta i {
+    color: var(--accent);
+    font-size: 10px;
+  }
+
+  /* ============================================================
+     شبكة الفرق والمواد
+     ============================================================ */
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+
+  .category-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .category-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -20%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201, 169, 97, 0.08), transparent 70%);
+    pointer-events: none;
+  }
+
+  .category-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px var(--shadow);
+  }
+
+  .category-card.disabled {
+    opacity: 0.55;
+    pointer-events: none;
+    background: repeating-linear-gradient(45deg, var(--bg-card), var(--bg-card) 8px, rgba(150,150,150,0.05) 8px, rgba(150,150,150,0.05) 16px);
+  }
+
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .category-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+    border: 2px solid var(--accent);
+    box-shadow: 0 6px 16px var(--shadow);
+  }
+
+  [data-theme="dark"] .category-icon { color: var(--bg-page); }
+
+  .category-icon.subjects {
+    background: linear-gradient(135deg, var(--info), #3498DB);
+  }
+
+  .category-info { flex: 1; min-width: 0; }
+
+  .category-name {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .category-count {
+    font-size: 12.5px;
+    color: var(--text-sub);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .category-count i {
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  .category-count strong {
+    color: var(--primary);
+    font-weight: 800;
+  }
+
+  [data-theme="dark"] .category-count strong { color: var(--accent); }
+
+  .category-actions {
+    display: flex;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .category-actions .btn {
+    flex: 1;
+    padding: 11px 14px;
+    font-size: 13px;
+    border-radius: 11px;
+  }
+
+  /* ============================================================
+     Empty State
+     ============================================================ */
+  .empty-state {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--text-sub);
+    background: var(--bg-card);
+    border-radius: 16px;
+    border: 2px dashed var(--border);
+    grid-column: 1 / -1;
+  }
+
+  .empty-state i {
+    font-size: 52px;
+    color: var(--accent);
+    opacity: 0.6;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .empty-state h3 {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .empty-state p { font-size: 13.5px; font-weight: 500; }
+
+  /* ============================================================
+     Pagination
+     ============================================================ */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .page-btn {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .page-btn:hover:not(:disabled):not(.active) {
+    background: var(--bg-input);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .page-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px var(--shadow);
+  }
+
+  [data-theme="dark"] .page-btn.active { color: var(--bg-page); }
+
+  .page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .pagination-info {
+    font-size: 12.5px;
+    color: var(--text-sub);
+    font-weight: 600;
+    margin: 0 10px;
+  }
+
+  /* ============================================================
+     Selection Bar
+     ============================================================ */
+  .selection-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border-top: 2px solid var(--primary);
+    box-shadow: 0 -8px 30px var(--shadow);
+    padding: 14px 20px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    z-index: 100;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .selection-bar.show {
+    display: flex;
+    transform: translateY(0);
+  }
+
+  .selection-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .selection-info .badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  [data-theme="dark"] .selection-info .badge { color: var(--bg-page); }
+
+  .selection-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* ============================================================
+     Modal
+     ============================================================ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100000;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal-box {
+    background: var(--bg-card);
+    border-radius: 22px;
+    padding: 28px 26px;
+    max-width: 620px;
+    width: 100%;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+    border-top: 6px solid var(--accent);
+    animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 92vh;
+    overflow-y: auto;
+    text-align: right;
+  }
+
+  .modal-box.small { max-width: 460px; text-align: center; }
+
+  @keyframes modalPop {
+    from { opacity: 0; transform: scale(0.85) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 2px dashed var(--border);
+  }
+
+  .modal-header-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .modal-header-icon { color: var(--bg-page); }
+
+  .modal-header h2 {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--text-main);
+    flex: 1;
+  }
+
+  .modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: none;
+    background: var(--bg-input);
+    color: var(--text-sub);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .modal-close:hover { background: var(--error); color: #fff; }
+
+  /* ============================================================
+     Forms
+     ============================================================ */
+  .form-group { margin-bottom: 16px; }
+
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .form-label .required { color: var(--error); margin-right: 3px; }
+  .form-label .hint { font-size: 11px; color: var(--text-sub); font-weight: 500; margin-right: 6px; }
+
+  .form-input, .form-textarea, .form-select {
+    width: 100%;
+    padding: 13px 16px;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    transition: all 0.25s ease;
+    outline: none;
+    font-weight: 500;
+  }
+
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
+    border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1);
+  }
+
+  [data-theme="dark"] .form-input:focus,
+  [data-theme="dark"] .form-textarea:focus,
+  [data-theme="dark"] .form-select:focus {
+    box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.15);
+  }
+
+  .form-textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
+
+  .char-counter {
+    text-align: left;
+    font-size: 11px;
+    color: var(--text-sub);
+    margin-top: 4px;
+    font-weight: 600;
+    direction: ltr;
+  }
+
+  /* ============================================================
+     Notif Type Tabs
+     ============================================================ */
+  .notif-type-tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--bg-input);
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 12px;
+    overflow-x: auto;
+  }
+
+  .notif-type-tabs::-webkit-scrollbar { display: none; }
+
+  .notif-type-btn {
+    flex: 1;
+    min-width: 90px;
+    padding: 11px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 9px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--text-sub);
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .notif-type-btn:hover {
+    color: var(--text-main);
+    background: var(--bg-card);
+  }
+
+  .notif-type-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    box-shadow: 0 4px 12px var(--shadow);
+  }
+
+  [data-theme="dark"] .notif-type-btn.active { color: var(--bg-page); }
+
+  .notif-type-btn i { font-size: 13px; }
+
+  /* ============================================================
+     🆕 الصفحات الداخلية
+     ============================================================ */
+  .internal-pages-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .internal-page-btn {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .internal-page-btn:hover {
+    border-color: var(--accent);
+    background: var(--bg-card);
+    transform: translateY(-2px);
+  }
+
+  .internal-page-btn.selected {
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px var(--shadow);
+  }
+
+  [data-theme="dark"] .internal-page-btn.selected { color: var(--bg-page); }
+
+  .internal-page-btn i {
+    font-size: 14px;
+    color: var(--accent);
+  }
+
+  .internal-page-btn.selected i { color: var(--accent-light); }
+
+  /* ============================================================
+     Media Preview
+     ============================================================ */
+  .media-preview-box {
+    margin-top: 12px;
+    padding: 14px;
+    background: var(--bg-input);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: none;
+  }
+
+  .media-preview-box.show { display: block; }
+
+  .media-preview-box img,
+  .media-preview-box video {
+    width: 100%;
+    max-height: 320px;
+    object-fit: contain;
+    border-radius: 10px;
+    display: block;
+    background: #000;
+  }
+
+  .media-preview-box img { background: transparent; }
+
+  /* ============================================================
+     Confirm Modal
+     ============================================================ */
+  .modal-icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lighter));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 18px;
+    box-shadow: 0 10px 25px var(--shadow);
+  }
+
+  [data-theme="dark"] .modal-icon { color: var(--bg-page); }
+
+  .modal-icon.warning { background: linear-gradient(135deg, var(--warning), #F39C12); }
+  .modal-icon.danger { background: linear-gradient(135deg, #C0392B, #E74C3C); }
+  .modal-icon.success { background: linear-gradient(135deg, var(--success), #27AE60); }
+
+  .modal-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 10px;
+  }
+
+  .modal-message {
+    font-size: 14px;
+    color: var(--text-sub);
+    font-weight: 600;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    padding: 0 10px;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 2px dashed var(--border);
+  }
+
+  .modal-actions .btn { flex: 1; padding: 14px; }
+
+  /* ============================================================
+     Toast
+     ============================================================ */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background: var(--bg-card);
+    color: var(--text-main);
+    padding: 14px 24px;
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--border);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 999999;
+    transition: transform 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+    max-width: calc(100vw - 32px);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast.success { border-color: var(--success); }
+  .toast.success i { color: var(--success); }
+  .toast.error { border-color: var(--error); }
+  .toast.error i { color: var(--error); }
+  .toast.warning { border-color: var(--warning); }
+  .toast.warning i { color: var(--warning); }
+  .toast.info { border-color: var(--info); }
+  .toast.info i { color: var(--info); }
+
+  /* ============================================================
+     Responsive
+     ============================================================ */
+  @media (max-width: 700px) {
+    .header-inner { padding: 12px 14px; }
+    .back-btn { width: 40px; height: 40px; font-size: 15px; border-radius: 11px; }
+    .header-title i { font-size: 18px; }
+    .header-title h1 { font-size: 17px; }
+    .icon-btn { width: 38px; height: 38px; font-size: 15px; }
+
+    .container { padding: 16px 12px 120px; }
+
+    .main-tab { padding: 11px 12px; font-size: 13px; min-width: 100px; }
+    .main-tab i { font-size: 14px; }
+    .main-tab .tab-count { padding: 1px 6px; font-size: 10px; }
+
+    .toolbar { padding: 12px; gap: 8px; }
+    .btn { padding: 11px 16px; font-size: 13px; flex: 1; min-width: 100px; }
+    .search-input { padding: 12px 40px; font-size: 13px; }
+
+    .users-grid { grid-template-columns: 1fr; gap: 10px; }
+    .user-card { padding: 12px; }
+
+    .categories-grid { grid-template-columns: 1fr; }
+    .category-card { padding: 16px; }
+
+    .selection-bar { padding: 12px 14px; flex-direction: column; gap: 10px; }
+    .selection-actions { width: 100%; }
+    .selection-actions .btn { flex: 1; }
+
+    .modal-box { padding: 22px 18px; border-radius: 18px; }
+    .modal-header h2 { font-size: 16px; }
+    .modal-header-icon { width: 40px; height: 40px; font-size: 16px; }
+
+    .page-btn { min-width: 36px; height: 36px; font-size: 13px; }
+    .pagination-info { font-size: 11.5px; margin: 0 6px; }
+
+    .notif-type-btn { min-width: 80px; font-size: 12px; }
+    .internal-pages-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 400px) {
+    .header-title h1 { font-size: 15px; }
+    .btn span.label { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ Header ============ -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-left">
+      <a href="index1.html" class="back-btn" title="الرجوع">
+        <i class="fas fa-arrow-right"></i>
+      </a>
+      <div class="header-title">
+        <i class="fas fa-bell"></i>
+        <div>
+          <h1>إدارة الإشعارات</h1>
+          <small>NOTIFICATIONS MANAGEMENT</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="themeToggle" title="الوضع">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+      <button class="icon-btn logout" id="logoutBtn" title="تسجيل الخروج">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ Main Container ============ -->
+<div class="container">
+
+  <!-- Tabs: طلاب / معلمين / فرق / مواد -->
+  <div class="main-tabs">
+    <button class="main-tab active" data-section="students">
+      <i class="fas fa-user-graduate"></i>
+      <span>الطلاب</span>
+      <span class="tab-count" id="studentsCount">0</span>
+    </button>
+    <button class="main-tab" data-section="teachers">
+      <i class="fas fa-chalkboard-user"></i>
+      <span>المعلمين</span>
+      <span class="tab-count" id="teachersCount">0</span>
+    </button>
+    <button class="main-tab" data-section="grades">
+      <i class="fas fa-layer-group"></i>
+      <span>الفرق</span>
+      <span class="tab-count" id="gradesCount">0</span>
+    </button>
+    <button class="main-tab" data-section="subjects">
+      <i class="fas fa-book-open"></i>
+      <span>المواد</span>
+      <span class="tab-count" id="subjectsCount">0</span>
+    </button>
+  </div>
+
+  <!-- ============ قسم الطلاب ============ -->
+  <div class="section-content active" id="section-students">
+    <div class="toolbar">
+      <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" class="search-input" id="searchStudents" placeholder="ابحث بالاسم أو الكود أو الهاتف...">
+        <button class="search-clear" id="clearSearchStudents" aria-label="مسح">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <button class="btn btn-info" id="selectAllStudents">
+        <i class="fas fa-check-double"></i>
+        <span class="label">تحديد الكل</span>
+      </button>
+      <button class="btn btn-primary" id="sendToAllStudents">
+        <i class="fas fa-bullhorn"></i>
+        <span class="label">رسالة جماعية</span>
+      </button>
+    </div>
+
+    <div class="users-grid" id="studentsGrid"></div>
+
+    <div class="pagination" id="studentsPagination"></div>
+  </div>
+
+  <!-- ============ قسم المعلمين ============ -->
+  <div class="section-content" id="section-teachers">
+    <div class="toolbar">
+      <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" class="search-input" id="searchTeachers" placeholder="ابحث بالاسم أو الكود أو الهاتف...">
+        <button class="search-clear" id="clearSearchTeachers" aria-label="مسح">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <button class="btn btn-info" id="selectAllTeachers">
+        <i class="fas fa-check-double"></i>
+        <span class="label">تحديد الكل</span>
+      </button>
+      <button class="btn btn-primary" id="sendToAllTeachers">
+        <i class="fas fa-bullhorn"></i>
+        <span class="label">رسالة جماعية</span>
+      </button>
+    </div>
+
+    <div class="users-grid" id="teachersGrid"></div>
+
+    <div class="pagination" id="teachersPagination"></div>
+  </div>
+
+  <!-- ============ قسم الفرق ============ -->
+  <div class="section-content" id="section-grades">
+    <div class="toolbar">
+      <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" class="search-input" id="searchGrades" placeholder="ابحث عن فرقة...">
+        <button class="search-clear" id="clearSearchGrades" aria-label="مسح">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="categories-grid" id="gradesGrid"></div>
+  </div>
+
+  <!-- ============ قسم المواد ============ -->
+  <div class="section-content" id="section-subjects">
+    <div class="toolbar">
+      <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" class="search-input" id="searchSubjects" placeholder="ابحث عن مادة...">
+        <button class="search-clear" id="clearSearchSubjects" aria-label="مسح">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="categories-grid" id="subjectsGrid"></div>
+  </div>
+
+</div>
+
+<!-- ============ شريط التحديد السفلي ============ -->
+<div class="selection-bar" id="selectionBar">
+  <div class="selection-info">
+    <i class="fas fa-check-circle" style="color: var(--success); font-size: 20px;"></i>
+    <span>تم تحديد</span>
+    <span class="badge" id="selectedCount">0</span>
+    <span>مستخدم</span>
+  </div>
+  <div class="selection-actions">
+    <button class="btn btn-cancel" id="clearSelection">
+      <i class="fas fa-times"></i>
+      إلغاء التحديد
+    </button>
+    <button class="btn btn-primary" id="sendToSelected">
+      <i class="fas fa-paper-plane"></i>
+      إرسال إشعار
+    </button>
+  </div>
+</div>
+
+<!-- ============ نافذة إنشاء إشعار ============ -->
+<div class="modal-overlay" id="notifModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-header-icon">
+        <i class="fas fa-bell"></i>
+      </div>
+      <h2 id="notifModalTitle">إرسال إشعار</h2>
+      <button class="modal-close" id="notifModalClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-error" id="notifError" style="display:none; background: rgba(192, 57, 43, 0.1); color: var(--error); border: 1px solid rgba(192, 57, 43, 0.3); padding: 10px 14px; border-radius: 10px; font-size: 12.5px; font-weight: 600; margin-bottom: 14px;"></div>
+
+    <!-- اسم الإشعار -->
+    <div class="form-group">
+      <label class="form-label">اسم الإشعار <span class="required">*</span></label>
+      <input type="text" class="form-input" id="notifTitle" placeholder="مثال: إعلان هام" maxlength="80">
+      <div class="char-counter"><span id="titleCount">0</span> / 80</div>
+    </div>
+
+    <!-- محتوى الإشعار -->
+    <div class="form-group">
+      <label class="form-label">محتوى الإشعار <span class="required">*</span></label>
+      <textarea class="form-textarea" id="notifBody" placeholder="اكتب محتوى الإشعار هنا..." maxlength="1000"></textarea>
+      <div class="char-counter"><span id="bodyCount">0</span> / 1000</div>
+    </div>
+
+    <!-- نوع الإشعار -->
+    <div class="form-group">
+      <label class="form-label">
+        نوع الإشعار <span class="hint">(اختياري)</span>
+      </label>
+
+      <div class="notif-type-tabs">
+        <button type="button" class="notif-type-btn active" data-type="none">
+          <i class="fas fa-comment"></i>
+          <span>نصي</span>
+        </button>
+        <button type="button" class="notif-type-btn" data-type="image">
+          <i class="fas fa-image"></i>
+          <span>صورة</span>
+        </button>
+        <button type="button" class="notif-type-btn" data-type="video">
+          <i class="fas fa-video"></i>
+          <span>فيديو</span>
+        </button>
+        <button type="button" class="notif-type-btn" data-type="link">
+          <i class="fas fa-link"></i>
+          <span>خارجي</span>
+        </button>
+        <button type="button" class="notif-type-btn" data-type="page">
+          <i class="fas fa-file-alt"></i>
+          <span>صفحة داخلية</span>
+        </button>
+      </div>
+
+      <!-- رابط الصورة/الفيديو/الخارجي -->
+      <input type="url" class="form-input" id="notifUrl" placeholder="https://example.com/image.jpg" style="direction:ltr;text-align:left; display:none; margin-top:10px;">
+
+      <!-- 🆕 الصفحات الداخلية -->
+      <div id="internalPagesWrapper" style="display:none; margin-top:10px;">
+        <div class="internal-pages-grid">
+          <button type="button" class="internal-page-btn" data-page="index.html">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+          </button>
+          <button type="button" class="internal-page-btn" data-page="sora.html">
+            <i class="fas fa-user-circle"></i>
+            <span>ملفي الشخصي</span>
+          </button>
+          <button type="button" class="internal-page-btn" data-page="ashara.html">
+            <i class="fas fa-bell"></i>
+            <span>الإشعارات</span>
+          </button>
+          <button type="button" class="internal-page-btn" data-page="daam.html">
+            <i class="fas fa-headset"></i>
+            <span>الدعم</span>
+          </button>
+        </div>
+        <input type="text" class="form-input" id="customPageUrl" placeholder="أو اكتب اسم صفحة (مثال: lessons.html)" style="direction:ltr;text-align:left; margin-top:10px;">
+      </div>
+    </div>
+
+    <!-- معاينة الوسائط -->
+    <div class="media-preview-box" id="mediaPreviewBox">
+      <div id="mediaPreviewContent"></div>
+    </div>
+
+    <!-- معلومة الإرسال -->
+    <div class="form-group" style="margin-bottom:0; margin-top:16px;">
+      <div style="padding: 12px; background: var(--bg-input); border-radius: 12px; border: 1px solid var(--border); font-size: 13.5px; font-weight: 600; color: var(--text-main);">
+        <i class="fas fa-info-circle" style="color: var(--accent);"></i>
+        <span id="targetInfo">سيتم الإرسال للمستخدمين المحددين</span>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="notifCancel">
+        <i class="fas fa-times"></i>
+        إلغاء
+      </button>
+      <button class="btn btn-primary" id="notifSend">
+        <i class="fas fa-paper-plane"></i>
+        إرسال
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ نافذة تأكيد ============ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box small">
+    <div class="modal-icon" id="confirmIcon">
+      <i class="fas fa-question-circle"></i>
+    </div>
+    <h2 class="modal-title" id="confirmTitle">تأكيد</h2>
+    <p class="modal-message" id="confirmMessage">—</p>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="confirmCancel">
+        <i class="fas fa-times"></i>
+        إلغاء
+      </button>
+      <button class="btn btn-primary" id="confirmOk">
+        <i class="fas fa-check"></i>
+        تأكيد
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Toast ============ -->
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle" id="toastIcon"></i>
+  <span id="toastText"></span>
+</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+  getFirestore, doc, onSnapshot, setDoc, getDoc, serverTimestamp, collection 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAmkCOrSaklhUiDdDfZCpSDQNmMYP-Gdw0",
+  authDomain: "qanon-c716d.firebaseapp.com",
+  projectId: "qanon-c716d",
+  storageBucket: "qanon-c716d.firebasestorage.app",
+  messagingSenderId: "757756130875",
+  appId: "1:757756130875:web:63c53534c6843e2a29ce1e",
+  measurementId: "G-8FZGTC779Y"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const $ = (id) => document.getElementById(id);
+
+// ============================================================
+// 🔒 الحماية
+// ============================================================
+if (sessionStorage.getItem('meezan_logged_in') !== 'true') {
+  window.location.replace('login.html');
+}
+
+const adminId = sessionStorage.getItem('meezan_user_id') || 'admin';
+const adminName = sessionStorage.getItem('meezan_username') || 'المشرف';
+
+// ============================================================
+// 🧹 التنظيف
+// ============================================================
+function cleanInput(v) {
+  if (typeof v !== 'string') return '';
+  return v
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .replace(/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/g, ' ')
+    .replace(/^\s+|\s+$/g, '')
+    .trim();
+}
+
+// ============================================================
+// 📊 الحالة
+// ============================================================
+const PAGE_SIZE = 10;
+
+let students = [];
+let teachers = [];
+let studentGrades = [];
+let teacherSubjects = [];
+
+let filteredStudents = [];
+let filteredTeachers = [];
+let filteredGrades = [];
+let filteredSubjects = [];
+
+let selectedStudents = new Set();
+let selectedTeachers = new Set();
+
+let currentPageStudents = 1;
+let currentPageTeachers = 1;
+
+let searchQueryStudents = '';
+let searchQueryTeachers = '';
+let searchQueryGrades = '';
+let searchQuerySubjects = '';
+
+let currentSection = 'students';
+let notifType = 'none';
+let currentTargetMode = null;
+let customRecipients = null;
+let customTargetLabel = '';
+
+// ============================================================
+// 🌙 الوضع
+// ============================================================
+const savedTheme = localStorage.getItem('meezan_theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+updateThemeIcon(savedTheme);
+
+$('themeToggle').addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('meezan_theme', next);
+  updateThemeIcon(next);
+});
+
+function updateThemeIcon(t) {
+  $('themeIcon').className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+// ============================================================
+// 💬 Toast
+// ============================================================
+let toastTimeout;
+function showToast(text, type = 'success') {
+  const toast = $('toast');
+  const icon = $('toastIcon');
+  $('toastText').textContent = text;
+  toast.className = 'toast show ' + type;
+  const icons = {
+    success: 'fa-check-circle',
+    error: 'fa-times-circle',
+    warning: 'fa-exclamation-triangle',
+    info: 'fa-info-circle'
+  };
+  icon.className = `fas ${icons[type] || icons.success}`;
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ============================================================
+// 🔔 نافذة تأكيد
+// ============================================================
+let confirmResolve = null;
+function showConfirm(opt = {}) {
+  return new Promise((resolve) => {
+    const {
+      title = 'تأكيد',
+      message = 'هل أنت متأكد؟',
+      icon = 'fa-question-circle',
+      iconType = 'default',
+      okText = 'تأكيد',
+      cancelText = 'إلغاء'
+    } = opt;
+
+    $('confirmIcon').className = 'modal-icon';
+    if (iconType === 'warning') $('confirmIcon').classList.add('warning');
+    if (iconType === 'danger') $('confirmIcon').classList.add('danger');
+    if (iconType === 'success') $('confirmIcon').classList.add('success');
+
+    $('confirmIcon').innerHTML = `<i class="fas ${icon}"></i>`;
+    $('confirmTitle').textContent = title;
+    $('confirmMessage').innerHTML = message;
+    $('confirmOk').innerHTML = `<i class="fas fa-check"></i> <span>${okText}</span>`;
+    $('confirmCancel').innerHTML = `<i class="fas fa-times"></i> <span>${cancelText}</span>`;
+
+    confirmResolve = resolve;
+    $('confirmModal').classList.add('show');
+  });
+}
+
+function closeConfirm(r) {
+  $('confirmModal').classList.remove('show');
+  if (confirmResolve) { confirmResolve(r); confirmResolve = null; }
+}
+
+$('confirmOk').addEventListener('click', () => closeConfirm(true));
+$('confirmCancel').addEventListener('click', () => closeConfirm(false));
+$('confirmModal').addEventListener('click', (e) => {
+  if (e.target === $('confirmModal')) closeConfirm(false);
+});
+
+// ============================================================
+// 🚪 تسجيل الخروج
+// ============================================================
+$('logoutBtn').addEventListener('click', async () => {
+  const c = await showConfirm({
+    title: 'تسجيل الخروج',
+    message: 'هل تريد تسجيل الخروج؟',
+    icon: 'fa-sign-out-alt',
+    iconType: 'warning',
+    okText: 'خروج'
+  });
+  if (!c) return;
+  sessionStorage.clear();
+  window.location.replace('login.html');
+});
+
+// ============================================================
+// 🎯 Tabs
+// ============================================================
+document.querySelectorAll('.main-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const section = tab.dataset.section;
+    currentSection = section;
+
+    document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
+    $(`section-${section}`).classList.add('active');
+
+    updateSelectionBar();
+  });
+});
+
+// ============================================================
+// 📡 تحميل الطلاب Real-time
+// ============================================================
+onSnapshot(doc(db, 'users', 'all'), (snap) => {
+  if (snap.exists()) {
+    students = snap.data().items || [];
+  } else {
+    students = [];
+  }
+
+  $('studentsCount').textContent = students.length;
+  applyStudentFilters();
+  renderGrades();
+
+}, (err) => {
+  console.error('students error:', err);
+  $('studentsGrid').innerHTML = `
+    <div class="empty-state">
+      <i class="fas fa-exclamation-triangle" style="color:var(--error);"></i>
+      <h3>تعذّر تحميل الطلاب</h3>
+      <p>${err.message}</p>
+    </div>
+  `;
+});
+
+// ============================================================
+// 📡 تحميل المعلمين Real-time
+// ============================================================
+onSnapshot(doc(db, 'teachers', 'all'), (snap) => {
+  if (snap.exists()) {
+    teachers = snap.data().items || [];
+  } else {
+    teachers = [];
+  }
+
+  $('teachersCount').textContent = teachers.length;
+  applyTeacherFilters();
+  renderSubjects();
+
+}, (err) => {
+  console.error('teachers error:', err);
+  $('teachersGrid').innerHTML = `
+    <div class="empty-state">
+      <i class="fas fa-exclamation-triangle" style="color:var(--error);"></i>
+      <h3>تعذّر تحميل المعلمين</h3>
+      <p>${err.message}</p>
+    </div>
+  `;
+});
+
+// ============================================================
+// 📡 تحميل الفرق Real-time
+// ============================================================
+onSnapshot(doc(db, 'users', 'categories'), (snap) => {
+  if (snap.exists()) {
+    studentGrades = snap.data().items || [];
+  } else {
+    studentGrades = [];
+  }
+
+  $('gradesCount').textContent = studentGrades.length;
+  applyGradeFilters();
+
+}, (err) => console.error('grades error:', err));
+
+// ============================================================
+// 📡 تحميل المواد Real-time
+// ============================================================
+onSnapshot(doc(db, 'teachers', 'categories'), (snap) => {
+  if (snap.exists()) {
+    teacherSubjects = snap.data().items || [];
+  } else {
+    teacherSubjects = [];
+  }
+
+  $('subjectsCount').textContent = teacherSubjects.length;
+  applySubjectFilters();
+
+}, (err) => console.error('subjects error:', err));
+
+// ============================================================
+// 🔍 فلترة الطلاب
+// ============================================================
+function applyStudentFilters() {
+  const q = cleanInput(searchQueryStudents).toLowerCase();
+
+  if (!q) {
+    filteredStudents = [...students];
+  } else {
+    filteredStudents = students.filter(s => {
+      const fields = [s.fullName, s.username, s.code, s.phone, s.email, s.grade];
+      return fields.some(f => (f || '').toLowerCase().includes(q));
+    });
+  }
+
+  currentPageStudents = 1;
+  renderStudents();
+}
+
+// ============================================================
+// 🔍 فلترة المعلمين
+// ============================================================
+function applyTeacherFilters() {
+  const q = cleanInput(searchQueryTeachers).toLowerCase();
+
+  if (!q) {
+    filteredTeachers = [...teachers];
+  } else {
+    filteredTeachers = teachers.filter(t => {
+      const fields = [t.fullName, t.username, t.code, t.phone, t.email, t.grade];
+      return fields.some(f => (f || '').toLowerCase().includes(q));
+    });
+  }
+
+  currentPageTeachers = 1;
+  renderTeachers();
+}
+
+// ============================================================
+// 🔍 فلترة الفرق
+// ============================================================
+function applyGradeFilters() {
+  const q = cleanInput(searchQueryGrades).toLowerCase();
+
+  if (!q) {
+    filteredGrades = [...studentGrades];
+  } else {
+    filteredGrades = studentGrades.filter(g => g.toLowerCase().includes(q));
+  }
+
+  renderGrades();
+}
+
+// ============================================================
+// 🔍 فلترة المواد
+// ============================================================
+function applySubjectFilters() {
+  const q = cleanInput(searchQuerySubjects).toLowerCase();
+
+  if (!q) {
+    filteredSubjects = [...teacherSubjects];
+  } else {
+    filteredSubjects = teacherSubjects.filter(s => s.toLowerCase().includes(q));
+  }
+
+  renderSubjects();
+}
+
+// ============================================================
+// 🎨 عرض الطلاب
+// ============================================================
+function renderStudents() {
+  const grid = $('studentsGrid');
+  grid.innerHTML = '';
+
+  const total = filteredStudents.length;
+
+  if (total === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-user-graduate"></i>
+        <h3>${students.length === 0 ? 'لا يوجد طلاب بعد' : 'لا توجد نتائج'}</h3>
+        <p>${students.length === 0 ? 'سيظهر الطلاب هنا عند تسجيلهم' : 'جرّب البحث بكلمة أخرى'}</p>
+      </div>
+    `;
+    $('studentsPagination').innerHTML = '';
+    return;
+  }
+
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+  if (currentPageStudents > totalPages) currentPageStudents = totalPages;
+  if (currentPageStudents < 1) currentPageStudents = 1;
+
+  const start = (currentPageStudents - 1) * PAGE_SIZE;
+  const end = start + PAGE_SIZE;
+  const pageItems = filteredStudents.slice(start, end);
+
+  pageItems.forEach(student => {
+    grid.appendChild(createUserCard(student, 'student'));
+  });
+
+  renderPagination('students', totalPages, total);
+}
+
+// ============================================================
+// 🎨 عرض المعلمين
+// ============================================================
+function renderTeachers() {
+  const grid = $('teachersGrid');
+  grid.innerHTML = '';
+
+  const total = filteredTeachers.length;
+
+  if (total === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-chalkboard-user"></i>
+        <h3>${teachers.length === 0 ? 'لا يوجد معلمون بعد' : 'لا توجد نتائج'}</h3>
+        <p>${teachers.length === 0 ? 'سيظهر المعلمون هنا عند تسجيلهم' : 'جرّب البحث بكلمة أخرى'}</p>
+      </div>
+    `;
+    $('teachersPagination').innerHTML = '';
+    return;
+  }
+
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+  if (currentPageTeachers > totalPages) currentPageTeachers = totalPages;
+  if (currentPageTeachers < 1) currentPageTeachers = 1;
+
+  const start = (currentPageTeachers - 1) * PAGE_SIZE;
+  const end = start + PAGE_SIZE;
+  const pageItems = filteredTeachers.slice(start, end);
+
+  pageItems.forEach(teacher => {
+    grid.appendChild(createUserCard(teacher, 'teacher'));
+  });
+
+  renderPagination('teachers', totalPages, total);
+}
+
+// ============================================================
+// 🎨 عرض الفرق
+// ============================================================
+function renderGrades() {
+  const grid = $('gradesGrid');
+  grid.innerHTML = '';
+
+  if (filteredGrades.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-layer-group"></i>
+        <h3>${studentGrades.length === 0 ? 'لا توجد فرق مضافة' : 'لا توجد نتائج'}</h3>
+        <p>${studentGrades.length === 0 ? 'أضف فرق من صفحة إدارة المستخدمين' : 'جرّب البحث بكلمة أخرى'}</p>
+      </div>
+    `;
+    return;
+  }
+
+  filteredGrades.forEach(grade => {
+    const studentsInGrade = students.filter(s => s.grade === grade);
+    const count = studentsInGrade.length;
+
+    const card = document.createElement('div');
+    card.className = 'category-card' + (count === 0 ? ' disabled' : '');
+
+    card.innerHTML = `
+      <div class="category-header">
+        <div class="category-icon">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="category-info">
+          <div class="category-name">${escapeHtml(grade)}</div>
+          <div class="category-count">
+            <i class="fas fa-user-graduate"></i>
+            <strong>${count}</strong> طالب
+          </div>
+        </div>
+      </div>
+      <div class="category-actions">
+        <button class="btn btn-primary" ${count === 0 ? 'disabled' : ''}>
+          <i class="fas fa-bullhorn"></i>
+          إرسال للفرقة
+        </button>
+      </div>
+    `;
+
+    const btn = card.querySelector('button');
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      sendToGrade(grade);
+    });
+
+    grid.appendChild(card);
+  });
+}
+
+// ============================================================
+// 🎨 عرض المواد
+// ============================================================
+function renderSubjects() {
+  const grid = $('subjectsGrid');
+  grid.innerHTML = '';
+
+  if (filteredSubjects.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-book-open"></i>
+        <h3>${teacherSubjects.length === 0 ? 'لا توجد مواد مضافة' : 'لا توجد نتائج'}</h3>
+        <p>${teacherSubjects.length === 0 ? 'أضف مواد من صفحة إدارة المعلمين' : 'جرّب البحث بكلمة أخرى'}</p>
+      </div>
+    `;
+    return;
+  }
+
+  filteredSubjects.forEach(subject => {
+    const teachersInSubject = teachers.filter(t => t.grade === subject);
+    const count = teachersInSubject.length;
+
+    const card = document.createElement('div');
+    card.className = 'category-card' + (count === 0 ? ' disabled' : '');
+
+    card.innerHTML = `
+      <div class="category-header">
+        <div class="category-icon subjects">
+          <i class="fas fa-book"></i>
+        </div>
+        <div class="category-info">
+          <div class="category-name">${escapeHtml(subject)}</div>
+          <div class="category-count">
+            <i class="fas fa-chalkboard-user"></i>
+            <strong>${count}</strong> معلم
+          </div>
+        </div>
+      </div>
+      <div class="category-actions">
+        <button class="btn btn-primary" ${count === 0 ? 'disabled' : ''}>
+          <i class="fas fa-bullhorn"></i>
+          إرسال للمادة
+        </button>
+      </div>
+    `;
+
+    const btn = card.querySelector('button');
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      sendToSubject(subject);
+    });
+
+    grid.appendChild(card);
+  });
+}
+
+// ============================================================
+// 🎨 إنشاء بطاقة مستخدم
+// ============================================================
+function createUserCard(user, type) {
+  const isSelected = type === 'student'
+    ? selectedStudents.has(user.id)
+    : selectedTeachers.has(user.id);
+
+  const card = document.createElement('div');
+  card.className = 'user-card' + (isSelected ? ' selected' : '');
+
+  const check = document.createElement('div');
+  check.className = 'user-check';
+  check.innerHTML = '<i class="fas fa-check"></i>';
+
+  const avatar = document.createElement('div');
+  avatar.className = 'user-avatar';
+  if (user.avatarUrl) {
+    avatar.innerHTML = `<img src="${user.avatarUrl}" alt="" onerror="this.parentNode.innerHTML='<span>${(user.fullName || '؟').charAt(0).toUpperCase()}</span>'">`;
+  } else {
+    const firstChar = (user.fullName || user.username || '؟').charAt(0).toUpperCase();
+    avatar.innerHTML = `<span>${firstChar}</span>`;
+  }
+
+  const info = document.createElement('div');
+  info.className = 'user-info';
+
+  const name = document.createElement('div');
+  name.className = 'user-name';
+  name.textContent = user.fullName || user.username || 'بدون اسم';
+
+  const meta = document.createElement('div');
+  meta.className = 'user-meta';
+  let metaHtml = '';
+  if (user.code) metaHtml += `<span><i class="fas fa-hashtag"></i> ${escapeHtml(user.code)}</span>`;
+  if (user.grade) metaHtml += `<span><i class="fas fa-graduation-cap"></i> ${escapeHtml(user.grade)}</span>`;
+  if (user.phone) metaHtml += `<span><i class="fas fa-phone"></i> ${escapeHtml(user.phone)}</span>`;
+  meta.innerHTML = metaHtml || '<span>لا توجد بيانات إضافية</span>';
+
+  info.appendChild(name);
+  info.appendChild(meta);
+
+  card.appendChild(check);
+  card.appendChild(avatar);
+  card.appendChild(info);
+
+  card.addEventListener('click', () => {
+    toggleUserSelection(user.id, type, card);
+  });
+
+  return card;
+}
+
+// ============================================================
+// ✅ تحديد / إلغاء
+// ============================================================
+function toggleUserSelection(userId, type, cardEl) {
+  const set = type === 'student' ? selectedStudents : selectedTeachers;
+
+  if (set.has(userId)) {
+    set.delete(userId);
+    cardEl.classList.remove('selected');
+  } else {
+    set.add(userId);
+    cardEl.classList.add('selected');
+  }
+
+  updateSelectionBar();
+}
+
+function updateSelectionBar() {
+  const currentSet = currentSection === 'students' ? selectedStudents : selectedTeachers;
+  const count = currentSet.size;
+
+  const bar = $('selectionBar');
+  if (count > 0) {
+    bar.classList.add('show');
+    $('selectedCount').textContent = count;
+  } else {
+    bar.classList.remove('show');
+  }
+}
+
+$('clearSelection').addEventListener('click', () => {
+  selectedStudents.clear();
+  selectedTeachers.clear();
+  document.querySelectorAll('.user-card.selected').forEach(c => c.classList.remove('selected'));
+  updateSelectionBar();
+});
+
+// ============================================================
+// 📄 Pagination
+// ============================================================
+function renderPagination(type, totalPages, totalItems) {
+  const container = $(type === 'students' ? 'studentsPagination' : 'teachersPagination');
+  container.innerHTML = '';
+
+  if (totalPages <= 1) return;
+
+  const currentPage = type === 'students' ? currentPageStudents : currentPageTeachers;
+
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'page-btn';
+  prevBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.addEventListener('click', () => {
+    if (type === 'students') { currentPageStudents--; renderStudents(); }
+    else { currentPageTeachers--; renderTeachers(); }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  container.appendChild(prevBtn);
+
+  const pages = getPagesRange(currentPage, totalPages);
+  pages.forEach(p => {
+    if (p === '...') {
+      const dots = document.createElement('span');
+      dots.className = 'pagination-info';
+      dots.textContent = '...';
+      container.appendChild(dots);
+    } else {
+      const btn = document.createElement('button');
+      btn.className = 'page-btn' + (p === currentPage ? ' active' : '');
+      btn.textContent = p;
+      btn.addEventListener('click', () => {
+        if (type === 'students') { currentPageStudents = p; renderStudents(); }
+        else { currentPageTeachers = p; renderTeachers(); }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      container.appendChild(btn);
+    }
+  });
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'page-btn';
+  nextBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.addEventListener('click', () => {
+    if (type === 'students') { currentPageStudents++; renderStudents(); }
+    else { currentPageTeachers++; renderTeachers(); }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  container.appendChild(nextBtn);
+
+  const info = document.createElement('span');
+  info.className = 'pagination-info';
+  info.textContent = `صفحة ${currentPage} من ${totalPages} (${totalItems} ${type === 'students' ? 'طالب' : 'معلم'})`;
+  container.appendChild(info);
+}
+
+function getPagesRange(current, total) {
+  const pages = [];
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i);
+    return pages;
+  }
+  pages.push(1);
+  if (current > 3) pages.push('...');
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
+  for (let i = start; i <= end; i++) pages.push(i);
+  if (current < total - 2) pages.push('...');
+  pages.push(total);
+  return pages;
+}
+
+// ============================================================
+// 🔍 البحث
+// ============================================================
+$('searchStudents').addEventListener('input', (e) => {
+  searchQueryStudents = e.target.value;
+  $('clearSearchStudents').classList.toggle('show', !!cleanInput(searchQueryStudents));
+  applyStudentFilters();
+});
+
+$('clearSearchStudents').addEventListener('click', () => {
+  $('searchStudents').value = '';
+  searchQueryStudents = '';
+  $('clearSearchStudents').classList.remove('show');
+  applyStudentFilters();
+});
+
+$('searchTeachers').addEventListener('input', (e) => {
+  searchQueryTeachers = e.target.value;
+  $('clearSearchTeachers').classList.toggle('show', !!cleanInput(searchQueryTeachers));
+  applyTeacherFilters();
+});
+
+$('clearSearchTeachers').addEventListener('click', () => {
+  $('searchTeachers').value = '';
+  searchQueryTeachers = '';
+  $('clearSearchTeachers').classList.remove('show');
+  applyTeacherFilters();
+});
+
+$('searchGrades').addEventListener('input', (e) => {
+  searchQueryGrades = e.target.value;
+  $('clearSearchGrades').classList.toggle('show', !!cleanInput(searchQueryGrades));
+  applyGradeFilters();
+});
+
+$('clearSearchGrades').addEventListener('click', () => {
+  $('searchGrades').value = '';
+  searchQueryGrades = '';
+  $('clearSearchGrades').classList.remove('show');
+  applyGradeFilters();
+});
+
+$('searchSubjects').addEventListener('input', (e) => {
+  searchQuerySubjects = e.target.value;
+  $('clearSearchSubjects').classList.toggle('show', !!cleanInput(searchQuerySubjects));
+  applySubjectFilters();
+});
+
+$('clearSearchSubjects').addEventListener('click', () => {
+  $('searchSubjects').value = '';
+  searchQuerySubjects = '';
+  $('clearSearchSubjects').classList.remove('show');
+  applySubjectFilters();
+});
+
+// ============================================================
+// ✅ تحديد الكل
+// ============================================================
+$('selectAllStudents').addEventListener('click', () => {
+  const isAllSelected = filteredStudents.every(s => selectedStudents.has(s.id));
+
+  if (isAllSelected) {
+    filteredStudents.forEach(s => selectedStudents.delete(s.id));
+    $('selectAllStudents').innerHTML = '<i class="fas fa-check-double"></i><span class="label">تحديد الكل</span>';
+  } else {
+    filteredStudents.forEach(s => selectedStudents.add(s.id));
+    $('selectAllStudents').innerHTML = '<i class="fas fa-times"></i><span class="label">إلغاء الكل</span>';
+  }
+
+  renderStudents();
+  updateSelectionBar();
+});
+
+$('selectAllTeachers').addEventListener('click', () => {
+  const isAllSelected = filteredTeachers.every(t => selectedTeachers.has(t.id));
+
+  if (isAllSelected) {
+    filteredTeachers.forEach(t => selectedTeachers.delete(t.id));
+    $('selectAllTeachers').innerHTML = '<i class="fas fa-check-double"></i><span class="label">تحديد الكل</span>';
+  } else {
+    filteredTeachers.forEach(t => selectedTeachers.add(t.id));
+    $('selectAllTeachers').innerHTML = '<i class="fas fa-times"></i><span class="label">إلغاء الكل</span>';
+  }
+
+  renderTeachers();
+  updateSelectionBar();
+});
+
+// ============================================================
+// 📢 رسالة جماعية
+// ============================================================
+$('sendToAllStudents').addEventListener('click', () => {
+  if (students.length === 0) return showToast('لا يوجد طلاب', 'warning');
+  currentTargetMode = 'all_students';
+  customRecipients = students.map(s => ({ userId: s.id, type: 'student' }));
+  customTargetLabel = `جميع الطلاب (${students.length})`;
+  openNotifModal(`📢 رسالة جماعية للطلاب`, customTargetLabel);
+});
+
+$('sendToAllTeachers').addEventListener('click', () => {
+  if (teachers.length === 0) return showToast('لا يوجد معلمون', 'warning');
+  currentTargetMode = 'all_teachers';
+  customRecipients = teachers.map(t => ({ userId: t.id, type: 'teacher' }));
+  customTargetLabel = `جميع المعلمين (${teachers.length})`;
+  openNotifModal(`📢 رسالة جماعية للمعلمين`, customTargetLabel);
+});
+
+// ============================================================
+// 🎯 إرسال للمحدد
+// ============================================================
+$('sendToSelected').addEventListener('click', () => {
+  if (currentSection === 'students' && selectedStudents.size === 0) {
+    return showToast('لم تحدد أي طالب', 'warning');
+  }
+  if (currentSection === 'teachers' && selectedTeachers.size === 0) {
+    return showToast('لم تحدد أي معلم', 'warning');
+  }
+
+  currentTargetMode = 'selected';
+
+  if (currentSection === 'students') {
+    customRecipients = [...selectedStudents].map(id => ({ userId: id, type: 'student' }));
+    customTargetLabel = `${selectedStudents.size} طالب محدد`;
+  } else {
+    customRecipients = [...selectedTeachers].map(id => ({ userId: id, type: 'teacher' }));
+    customTargetLabel = `${selectedTeachers.size} معلم محدد`;
+  }
+
+  openNotifModal('🎯 إرسال للمحدد', customTargetLabel);
+});
+
+// ============================================================
+// 📢 إرسال لفرقة
+// ============================================================
+function sendToGrade(grade) {
+  const studentsInGrade = students.filter(s => s.grade === grade);
+
+  if (studentsInGrade.length === 0) {
+    return showToast('لا يوجد طلاب في هذه الفرقة', 'warning');
+  }
+
+  currentTargetMode = 'grade';
+  customRecipients = studentsInGrade.map(s => ({ userId: s.id, type: 'student' }));
+  customTargetLabel = `فرقة "${grade}" (${studentsInGrade.length} طالب)`;
+
+  openNotifModal(`📢 إشعار لفرقة "${grade}"`, customTargetLabel);
+}
+
+// ============================================================
+// 📢 إرسال لمادة
+// ============================================================
+function sendToSubject(subject) {
+  const teachersInSubject = teachers.filter(t => t.grade === subject);
+
+  if (teachersInSubject.length === 0) {
+    return showToast('لا يوجد معلمون في هذه المادة', 'warning');
+  }
+
+  currentTargetMode = 'subject';
+  customRecipients = teachersInSubject.map(t => ({ userId: t.id, type: 'teacher' }));
+  customTargetLabel = `مادة "${subject}" (${teachersInSubject.length} معلم)`;
+
+  openNotifModal(`📢 إشعار لمادة "${subject}"`, customTargetLabel);
+}
+
+// ============================================================
+// 🎯 فتح نافذة الإشعار
+// ============================================================
+function openNotifModal(title, infoText) {
+  $('notifModalTitle').textContent = title;
+  $('targetInfo').textContent = `سيتم الإرسال لـ ${infoText}`;
+
+  $('notifTitle').value = '';
+  $('notifBody').value = '';
+  $('notifUrl').value = '';
+  $('notifUrl').style.display = 'none';
+  $('customPageUrl').value = '';
+  $('internalPagesWrapper').style.display = 'none';
+  $('titleCount').textContent = '0';
+  $('bodyCount').textContent = '0';
+  $('notifError').style.display = 'none';
+  $('mediaPreviewBox').classList.remove('show');
+  $('mediaPreviewContent').innerHTML = '';
+
+  notifType = 'none';
+  document.querySelectorAll('.notif-type-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.type === 'none');
+  });
+  document.querySelectorAll('.internal-page-btn').forEach(b => {
+    b.classList.remove('selected');
+  });
+
+  $('notifModal').classList.add('show');
+}
+
+// ============================================================
+// ✖️ إغلاق
+// ============================================================
+$('notifModalClose').addEventListener('click', () => $('notifModal').classList.remove('show'));
+$('notifCancel').addEventListener('click', () => $('notifModal').classList.remove('show'));
+$('notifModal').addEventListener('click', (e) => {
+  if (e.target === $('notifModal')) $('notifModal').classList.remove('show');
+});
+
+// ============================================================
+// 📊 عدّادات
+// ============================================================
+$('notifTitle').addEventListener('input', (e) => {
+  $('titleCount').textContent = e.target.value.length;
+});
+
+$('notifBody').addEventListener('input', (e) => {
+  $('bodyCount').textContent = e.target.value.length;
+});
+
+// ============================================================
+// 🎨 نوع الإشعار
+// ============================================================
+document.querySelectorAll('.notif-type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    notifType = btn.dataset.type;
+
+    document.querySelectorAll('.notif-type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // إخفاء كل شيء أولاً
+    $('notifUrl').style.display = 'none';
+    $('internalPagesWrapper').style.display = 'none';
+    $('mediaPreviewBox').classList.remove('show');
+    $('mediaPreviewContent').innerHTML = '';
+    document.querySelectorAll('.internal-page-btn').forEach(b => b.classList.remove('selected'));
+
+    if (notifType === 'none') {
+      // لا شيء
+    } else if (notifType === 'page') {
+      // صفحة داخلية
+      $('internalPagesWrapper').style.display = 'block';
+      $('customPageUrl').value = '';
+    } else {
+      // صورة / فيديو / رابط خارجي
+      $('notifUrl').style.display = 'block';
+      const placeholders = {
+        image: 'https://example.com/image.jpg',
+        video: 'https://example.com/video.mp4',
+        link: 'https://example.com'
+      };
+      $('notifUrl').placeholder = placeholders[notifType] || '';
+      $('notifUrl').value = '';
+    }
+  });
+});
+
+// ============================================================
+// 🆕 أزرار الصفحات الداخلية
+// ============================================================
+document.querySelectorAll('.internal-page-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const page = btn.dataset.page;
+
+    document.querySelectorAll('.internal-page-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    $('customPageUrl').value = page;
+    updateInternalPagePreview();
+  });
+});
+
+$('customPageUrl').addEventListener('input', () => {
+  document.querySelectorAll('.internal-page-btn').forEach(b => b.classList.remove('selected'));
+  updateInternalPagePreview();
+});
+
+function updateInternalPagePreview() {
+  const page = cleanInput($('customPageUrl').value);
+  const box = $('mediaPreviewBox');
+  const content = $('mediaPreviewContent');
+
+  if (!page) {
+    box.classList.remove('show');
+    content.innerHTML = '';
+    return;
+  }
+
+  content.innerHTML = `
+    <div style="padding:14px;text-align:center;background:var(--bg-card);border-radius:10px;">
+      <i class="fas fa-file-alt" style="font-size:36px;color:var(--info);display:block;margin-bottom:10px;"></i>
+      <div style="font-size:13.5px;font-weight:800;color:var(--text-main);margin-bottom:4px;">صفحة داخلية</div>
+      <div style="font-size:12.5px;color:var(--text-sub);font-weight:600;direction:ltr;">${escapeHtml(page)}</div>
+    </div>
+  `;
+  box.classList.add('show');
+}
+
+// ============================================================
+// 🖼️ معاينة الوسائط
+// ============================================================
+let previewTimeout;
+$('notifUrl').addEventListener('input', (e) => {
+  clearTimeout(previewTimeout);
+  const url = cleanInput(e.target.value);
+
+  previewTimeout = setTimeout(() => {
+    const box = $('mediaPreviewBox');
+    const content = $('mediaPreviewContent');
+
+    if (!url || !/^https?:\/\/.+/i.test(url)) {
+      box.classList.remove('show');
+      content.innerHTML = '';
+      return;
+    }
+
+    if (notifType === 'image') {
+      content.innerHTML = `<img src="${escapeHtml(url)}" alt="" onerror="this.parentNode.innerHTML='<div style=\\'padding:14px;text-align:center;color:var(--error);font-size:12.5px;font-weight:700;\\'>⚠️ تعذّر تحميل الصورة</div>'">`;
+      box.classList.add('show');
+    } else if (notifType === 'video') {
+      content.innerHTML = `<video src="${escapeHtml(url)}" controls preload="metadata" onerror="this.parentNode.innerHTML='<div style=\\'padding:14px;text-align:center;color:var(--error);font-size:12.5px;font-weight:700;\\'>⚠️ تعذّر تحميل الفيديو</div>'"></video>`;
+      box.classList.add('show');
+    } else if (notifType === 'link') {
+      content.innerHTML = `<div style="padding:14px;text-align:center;"><i class="fas fa-link" style="font-size:32px;color:var(--info);display:block;margin-bottom:8px;"></i><a href="${escapeHtml(url)}" target="_blank" rel="noopener" style="color:var(--info);font-weight:700;font-size:13px;word-break:break-all;">${escapeHtml(url)}</a></div>`;
+      box.classList.add('show');
+    }
+  }, 500);
+});
+
+// ============================================================
+// 📤 إرسال الإشعار
+// ============================================================
+$('notifSend').addEventListener('click', async () => {
+  const errEl = $('notifError');
+  errEl.style.display = 'none';
+
+  const title = cleanInput($('notifTitle').value);
+  const body = cleanInput($('notifBody').value);
+  let url = cleanInput($('notifUrl').value);
+
+  if (notifType === 'page') {
+    url = cleanInput($('customPageUrl').value);
+  }
+
+  // تحقق
+  if (!title) return showNotifError('الرجاء إدخال اسم الإشعار');
+  if (title.length < 2) return showNotifError('اسم الإشعار قصير جداً');
+  if (!body) return showNotifError('الرجاء إدخال محتوى الإشعار');
+
+  if (notifType !== 'none' && !url) {
+    const names = {
+      image: 'رابط الصورة',
+      video: 'رابط الفيديو',
+      link: 'الرابط الخارجي',
+      page: 'اسم الصفحة الداخلية'
+    };
+    return showNotifError(`الرجاء إدخال ${names[notifType]}`);
+  }
+
+  if (notifType !== 'page' && url && !/^https?:\/\/.+/i.test(url)) {
+    return showNotifError('الرابط يجب أن يبدأ بـ http:// أو https://');
+  }
+
+  if (!customRecipients || customRecipients.length === 0) {
+    return showNotifError('لا يوجد مستلمون');
+  }
+
+  // تأكيد
+  const c = await showConfirm({
+    title: 'تأكيد الإرسال',
+    message: `هل تريد إرسال الإشعار إلى <strong>${customTargetLabel}</strong>؟`,
+    icon: 'fa-paper-plane',
+    iconType: 'success',
+    okText: 'إرسال'
+  });
+  if (!c) return;
+
+  // أرسل
+  const btn = $('notifSend');
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+
+  try {
+    const now = new Date().toISOString();
+    const notifId = 'notif_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+
+    const notification = {
+      id: notifId,
+      title: title,
+      body: body,
+      type: notifType,
+      url: notifType !== 'none' ? url : '',
+      mediaType: notifType,
+      senderId: adminId,
+      senderName: adminName,
+      createdAt: now,
+      target: currentTargetMode,
+      targetLabel: customTargetLabel,
+      recipients: customRecipients.map(r => r.userId)
+    };
+
+    // احفظ الإشعار
+    await setDoc(doc(db, 'notifications', notifId), notification);
+
+    // أضف للمستخدمين
+    for (const recipient of customRecipients) {
+      await addNotificationToUser(recipient.userId, notifId);
+    }
+
+    // حدّث lastNotification
+    await setDoc(doc(db, 'settings', 'lastNotification'), {
+      id: notifId,
+      title: title,
+      body: body,
+      type: notifType,
+      url: notifType !== 'none' ? url : '',
+      mediaType: notifType,
+      createdAt: now,
+      senderName: adminName
+    });
+
+    showToast(`✅ تم إرسال الإشعار لـ ${customRecipients.length} مستخدم`, 'success');
+
+    $('notifModal').classList.remove('show');
+    selectedStudents.clear();
+    selectedTeachers.clear();
+    document.querySelectorAll('.user-card.selected').forEach(c => c.classList.remove('selected'));
+    updateSelectionBar();
+    renderStudents();
+    renderTeachers();
+
+  } catch (e) {
+    console.error('send error:', e);
+    errEl.textContent = 'حدث خطأ أثناء الإرسال: ' + e.message;
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+});
+
+function showNotifError(msg) {
+  const errEl = $('notifError');
+  errEl.textContent = msg;
+  errEl.style.display = 'block';
+}
+
+// ============================================================
+// 💾 إضافة إشعار لمستخدم
+// ============================================================
+async function addNotificationToUser(userId, notifId) {
+  try {
+    const userNotifsRef = doc(db, 'user_notifications', userId);
+    const snap = await getDoc(userNotifsRef);
+
+    let notifIds = [];
+    let unreadCount = 0;
+
+    if (snap.exists()) {
+      const data = snap.data();
+      notifIds = data.notifIds || [];
+      unreadCount = data.unreadCount || 0;
+    }
+
+    if (!notifIds.includes(notifId)) {
+      notifIds.unshift(notifId);
+      if (notifIds.length > 100) notifIds = notifIds.slice(0, 100);
+      unreadCount++;
+    }
+
+    await setDoc(userNotifsRef, {
+      userId,
+      notifIds,
+      unreadCount,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+  } catch (e) {
+    console.error('add notif error:', e);
+  }
+}
+
+// ============================================================
+// 🛠️ أدوات
+// ============================================================
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ============================================================
+// ⌨️ Escape
+// ============================================================
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if ($('confirmModal').classList.contains('show')) closeConfirm(false);
+    if ($('notifModal').classList.contains('show')) $('notifModal').classList.remove('show');
+  }
+});
+
+// ============================================================
+// 🚀 Init
+// ============================================================
+requestAnimationFrame(() => document.body.classList.add('ready'));
+</script>
+
+</body>
+</html>
