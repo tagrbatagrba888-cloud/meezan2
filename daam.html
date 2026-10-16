@@ -215,6 +215,8 @@
 
   .bot-indicator.show { display: block; }
 
+  .bot-indicator.api { background: var(--info); }
+
   /* ===== Layout ===== */
   .main-container {
     display: flex;
@@ -469,6 +471,7 @@
   .mini-badge.mine { color: var(--success); background: rgba(30, 122, 90, 0.15); border-color: var(--success); }
   .mini-badge.other { color: var(--info); background: rgba(41, 128, 185, 0.15); border-color: var(--info); }
   .mini-badge.bot { color: var(--success); background: rgba(30, 122, 90, 0.15); border-color: var(--success); }
+  .mini-badge.api { color: var(--info); background: rgba(41, 128, 185, 0.15); border-color: var(--info); }
   .mini-badge.unread {
     color: #fff;
     background: var(--error);
@@ -670,11 +673,16 @@
     flex-shrink: 0;
   }
 
-  .icon-btn-sm:hover {
+  .icon-btn-sm:hover:not(:disabled) {
     background: var(--primary);
     color: #fff;
     border-color: var(--primary);
     transform: translateY(-2px);
+  }
+
+  .icon-btn-sm:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
   }
 
   .icon-btn-sm.claimed {
@@ -683,18 +691,31 @@
     border-color: var(--success);
   }
 
-  /* ✅ زر إعادة التحويل للبوت */
   .icon-btn-sm.warning {
     color: var(--warning);
     border-color: var(--warning);
     background: rgba(230, 126, 34, 0.08);
   }
 
-  .icon-btn-sm.warning:hover {
+  .icon-btn-sm.warning:hover:not(:disabled) {
     background: var(--warning);
     color: #fff;
     border-color: var(--warning);
     transform: translateY(-2px);
+  }
+
+  .icon-btn-sm.loading {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  .icon-btn-sm.loading i {
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
   .chat-status-bar {
@@ -721,6 +742,8 @@
 
   #otherAdminStatus i { color: var(--warning); }
   #transferStatus i { color: var(--warning); }
+  #botStatus i { color: var(--success); }
+  #apiStatus i { color: var(--info); }
 
   .chat-messages {
     flex: 1;
@@ -753,6 +776,7 @@
   .msg.user { align-self: flex-start; }
   .msg.admin { align-self: flex-end; flex-direction: row-reverse; }
   .msg.bot { align-self: flex-start; }
+  .msg.system { align-self: center; max-width: 90%; }
 
   .msg-avatar {
     width: 38px;
@@ -814,6 +838,16 @@
     background: linear-gradient(135deg, rgba(41, 128, 185, 0.08), rgba(41, 128, 185, 0.03));
     border-color: rgba(41, 128, 185, 0.3);
     border-top-right-radius: 4px;
+  }
+
+  .msg.system .msg-content {
+    background: var(--bg-input);
+    border-color: var(--border);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--text-sub);
+    text-align: center;
+    padding: 6px 14px;
   }
 
   .msg-sender-name {
@@ -879,7 +913,6 @@
     justify-content: flex-end;
   }
 
-  /* أزرار البوت */
   .msg-actions {
     margin-top: 10px;
     display: flex;
@@ -1074,7 +1107,7 @@
     text-align: center;
   }
 
-  .modal-box.wide { max-width: 600px; text-align: right; }
+  .modal-box.wide { max-width: 680px; text-align: right; }
   .modal-box.small { max-width: 440px; }
 
   @keyframes modalPop {
@@ -1188,7 +1221,13 @@
     margin-bottom: 6px;
   }
 
-  .form-input, .form-textarea {
+  .form-label .hint {
+    font-weight: 500;
+    color: var(--text-sub);
+    font-size: 11px;
+  }
+
+  .form-input, .form-textarea, .form-select {
     width: 100%;
     padding: 12px 14px;
     font-size: 13.5px;
@@ -1202,18 +1241,24 @@
     transition: all 0.25s ease;
   }
 
-  .form-input:focus, .form-textarea:focus {
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
     border-color: var(--primary);
     background: var(--bg-card);
     box-shadow: 0 0 0 4px rgba(11, 61, 46, 0.1);
   }
 
   [data-theme="dark"] .form-input:focus,
-  [data-theme="dark"] .form-textarea:focus {
+  [data-theme="dark"] .form-textarea:focus,
+  [data-theme="dark"] .form-select:focus {
     box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.15);
   }
 
   .form-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+  .form-input.ltr, .form-textarea.ltr {
+    direction: ltr;
+    text-align: left;
+  }
 
   .toggle-row {
     display: flex;
@@ -1306,6 +1351,21 @@
     box-shadow: 0 10px 26px var(--shadow);
   }
 
+  .btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .btn-test {
+    background: linear-gradient(135deg, var(--info), #5DADE2);
+    color: #fff;
+    padding: 10px 16px;
+    font-size: 12.5px;
+    border-radius: 10px;
+  }
+
+  .btn-test:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(41, 128, 185, 0.3);
+  }
+
   .modal-error {
     background: rgba(192, 57, 43, 0.1);
     color: var(--error);
@@ -1320,6 +1380,21 @@
   }
 
   .modal-error.show { display: block; }
+
+  .modal-success {
+    background: rgba(30, 122, 90, 0.1);
+    color: var(--success);
+    border: 1px solid rgba(30, 122, 90, 0.3);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: none;
+    line-height: 1.6;
+  }
+
+  .modal-success.show { display: block; }
 
   .media-type-row {
     display: grid;
@@ -1351,6 +1426,44 @@
   }
 
   [data-theme="dark"] .media-type-btn.active { color: var(--bg-page); }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--bg-input);
+    padding: 4px;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--text-sub);
+    font-family: 'Cairo', sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.2s;
+  }
+
+  .tab-btn.active {
+    background: var(--bg-card);
+    color: var(--text-main);
+    box-shadow: 0 2px 6px var(--shadow);
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
 
   /* تفاصيل المستخدم */
   .user-info-hero {
@@ -1550,6 +1663,8 @@
 
     .chat-status-bar { padding: 6px 14px; gap: 12px; font-size: 11px; }
     .user-info-grid { grid-template-columns: 1fr; }
+    .tabs { flex-wrap: wrap; }
+    .tab-btn { font-size: 11.5px; padding: 8px; }
   }
 
   @media (max-width: 400px) {
@@ -1687,9 +1802,17 @@
           <i class="fas fa-robot"></i>
           <span>البوت يرد حالياً</span>
         </div>
+        <div class="status-item" id="apiStatus" style="display: none;">
+          <i class="fas fa-cloud"></i>
+          <span>البوت الخارجي (API) نشط</span>
+        </div>
         <div class="status-item" id="otherAdminStatus" style="display: none;">
           <i class="fas fa-exclamation-triangle"></i>
           <span id="otherAdminText">مشرف آخر يرد</span>
+        </div>
+        <div class="status-item" id="userTypingStatus" style="display: none;">
+          <i class="fas fa-keyboard"></i>
+          <span>المستخدم يكتب...</span>
         </div>
       </div>
 
@@ -1699,7 +1822,7 @@
         <div class="typing-dot"></div>
         <div class="typing-dot"></div>
         <div class="typing-dot"></div>
-        <span>يكتب الآن...</span>
+        <span id="typingText">يكتب الآن...</span>
       </div>
 
       <div class="chat-input-area">
@@ -1729,65 +1852,193 @@
       </button>
     </div>
 
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="general">
+        <i class="fas fa-cog"></i> عام
+      </button>
+      <button class="tab-btn" data-tab="api">
+        <i class="fas fa-cloud"></i> API خارجي
+      </button>
+      <button class="tab-btn" data-tab="persona">
+        <i class="fas fa-brain"></i> الشخصية
+      </button>
+      <button class="tab-btn" data-tab="messages">
+        <i class="fas fa-comment-dots"></i> الرسائل
+      </button>
+    </div>
+
     <div class="modal-error" id="botError"></div>
+    <div class="modal-success" id="botSuccess"></div>
 
-    <div class="toggle-row">
-      <div class="toggle-info">
-        <strong>تفعيل البوت الذكي</strong>
-        <small>عند التفعيل، يرد البوت تلقائياً على الرسائل الجديدة باستخدام الأزرار التفاعلية</small>
+    <!-- تبويب عام -->
+    <div class="tab-panel active" data-panel="general">
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <strong>تفعيل البوت الذكي</strong>
+          <small>عند التفعيل، يرد البوت تلقائياً على الرسائل الجديدة</small>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="botEnabled">
+          <span class="slider"></span>
+        </label>
       </div>
-      <label class="switch">
-        <input type="checkbox" id="botEnabled">
-        <span class="slider"></span>
-      </label>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <strong>قراءة بيانات المستخدم</strong>
+          <small>يسمح للبوت بالوصول لكل قواعد بيانات الموقع (users, teachers, exams, homeworks, ...)</small>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="botAccessDb" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <strong>رد تلقائي عند الترحيب</strong>
+          <small>يرد البوت فوراً عند استقبال رسالة ترحيب</small>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="botAutoGreet" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <strong>إرسال إشارة "يكتب"</strong>
+          <small>يظهر شريط الكتابة للمستخدم أثناء معالجة الرد</small>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="botTypingSignal" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
     </div>
 
-    <div class="toggle-row">
-      <div class="toggle-info">
-        <strong>قراءة بيانات المستخدم</strong>
-        <small>يسمح للبوت بالوصول لبيانات المستخدم (الاسم، الفرقة، الإحصائيات) للرد بذكاء</small>
+    <!-- تبويب API -->
+    <div class="tab-panel" data-panel="api">
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <strong>استخدام API خارجي</strong>
+          <small>عند التفعيل، يرسل البوت الرسائل للـ API الخارجي. عند فشل الاتصال يرجع تلقائياً للبوت المحلي</small>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="apiEnabled">
+          <span class="slider"></span>
+        </label>
       </div>
-      <label class="switch">
-        <input type="checkbox" id="botAccessDb" checked>
-        <span class="slider"></span>
-      </label>
+
+      <div class="form-group">
+        <label class="form-label">اسم البوت <span class="hint">(يظهر في الرسائل)</span></label>
+        <input type="text" class="form-input" id="botName" placeholder="ميزان الذكي" value="ميزان الذكي">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">رابط الـ API <span class="hint">(Endpoint URL)</span></label>
+        <input type="url" class="form-input ltr" id="apiUrl" placeholder="https://api.example.com/v1/chat">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">مفتاح الـ API <span class="hint">(API Key)</span></label>
+        <input type="password" class="form-input ltr" id="apiKey" placeholder="sk-...">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">اسم الموديل <span class="hint">(Model)</span></label>
+        <input type="text" class="form-input ltr" id="apiModel" placeholder="gpt-4 / claude-3 / ...">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">ترويسة إضافية <span class="hint">(اختياري - JSON)</span></label>
+        <textarea class="form-textarea ltr" id="apiHeaders" placeholder='{"Authorization": "Bearer xxx"}' style="min-height:60px;"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">أقصى عدد Tokens للرد</label>
+        <input type="number" class="form-input ltr" id="apiMaxTokens" value="500" min="50" max="4000">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Temperature <span class="hint">(0.0 - 2.0)</span></label>
+        <input type="number" class="form-input ltr" id="apiTemperature" value="0.7" min="0" max="2" step="0.1">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">مهلة الاتصال (ثانية)</label>
+        <input type="number" class="form-input ltr" id="apiTimeout" value="30" min="5" max="120">
+      </div>
+
+      <button type="button" class="btn btn-test" id="testApiBtn" style="width:100%;margin-bottom:10px;">
+        <i class="fas fa-vial"></i> اختبار الاتصال بالـ API
+      </button>
     </div>
 
-    <div class="toggle-row">
-      <div class="toggle-info">
-        <strong>رد تلقائي عند الترحيب</strong>
-        <small>يرد البوت فوراً عند استقبال رسالة ترحيب</small>
+    <!-- تبويب الشخصية -->
+    <div class="tab-panel" data-panel="persona">
+      <div class="form-group">
+        <label class="form-label">
+          شخصية البوت / كيف يفكر
+          <span class="hint">(System Prompt - يُرسل للـ API)</span>
+        </label>
+        <textarea class="form-textarea" id="botSystemPrompt" style="min-height:180px;">أنت "ميزان الذكي"، مساعد دعم فني ذكي ولطيف في منصة MEEZAN التعليمية.
+مهمتك: مساعدة الطلاب والمعلمين في حل مشاكلهم، والإجابة على استفساراتهم حول المنصة.
+
+قواعد أساسية:
+1. تحدث بالعربية الفصحى المبسطة، وبودّ.
+2. استخدم الإيموجي باعتدال.
+3. إذا لم تعرف الإجابة، اقترح تحويل المستخدم للدعم البشري.
+4. لديك وصول لكل بيانات المستخدم (الاسم، الكود، الفرقة، الامتحانات، الواجبات، الدرجات).
+5. اجعل ردودك مختصرة (2-4 أسطر) إلا لو طُلب التفصيل.
+6. لا تختلق معلومات. إذا لم تتوفر بيانات، قل ذلك بوضوح.</textarea>
       </div>
-      <label class="switch">
-        <input type="checkbox" id="botAutoGreet" checked>
-        <span class="slider"></span>
-      </label>
+
+      <div class="form-group">
+        <label class="form-label">
+          قالب سياق المستخدم
+          <span class="hint">(يُرسل مع كل رسالة للـ API - {placeholders})</span>
+        </label>
+        <textarea class="form-textarea" id="botContextTemplate" style="min-height:120px;">== بيانات المستخدم ==
+الاسم: {name}
+الدور: {role}
+الكود: {code}
+الفرقة: {grade}
+الهاتف: {phone}
+الامتحانات: {completedExams}/{totalExams}
+الواجبات: {completedHomeworks}/{totalHomeworks}
+== نهاية البيانات ==</textarea>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">
-        رسالة الترحيب (يمكن استخدام {name} لاسم المستخدم)
-      </label>
-      <textarea class="form-textarea" id="botWelcomeMsg" style="min-height: 90px;">أهلاً بك يا {name} 👋
+    <!-- تبويب الرسائل -->
+    <div class="tab-panel" data-panel="messages">
+      <div class="form-group">
+        <label class="form-label">
+          رسالة الترحيب <span class="hint">({name} = اسم المستخدم)</span>
+        </label>
+        <textarea class="form-textarea" id="botWelcomeMsg" style="min-height: 90px;">أهلاً بك يا {name} 👋
 أنا ميزان الذكي، مساعدك في المنصة.
 كيف أقدر أساعدك اليوم؟</textarea>
-    </div>
+      </div>
 
-    <div class="form-group">
-      <label class="form-label">
-        رسالة التحويل للدعم البشري
-      </label>
-      <textarea class="form-textarea" id="botTransferMsg" style="min-height: 80px;">✅ تم تحويل محادثتك لفريق الدعم الفني.
+      <div class="form-group">
+        <label class="form-label">رسالة التحويل للدعم البشري</label>
+        <textarea class="form-textarea" id="botTransferMsg" style="min-height: 80px;">✅ تم تحويل محادثتك لفريق الدعم الفني.
 سيتم الرد عليك في أقرب وقت ممكن.
 شكراً لصبرك 🌸</textarea>
-    </div>
+      </div>
 
-    <div class="form-group">
-      <label class="form-label">
-        رسالة إعادة التحويل للبوت
-      </label>
-      <textarea class="form-textarea" id="botReturnMsg" style="min-height: 70px;">🤖 تم إعادة تحويل محادثتك للبوت الذكي.
+      <div class="form-group">
+        <label class="form-label">رسالة إعادة التحويل للبوت</label>
+        <textarea class="form-textarea" id="botReturnMsg" style="min-height: 70px;">🤖 تم إعادة تحويل محادثتك للبوت الذكي.
 أنا هنا لمساعدتك! كيف أقدر أساعدك؟</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">رسالة خطأ API (Fallback)</label>
+        <textarea class="form-textarea" id="botApiErrorMsg" style="min-height: 60px;">⚠️ حدث خطأ مؤقت، سأستخدم معرفتي المحلية لمساعدتك.</textarea>
+      </div>
     </div>
 
     <div class="modal-actions">
@@ -1846,7 +2097,7 @@
     </div>
     <div class="form-group">
       <label class="form-label">الرابط</label>
-      <input type="url" class="form-input" id="attachUrl" placeholder="https://example.com/image.jpg" style="direction:ltr;text-align:left;">
+      <input type="url" class="form-input ltr" id="attachUrl" placeholder="https://example.com/image.jpg">
     </div>
     <div class="modal-actions">
       <button type="button" class="btn btn-cancel" id="attachCancel">
@@ -1899,7 +2150,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { 
-  getFirestore, doc, onSnapshot, setDoc, getDoc, serverTimestamp, collection 
+  getFirestore, doc, onSnapshot, setDoc, getDoc, serverTimestamp, collection, getDocs 
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -1951,18 +2202,48 @@ let unsubscribeCurrentChat = null;
 let unsubscribeChatsList = null;
 let attachType = 'image';
 
+// كاش بيانات المستخدمين (لبوت)
+const userDataCache = new Map();
+let cachedUsers = null;
+let cachedTeachers = null;
+let cachedUsersTime = 0;
+let cachedTeachersTime = 0;
+const CACHE_TTL = 60000; // دقيقة
+
 // إعدادات البوت
-let botSettings = {
+const DEFAULT_BOT_SETTINGS = {
   enabled: true,
   accessDb: true,
   autoGreet: true,
+  typingSignal: true,
+  botName: 'ميزان الذكي',
+  // API
+  apiEnabled: false,
+  apiUrl: '',
+  apiKey: '',
+  apiModel: '',
+  apiHeaders: '',
+  apiMaxTokens: 500,
+  apiTemperature: 0.7,
+  apiTimeout: 30,
+  // Persona
+  systemPrompt: 'أنت "ميزان الذكي"، مساعد دعم فني ذكي ولطيف في منصة MEEZAN التعليمية.\nمهمتك: مساعدة الطلاب والمعلمين في حل مشاكلهم، والإجابة على استفساراتهم حول المنصة.\n\nقواعد أساسية:\n1. تحدث بالعربية الفصحى المبسطة، وبودّ.\n2. استخدم الإيموجي باعتدال.\n3. إذا لم تعرف الإجابة، اقترح تحويل المستخدم للدعم البشري.\n4. لديك وصول لكل بيانات المستخدم.\n5. اجعل ردودك مختصرة (2-4 أسطر).\n6. لا تختلق معلومات.',
+  contextTemplate: '== بيانات المستخدم ==\nالاسم: {name}\nالدور: {role}\nالكود: {code}\nالفرقة: {grade}\nالهاتف: {phone}\nالامتحانات: {completedExams}/{totalExams}\nالواجبات: {completedHomeworks}/{totalHomeworks}\n== نهاية البيانات ==',
+  // Messages
   welcomeMsg: 'أهلاً بك يا {name} 👋\nأنا ميزان الذكي، مساعدك في المنصة.\nكيف أقدر أساعدك اليوم؟',
-  transferMsg: '✅ تم تحويل محادثتك لفريق الدعم الفني.\nسيتم الرد عليك في أقرب وقت.\nشكراً لصبرك 🌸',
-  returnMsg: '🤖 تم إعادة تحويل محادثتك للبوت الذكي.\nأنا هنا لمساعدتك! كيف أقدر أساعدك؟'
+  transferMsg: '✅ تم تحويل محادثتك لفريق الدعم الفني.\nسيتم الرد عليك في أقرب وقت ممكن.\nشكراً لصبرك 🌸',
+  returnMsg: '🤖 تم إعادة تحويل محادثتك للبوت الذكي.\nأنا هنا لمساعدتك! كيف أقدر أساعدك؟',
+  apiErrorMsg: '⚠️ حدث خطأ مؤقت، سأستخدم معرفتي المحلية لمساعدتك.'
 };
+
+let botSettings = { ...DEFAULT_BOT_SETTINGS };
 
 // منع تكرار ردود البوت
 const processedMsgs = new Set();
+
+// حالة الـ API
+let apiIsHealthy = false;
+let apiLastCheck = 0;
 
 // ============================================================
 // 🌙 الوضع
@@ -2223,6 +2504,8 @@ function createChatItem(chat) {
     : 'لا توجد رسائل';
 
   const isBotActive = chat.isTransferred !== true && !chat.claimedBy;
+  const botName = botSettings.botName || 'البوت';
+  const apiActive = botSettings.apiEnabled && apiIsHealthy;
 
   content.innerHTML = `
     <div class="chat-item-header">
@@ -2235,7 +2518,8 @@ function createChatItem(chat) {
       ${chat.userRole === 'teacher' ? '<span class="mini-badge role-teacher"><i class="fas fa-chalkboard-user"></i> معلم</span>' : ''}
       ${chat.userRole === 'guest' ? '<span class="mini-badge role-guest"><i class="fas fa-user"></i> ضيف</span>' : ''}
       ${chat.isTransferred === true ? '<span class="mini-badge support"><i class="fas fa-headset"></i> يحتاج دعم</span>' : ''}
-      ${isBotActive ? '<span class="mini-badge bot"><i class="fas fa-robot"></i> البوت</span>' : ''}
+      ${isBotActive && !apiActive ? '<span class="mini-badge bot"><i class="fas fa-robot"></i> البوت</span>' : ''}
+      ${isBotActive && apiActive ? '<span class="mini-badge api"><i class="fas fa-cloud"></i> API</span>' : ''}
       ${chat.claimedBy === adminId ? '<span class="mini-badge mine"><i class="fas fa-check"></i> أنت</span>' : ''}
       ${chat.claimedBy && chat.claimedBy !== adminId ? `<span class="mini-badge other"><i class="fas fa-user-shield"></i> ${escapeHtml(chat.claimedByName || 'مشرف آخر')}</span>` : ''}
       ${lastMsg && lastMsg.sender === 'user' && !chat.isReadByAdmin ? '<span class="mini-badge unread">جديد</span>' : ''}
@@ -2366,24 +2650,26 @@ function renderChatStatusBar(chat) {
     claimedText.textContent = 'غير مستلمة';
   }
 
-  // حالة التحويل
   $('transferStatus').style.display = chat.isTransferred ? 'flex' : 'none';
 
-  // حالة البوت
   const isBotActive = chat.isTransferred !== true && !chat.claimedBy;
-  $('botStatus').style.display = isBotActive ? 'flex' : 'none';
+  $('botStatus').style.display = (isBotActive && !botSettings.apiEnabled) ? 'flex' : 'none';
+  $('apiStatus').style.display = (isBotActive && botSettings.apiEnabled) ? 'flex' : 'none';
 
-  // مشرف آخر
   if (chat.claimedBy && chat.claimedBy !== adminId) {
     $('otherAdminStatus').style.display = 'flex';
     $('otherAdminText').textContent = `${chat.claimedByName || 'مشرف آخر'} يرد حالياً`;
   } else {
     $('otherAdminStatus').style.display = 'none';
   }
+
+  // حالة كتابة المستخدم
+  const userTyping = chat.userTypingAt && (Date.now() - new Date(chat.userTypingAt).getTime() < 4000);
+  $('userTypingStatus').style.display = userTyping ? 'flex' : 'none';
 }
 
 // ============================================================
-// 📌 زر الاستلام
+// 📌 زر الاستلام (تحسين: فوري)
 // ============================================================
 function updateClaimButton(chat) {
   const btn = $('claimChatBtn');
@@ -2408,7 +2694,10 @@ function updateClaimButton(chat) {
 $('claimChatBtn').addEventListener('click', async () => {
   if (!currentChat || !currentChatId) return;
 
+  const btn = $('claimChatBtn');
+
   if (currentChat.claimedBy === adminId) {
+    // التنازل
     const c = await showConfirm({
       title: 'التنازل',
       message: 'هل تريد التنازل عن هذه المحادثة؟',
@@ -2416,6 +2705,12 @@ $('claimChatBtn').addEventListener('click', async () => {
       okText: 'تنازل'
     });
     if (!c) return;
+
+    // ✅ تحديث فوري
+    currentChat.claimedBy = null;
+    currentChat.claimedByName = null;
+    renderChatStatusBar(currentChat);
+    updateClaimButton(currentChat);
 
     try {
       await setDoc(doc(db, 'support_chats', currentChatId), {
@@ -2425,9 +2720,28 @@ $('claimChatBtn').addEventListener('click', async () => {
         updatedAt: serverTimestamp()
       }, { merge: true });
       showToast('تم التنازل', 'info');
-    } catch (e) { showToast('حدث خطأ', 'error'); }
+    } catch (e) {
+      showToast('حدث خطأ', 'error');
+      // استرجع
+      currentChat.claimedBy = adminId;
+      currentChat.claimedByName = adminName;
+      renderChatStatusBar(currentChat);
+      updateClaimButton(currentChat);
+    }
 
   } else if (!currentChat.claimedBy) {
+    // ✅ استلام فوري (Optimistic)
+    const prevClaimedBy = currentChat.claimedBy;
+    const prevClaimedByName = currentChat.claimedByName;
+    currentChat.claimedBy = adminId;
+    currentChat.claimedByName = adminName;
+    currentChat.claimedAt = new Date().toISOString();
+
+    renderChatStatusBar(currentChat);
+    updateClaimButton(currentChat);
+    btn.classList.add('loading');
+    btn.innerHTML = '<i class="fas fa-circle-notch"></i>';
+
     try {
       await setDoc(doc(db, 'support_chats', currentChatId), {
         claimedBy: adminId,
@@ -2435,9 +2749,21 @@ $('claimChatBtn').addEventListener('click', async () => {
         claimedAt: new Date().toISOString(),
         updatedAt: serverTimestamp()
       }, { merge: true });
-      await addSystemMessage('استلم المحادثة: ' + adminName);
+
       showToast('تم استلام المحادثة ✓', 'success');
-    } catch (e) { showToast('حدث خطأ', 'error'); }
+      // أرسل رسالة نظام (بدون انتظار)
+      addSystemMessage('استلم المحادثة: ' + adminName).catch(() => {});
+    } catch (e) {
+      // استرجع
+      currentChat.claimedBy = prevClaimedBy;
+      currentChat.claimedByName = prevClaimedByName;
+      renderChatStatusBar(currentChat);
+      updateClaimButton(currentChat);
+      showToast('تعذّر الاستلام', 'error');
+    } finally {
+      btn.classList.remove('loading');
+      updateClaimButton(currentChat);
+    }
   }
 });
 
@@ -2449,14 +2775,13 @@ $('returnToBotBtn').addEventListener('click', async () => {
 
   const c = await showConfirm({
     title: 'إعادة التحويل للبوت',
-    message: 'سيتم إلغاء تحويل المحادثة، وسيرد البوت تلقائياً على أي رسالة جديدة من المستخدم.<br><br>هل تريد المتابعة؟',
+    message: 'سيتم إلغاء تحويل المحادثة، وسيرد البوت تلقائياً على أي رسالة جديدة.<br><br>هل تريد المتابعة؟',
     icon: 'fa-robot',
     okText: 'إعادة التحويل'
   });
   if (!c) return;
 
   try {
-    // 1) ألغِ التحويل + ألغِ الاستلام + احذف الغلق لو موجود
     await setDoc(doc(db, 'support_chats', currentChatId), {
       isTransferred: false,
       claimedBy: null,
@@ -2471,15 +2796,11 @@ $('returnToBotBtn').addEventListener('click', async () => {
       updatedAt: serverTimestamp()
     }, { merge: true });
 
-    // 2) أرسل رسالة نظام + رسالة من البوت
-    const returnMessageText = botSettings.returnMsg || '🤖 تم إعادة تحويل محادثتك للبوت الذكي.';
-
     const snap = await getDoc(doc(db, 'support_chats', currentChatId));
     if (snap.exists()) {
       const data = snap.data();
       const messages = data.messages || [];
 
-      // رسالة النظام
       messages.push({
         id: 'sys_' + Date.now(),
         sender: 'bot',
@@ -2488,11 +2809,10 @@ $('returnToBotBtn').addEventListener('click', async () => {
         createdAt: new Date().toISOString()
       });
 
-      // رسالة البوت للمستخدم
       messages.push({
         id: 'bot_return_' + Date.now(),
         sender: 'bot',
-        text: returnMessageText,
+        text: botSettings.returnMsg || '🤖 تم إعادة تحويل محادثتك للبوت الذكي.',
         createdAt: new Date(Date.now() + 100).toISOString()
       });
 
@@ -2612,6 +2932,15 @@ function renderMessages(messages) {
 
 function createMessageElement(msg) {
   const sender = msg.sender || 'user';
+
+  // رسالة نظام
+  if (msg.isSystem) {
+    const el = document.createElement('div');
+    el.className = 'msg system';
+    el.innerHTML = `<div class="msg-content">${escapeHtml(msg.text || '')}</div>`;
+    return el;
+  }
+
   const el = document.createElement('div');
   el.className = `msg ${sender === 'support' || sender === 'admin' ? 'admin' : sender}`;
 
@@ -2639,7 +2968,7 @@ function createMessageElement(msg) {
   if (sender === 'support' || sender === 'admin') {
     html += `<div class="msg-sender-name"><i class="fas fa-user-shield"></i> ${escapeHtml(msg.senderName || 'الدعم')}</div>`;
   } else if (sender === 'bot') {
-    html += `<div class="msg-sender-name"><i class="fas fa-robot"></i> ميزان الذكي</div>`;
+    html += `<div class="msg-sender-name"><i class="fas fa-robot"></i> ${escapeHtml(botSettings.botName || 'البوت')}</div>`;
   }
 
   if (msg.text) {
@@ -2675,7 +3004,6 @@ function createMessageElement(msg) {
 
   content.innerHTML = html;
 
-  // ربط أزرار البوت
   content.querySelectorAll('.action-btn-chat').forEach(btn => {
     btn.addEventListener('click', async () => {
       try {
@@ -2697,7 +3025,6 @@ function createMessageElement(msg) {
 async function handleBotAction(action, msgId) {
   if (!action || !currentChatId) return;
 
-  // علّم الرسالة كمستخدمة
   try {
     const snap = await getDoc(doc(db, 'support_chats', currentChatId));
     if (snap.exists()) {
@@ -2714,15 +3041,12 @@ async function handleBotAction(action, msgId) {
     }
   } catch (e) {}
 
-  // أرسل خيار البوت كرسالة نظام من المشرف
   const label = action.label.replace(/[📊⭐📝📚🔑🎓🔔💬🔐🏠👤🔙🤖]/g, '').trim();
   await sendBotResponseAsMessage(label);
 }
 
-// إرسال رسالة البوت يدوياً (من المشرف)
 async function sendBotResponseAsMessage(userText) {
-  // نستخدم نفس منطق البوت (للمعاينة)
-  const reply = buildBotReply(userText);
+  const reply = await buildBotReply(userText);
 
   if (!reply) return;
 
@@ -2753,86 +3077,502 @@ async function sendBotResponseAsMessage(userText) {
   }, { merge: true });
 }
 
-// بناء رد البوت (نفس منطق المستخدم)
-function buildBotReply(userText) {
+// ============================================================
+// 🧠 منطق البوت (محلي + API)
+// ============================================================
+
+/**
+ * جلب بيانات المستخدم من Firestore (users/teachers)
+ */
+async function fetchUserData(userId, role) {
+  if (!userId || role === 'guest') return null;
+
+  // كاش
+  const cacheKey = `${role}_${userId}`;
+  const now = Date.now();
+  const cached = userDataCache.get(cacheKey);
+  if (cached && (now - cached.time) < CACHE_TTL) {
+    return cached.data;
+  }
+
+  const collName = role === 'teacher' ? 'teachers' : 'users';
+
+  // كاش جماعي
+  if (role === 'teacher' && cachedTeachers && (now - cachedTeachersTime) < CACHE_TTL) {
+    const found = cachedTeachers.find(u => u.id === userId);
+    userDataCache.set(cacheKey, { data: found, time: now });
+    return found;
+  }
+  if (role !== 'teacher' && cachedUsers && (now - cachedUsersTime) < CACHE_TTL) {
+    const found = cachedUsers.find(u => u.id === userId);
+    userDataCache.set(cacheKey, { data: found, time: now });
+    return found;
+  }
+
+  try {
+    const snap = await getDoc(doc(db, collName, 'all'));
+    if (snap.exists()) {
+      const items = snap.data().items || [];
+      if (role === 'teacher') {
+        cachedTeachers = items;
+        cachedTeachersTime = now;
+      } else {
+        cachedUsers = items;
+        cachedUsersTime = now;
+      }
+      const found = items.find(u => u.id === userId);
+      userDataCache.set(cacheKey, { data: found, time: now });
+      return found;
+    }
+  } catch (e) {
+    console.warn('fetchUserData error:', e);
+  }
+
+  return null;
+}
+
+/**
+ * بناء سياق المستخدم (Context) من بيانات قاعدة البيانات
+ */
+function buildUserContext(chat, userData) {
+  const name = userData?.fullName || chat.userName || 'مستخدم';
+  const role = chat.userRole === 'teacher' ? 'معلم' : (chat.userRole === 'student' ? 'طالب' : 'ضيف');
+  const code = userData?.code || chat.userCode || '—';
+  const grade = userData?.grade || '—';
+  const phone = userData?.phone || chat.userPhone || '—';
+  const completedExams = userData?.completedExams || 0;
+  const totalExams = userData?.totalExams || 0;
+  const completedHomeworks = userData?.completedHomeworks || 0;
+  const totalHomeworks = userData?.totalHomeworks || 0;
+
+  let template = botSettings.contextTemplate || '';
+  if (!template) return '';
+
+  return template
+    .replace(/\{name\}/g, name)
+    .replace(/\{role\}/g, role)
+    .replace(/\{code\}/g, code)
+    .replace(/\{grade\}/g, grade)
+    .replace(/\{phone\}/g, phone)
+    .replace(/\{completedExams\}/g, completedExams)
+    .replace(/\{totalExams\}/g, totalExams)
+    .replace(/\{completedHomeworks\}/g, completedHomeworks)
+    .replace(/\{totalHomeworks\}/g, totalHomeworks);
+}
+
+/**
+ * بناء سياق الموقع الكامل (كل قواعد البيانات)
+ */
+async function buildSiteContext() {
+  const ctx = {};
+
+  try {
+    // إحصائيات عامة
+    const statsSnap = await getDoc(doc(db, 'settings', 'stats'));
+    if (statsSnap.exists()) ctx.stats = statsSnap.data();
+
+    // إعدادات عامة
+    const genSnap = await getDoc(doc(db, 'settings', 'general'));
+    if (genSnap.exists()) ctx.general = genSnap.data();
+  } catch (e) {}
+
+  return ctx;
+}
+
+/**
+ * استدعاء الـ API الخارجي
+ */
+async function callExternalAPI(userMessage, chat, userData) {
+  if (!botSettings.apiEnabled || !botSettings.apiUrl) {
+    return { ok: false, reason: 'api_disabled' };
+  }
+
+  // بناء الرسائل
+  const systemPrompt = botSettings.systemPrompt || DEFAULT_BOT_SETTINGS.systemPrompt;
+  const userContext = buildUserContext(chat, userData);
+  const siteContext = botSettings.accessDb ? await buildSiteContext() : {};
+
+  const systemContent = systemPrompt + (userContext ? '\n\n' + userContext : '') +
+    (Object.keys(siteContext).length ? '\n\n== سياق الموقع ==\n' + JSON.stringify(siteContext, null, 2) + '\n== نهاية السياق ==' : '');
+
+  // آخر 10 رسائل للسياق
+  const history = (chat.messages || []).slice(-10).map(m => ({
+    role: m.sender === 'user' ? 'user' : 'assistant',
+    content: m.text || ''
+  }));
+
+  const body = {
+    model: botSettings.apiModel || 'default',
+    messages: [
+      { role: 'system', content: systemContent },
+      ...history,
+      { role: 'user', content: userMessage }
+    ],
+    max_tokens: parseInt(botSettings.apiMaxTokens) || 500,
+    temperature: parseFloat(botSettings.apiTemperature) || 0.7
+  };
+
+  // Headers
+  let extraHeaders = {};
+  if (botSettings.apiHeaders) {
+    try { extraHeaders = JSON.parse(botSettings.apiHeaders); } catch (e) {}
+  }
+
+  const headers = {
+    'Content-Type': 'application/json',
+    ...extraHeaders
+  };
+
+  if (botSettings.apiKey && !headers['Authorization']) {
+    headers['Authorization'] = 'Bearer ' + botSettings.apiKey;
+  }
+
+  // Timeout
+  const controller = new AbortController();
+  const timeoutMs = (parseInt(botSettings.apiTimeout) || 30) * 1000;
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const res = await fetch(botSettings.apiUrl, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body),
+      signal: controller.signal
+    });
+
+    clearTimeout(timer);
+
+    if (!res.ok) {
+      return { ok: false, reason: 'http_' + res.status };
+    }
+
+    const data = await res.json();
+
+    // استخراج الرد - أشهر الصيغ
+    let replyText = '';
+    if (data.choices && data.choices[0]?.message?.content) {
+      replyText = data.choices[0].message.content;
+    } else if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+      replyText = data.candidates[0].content.parts[0].text;
+    } else if (data.content && typeof data.content === 'string') {
+      replyText = data.content;
+    } else if (data.reply) {
+      replyText = data.reply;
+    } else if (data.message) {
+      replyText = typeof data.message === 'string' ? data.message : data.message.content;
+    } else if (data.response) {
+      replyText = data.response;
+    } else if (typeof data === 'string') {
+      replyText = data;
+    }
+
+    if (!replyText) {
+      return { ok: false, reason: 'empty_response' };
+    }
+
+    apiIsHealthy = true;
+    apiLastCheck = Date.now();
+
+    return { ok: true, text: replyText.trim() };
+
+  } catch (e) {
+    clearTimeout(timer);
+    apiIsHealthy = false;
+    console.warn('API error:', e.message);
+    return { ok: false, reason: e.name === 'AbortError' ? 'timeout' : 'network' };
+  }
+}
+
+/**
+ * اختبار الـ API
+ */
+async function testApiConnection() {
+  const btn = $('testApiBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> جاري الاختبار...';
+
+  const testUrl = cleanInput($('apiUrl').value);
+  const testKey = $('apiKey').value;
+  const testModel = cleanInput($('apiModel').value);
+
+  if (!testUrl) {
+    showBotMsg('error', 'الرجاء إدخال رابط الـ API أولاً');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-vial"></i> اختبار الاتصال بالـ API';
+    return;
+  }
+
+  let extraHeaders = {};
+  const headersStr = cleanInput($('apiHeaders').value);
+  if (headersStr) {
+    try { extraHeaders = JSON.parse(headersStr); }
+    catch (e) { showBotMsg('error', 'ترويسة إضافية غير صالحة (JSON)'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-vial"></i> اختبار الاتصال بالـ API'; return; }
+  }
+
+  const headers = { 'Content-Type': 'application/json', ...extraHeaders };
+  if (testKey && !headers['Authorization']) headers['Authorization'] = 'Bearer ' + testKey;
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 20000);
+
+  try {
+    const res = await fetch(testUrl, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        model: testModel || 'default',
+        messages: [{ role: 'user', content: 'ping' }],
+        max_tokens: 10
+      }),
+      signal: controller.signal
+    });
+    clearTimeout(timer);
+
+    if (res.ok) {
+      apiIsHealthy = true;
+      apiLastCheck = Date.now();
+      showBotMsg('success', '✅ الاتصال بالـ API يعمل بنجاح!');
+    } else {
+      const txt = await res.text().catch(() => '');
+      showBotMsg('error', `❌ فشل الاتصال (HTTP ${res.status})${txt ? ': ' + txt.slice(0, 150) : ''}`);
+    }
+  } catch (e) {
+    clearTimeout(timer);
+    showBotMsg('error', '❌ فشل الاتصال: ' + (e.name === 'AbortError' ? 'انتهت المهلة' : e.message));
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-vial"></i> اختبار الاتصال بالـ API';
+  }
+}
+
+$('testApiBtn').addEventListener('click', testApiConnection);
+
+function showBotMsg(type, text) {
+  const errEl = $('botError');
+  const okEl = $('botSuccess');
+  errEl.classList.remove('show');
+  okEl.classList.remove('show');
+  if (type === 'error') {
+    errEl.textContent = text;
+    errEl.classList.add('show');
+  } else {
+    okEl.textContent = text;
+    okEl.classList.add('show');
+  }
+  setTimeout(() => {
+    errEl.classList.remove('show');
+    okEl.classList.remove('show');
+  }, 5000);
+}
+
+/**
+ * المحرك الرئيسي للبوت: يحاول API أولاً، ثم يرجع للمحلي
+ */
+async function buildBotReply(userText) {
   if (!currentChat) return null;
 
   const name = currentChat.userName || 'صديقي';
-  const lower = userText.toLowerCase();
 
-  // القائمة الرئيسية
-  if (/قائمه|قائمة|رجوع|back|الرئيسية|menu|خيارات/i.test(lower)) {
+  // جلب بيانات المستخدم
+  let userData = null;
+  if (botSettings.accessDb && currentChat.userId) {
+    userData = await fetchUserData(currentChat.userId, currentChat.userRole);
+  }
+
+  // ✅ 1) جرب الـ API إذا مفعّل
+  if (botSettings.apiEnabled && botSettings.apiUrl) {
+    const apiResult = await callExternalAPI(userText, currentChat, userData);
+    if (apiResult.ok) {
+      return {
+        text: apiResult.text,
+        actions: [],
+        source: 'api'
+      };
+    }
+    // فشل - نكمل للمحلي
+    console.warn('API failed, falling back to local. Reason:', apiResult.reason);
+    // لو المستخدم اختار خطأ API صريح، ممكن نضيف رسالة
+    // (لكن الأفضل نكمل صامتاً)
+  }
+
+  // ✅ 2) البوت المحلي (Fallback)
+  return buildLocalBotReply(userText, name, userData);
+}
+
+/**
+ * البوت المحلي الذكي (بدون API) - نسخة محسّنة ومنظمة
+ */
+function buildLocalBotReply(userText, name, userData) {
+  const lower = userText.toLowerCase().trim();
+
+  // ============ مساعدات ============
+  const has = (...kws) => kws.some(k => lower.includes(k));
+
+  // ============ الترحيب ============
+  if (has('مرحبا', 'اهلا', 'أهلا', 'السلام', 'هاي', 'hi', 'hello', 'صباح', 'مساء', 'ازيك', 'إزيك')) {
     return {
-      text: `تمام يا ${name}، اختر من القائمة:`,
-      actions: getMainMenu()
+      text: `أهلاً بك يا ${name} 👋\nكيف أقدر أساعدك اليوم؟`,
+      actions: getMainMenu(),
+      source: 'local'
     };
   }
 
-  // معلوماتي
-  if (/معلوماتي|حسابي|بياناتي/i.test(lower)) {
+  // ============ القائمة الرئيسية ============
+  if (has('قائمه', 'قائمة', 'رجوع', 'back', 'الرئيسية', 'menu', 'خيارات', 'ابدأ', 'ابدا')) {
     return {
-      text: `📊 معلوماتك يا ${name}:\n\n• الكود: ${currentChat.userCode || '—'}\n• الفرقة: —`,
+      text: `تمام يا ${name}، اختر من القائمة:`,
+      actions: getMainMenu(),
+      source: 'local'
+    };
+  }
+
+  // ============ معلوماتي ============
+  if (has('معلوماتي', 'حسابي', 'بياناتي', 'بروفايل', 'profile', 'حسابى')) {
+    let text = `📊 معلوماتك يا ${name}:\n\n`;
+    if (userData) {
+      text += `• الاسم: ${userData.fullName || name}\n`;
+      text += `• الكود: ${userData.code || currentChat.userCode || '—'}\n`;
+      text += `• الفرقة/المادة: ${userData.grade || '—'}\n`;
+      text += `• الهاتف: ${userData.phone || '—'}\n`;
+    } else {
+      text += `• الكود: ${currentChat.userCode || '—'}\n`;
+      text += `• الدور: ${currentChat.userRole === 'teacher' ? 'معلم' : (currentChat.userRole === 'student' ? 'طالب' : 'ضيف')}\n`;
+    }
+    return {
+      text,
       actions: [
         { id: 'stats', label: '📊 نسبة تفوقي', icon: 'fa-chart-line' },
         { id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }
-      ]
+      ],
+      source: 'local'
     };
   }
 
-  // نسبة التفوق
-  if (/نسبه|نسبة|تفوق|معدل|درجات/i.test(lower)) {
+  // ============ نسبة التفوق / الدرجات ============
+  if (has('نسبه', 'نسبة', 'تفوق', 'معدل', 'درجات', 'نتيجه', 'نتيجة')) {
+    let text = `📊 نسبة تفوقك يا ${name}:\n\n`;
+    if (userData) {
+      const ce = userData.completedExams || 0;
+      const te = userData.totalExams || 0;
+      const ch = userData.completedHomeworks || 0;
+      const th = userData.totalHomeworks || 0;
+      const examPct = te > 0 ? Math.round((ce / te) * 100) : 0;
+      const hwPct = th > 0 ? Math.round((ch / th) * 100) : 0;
+      const totalPct = Math.round((examPct + hwPct) / 2);
+      text += `• الامتحانات: ${ce} / ${te} (${examPct}%)\n`;
+      text += `• الواجبات: ${ch} / ${th} (${hwPct}%)\n`;
+      text += `• الإجمالي: ${totalPct}%`;
+    } else {
+      text += `لا تتوفر بيانات حالياً.`;
+    }
     return {
-      text: `📊 نسبة تفوقك يا ${name}:\n\nسيتم عرض تفاصيلها من البيانات الحقيقية.`,
+      text,
       actions: [
         { id: 'exams', label: '📝 الامتحانات', icon: 'fa-file-pen' },
         { id: 'homeworks', label: '📚 الواجبات', icon: 'fa-book' },
         { id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }
-      ]
+      ],
+      source: 'local'
     };
   }
 
-  // الامتحانات
-  if (/امتحان|اختبار/i.test(lower)) {
+  // ============ الامتحانات ============
+  if (has('امتحان', 'اختبار', 'exam')) {
+    let text = `📝 امتحاناتك يا ${name}:\n\n`;
+    if (userData) {
+      text += `• المكتملة: ${userData.completedExams || 0}\n`;
+      text += `• الإجمالية: ${userData.totalExams || 0}`;
+    } else {
+      text += `لا تتوفر بيانات حالياً.`;
+    }
     return {
-      text: `📝 امتحاناتك يا ${name}:`,
-      actions: [
-        { id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }
-      ]
+      text,
+      actions: [{ id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }],
+      source: 'local'
     };
   }
 
-  // الواجبات
-  if (/واجب|واجبات/i.test(lower)) {
+  // ============ الواجبات ============
+  if (has('واجب', 'واجبات', 'homework')) {
+    let text = `📚 واجباتك يا ${name}:\n\n`;
+    if (userData) {
+      text += `• المكتملة: ${userData.completedHomeworks || 0}\n`;
+      text += `• الإجمالية: ${userData.totalHomeworks || 0}`;
+    } else {
+      text += `لا تتوفر بيانات حالياً.`;
+    }
     return {
-      text: `📚 واجباتك يا ${name}:`,
-      actions: [
-        { id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }
-      ]
+      text,
+      actions: [{ id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }],
+      source: 'local'
     };
   }
 
-  // كلمة السر
-  if (/كلمه|كلمة|باسورد|password/i.test(lower)) {
+  // ============ كلمة السر ============
+  if (has('كلمه', 'كلمة', 'باسورد', 'password', 'سر')) {
     return {
-      text: '🔑 بخصوص كلمة السر:\n\n• لتغييرها: افتح sora.html\n• لو نسيتها: تواصل مع الدعم',
+      text: '🔑 بخصوص كلمة السر:\n\n• لتغييرها: افتح sora.html\n• لو نسيتها: تواصل مع الدعم البشري',
       actions: [
+        { id: 'support', label: '💬 الدعم البشري', icon: 'fa-headset', type: 'danger' },
         { id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }
-      ]
+      ],
+      source: 'local'
     };
   }
 
-  // التحويل للدعم
-  if (/دعم|بشري|مسؤول|موظف/i.test(lower)) {
+  // ============ الإشعارات ============
+  if (has('اشعار', 'إشعار', 'تنبيه', 'notification')) {
+    return {
+      text: '🔔 الإشعارات:\n\nيمكنك متابعة كل الإشعارات من الصفحة الرئيسية.\nهل تريد شيئاً آخر؟',
+      actions: [{ id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }],
+      source: 'local'
+    };
+  }
+
+  // ============ موادي / المقررات ============
+  if (has('مواد', 'مقرر', 'منهج', 'courses', 'subject')) {
+    let text = `📚 موادي يا ${name}:\n\n`;
+    if (userData?.grade) text += `• الفرقة/المادة: ${userData.grade}`;
+    else text += `لا تتوفر بيانات حالياً.`;
+    return {
+      text,
+      actions: [{ id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }],
+      source: 'local'
+    };
+  }
+
+  // ============ الدعم البشري ============
+  if (has('دعم', 'بشري', 'مسؤول', 'موظف', 'شكوى', 'مشكله', 'مشكلة', 'خطا', 'خطأ', 'مش شغال', 'مشغال', 'مشكله')) {
     return {
       transferToSupport: true,
-      text: botSettings.transferMsg || '✅ تم التحويل للدعم'
+      text: botSettings.transferMsg || '✅ تم التحويل للدعم',
+      source: 'local'
     };
   }
 
-  // رد افتراضي
+  // ============ شكر ============
+  if (has('شكرا', 'شكراً', 'متشكر', 'تسلم', 'thanks', 'thank')) {
+    return {
+      text: `العفو يا ${name} 🌸\nأنا هنا دائماً لمساعدتك!`,
+      actions: [{ id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }],
+      source: 'local'
+    };
+  }
+
+  // ============ وداع ============
+  if (has('سلام', 'باي', 'bye', 'وداع', 'الى اللقاء', 'إلى اللقاء')) {
+    return {
+      text: `مع السلامة يا ${name} 👋\nلو احتجتني، أنا هنا!`,
+      actions: [{ id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }],
+      source: 'local'
+    };
+  }
+
+  // ============ رد افتراضي ============
   return {
-    text: `معلش يا ${name}، اختر من القائمة:`,
-    actions: getMainMenu()
+    text: `معلش يا ${name}، مقدرتش أفهم طلبك بالظبط.\nاختر من القائمة أو اكتب استفسارك بشكل أوضح:`,
+    actions: getMainMenu(),
+    source: 'local'
   };
 }
 
@@ -2866,7 +3606,7 @@ function getMainMenu() {
 
 function escapeHtml(text) {
   const div = document.createElement('div');
-  div.textContent = text;
+  div.textContent = text == null ? '' : String(text);
   return div.innerHTML;
 }
 
@@ -2894,6 +3634,39 @@ function formatDateTime(iso) {
 }
 
 // ============================================================
+// ⌨️ شريط الكتابة الفوري (تحسين كبير)
+// ============================================================
+let typingTimeout = null;
+let isTypingNow = false;
+
+$('chatInput').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+
+  // ✅ إشارة كتابة فورية
+  if (!currentChatId) return;
+
+  if (!isTypingNow) {
+    isTypingNow = true;
+    // إرسال إشارة "أكتب"
+    setDoc(doc(db, 'support_chats', currentChatId), {
+      adminTypingAt: new Date().toISOString(),
+      adminTypingBy: adminName
+    }, { merge: true }).catch(() => {});
+  }
+
+  clearTimeout(typingTimeout);
+  typingTimeout = setTimeout(() => {
+    isTypingNow = false;
+    // إخفاء الإشارة
+    setDoc(doc(db, 'support_chats', currentChatId), {
+      adminTypingAt: null,
+      adminTypingBy: null
+    }, { merge: true }).catch(() => {});
+  }, 2500);
+});
+
+// ============================================================
 // 📤 إرسال رسالة من المشرف
 // ============================================================
 $('sendBtn').addEventListener('click', () => sendAdminMessage());
@@ -2904,11 +3677,6 @@ $('chatInput').addEventListener('keydown', (e) => {
   }
 });
 
-$('chatInput').addEventListener('input', function() {
-  this.style.height = 'auto';
-  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-});
-
 async function sendAdminMessage(text = null, mediaUrl = '', mediaType = '') {
   if (!currentChatId) return;
 
@@ -2917,14 +3685,19 @@ async function sendAdminMessage(text = null, mediaUrl = '', mediaType = '') {
 
   if (!msgText && !mediaUrl) return;
 
+  // ✅ استلام تلقائي فوري (بدون انتظار)
   if (!currentChat?.claimedBy) {
-    try {
-      await setDoc(doc(db, 'support_chats', currentChatId), {
-        claimedBy: adminId,
-        claimedByName: adminName,
-        claimedAt: new Date().toISOString()
-      }, { merge: true });
-    } catch (e) {}
+    if (currentChat) {
+      currentChat.claimedBy = adminId;
+      currentChat.claimedByName = adminName;
+      renderChatStatusBar(currentChat);
+      updateClaimButton(currentChat);
+    }
+    setDoc(doc(db, 'support_chats', currentChatId), {
+      claimedBy: adminId,
+      claimedByName: adminName,
+      claimedAt: new Date().toISOString()
+    }, { merge: true }).catch(() => {});
   }
 
   const btn = $('sendBtn');
@@ -2952,6 +3725,8 @@ async function sendAdminMessage(text = null, mediaUrl = '', mediaType = '') {
       messages: messages,
       lastMessageByAdmin: new Date().toISOString(),
       lastMessageText: msgText || (mediaType === 'video' ? '🎥 فيديو' : '📷 صورة'),
+      adminTypingAt: null,
+      adminTypingBy: null,
       updatedAt: serverTimestamp()
     }, { merge: true });
 
@@ -2959,6 +3734,8 @@ async function sendAdminMessage(text = null, mediaUrl = '', mediaType = '') {
       input.value = '';
       input.style.height = 'auto';
     }
+    isTypingNow = false;
+    clearTimeout(typingTimeout);
   } catch (e) {
     console.error('send error:', e);
     showToast('تعذّر الإرسال', 'error');
@@ -3048,21 +3825,47 @@ $('botModal').addEventListener('click', (e) => {
   if (e.target === $('botModal')) $('botModal').classList.remove('show');
 });
 
+// تبويبات
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelector(`.tab-panel[data-panel="${tab}"]`).classList.add('active');
+  });
+});
+
 async function loadBotSettings() {
   try {
     const snap = await getDoc(doc(db, 'settings', 'bot'));
     if (snap.exists()) {
-      const data = snap.data();
-      botSettings = { ...botSettings, ...data };
+      botSettings = { ...DEFAULT_BOT_SETTINGS, ...snap.data() };
     }
   } catch (e) {}
 
   $('botEnabled').checked = botSettings.enabled !== false;
   $('botAccessDb').checked = botSettings.accessDb !== false;
   $('botAutoGreet').checked = botSettings.autoGreet !== false;
-  $('botWelcomeMsg').value = botSettings.welcomeMsg || '';
-  $('botTransferMsg').value = botSettings.transferMsg || '';
-  $('botReturnMsg').value = botSettings.returnMsg || '';
+  $('botTypingSignal').checked = botSettings.typingSignal !== false;
+
+  $('apiEnabled').checked = botSettings.apiEnabled === true;
+  $('botName').value = botSettings.botName || DEFAULT_BOT_SETTINGS.botName;
+  $('apiUrl').value = botSettings.apiUrl || '';
+  $('apiKey').value = botSettings.apiKey || '';
+  $('apiModel').value = botSettings.apiModel || '';
+  $('apiHeaders').value = botSettings.apiHeaders || '';
+  $('apiMaxTokens').value = botSettings.apiMaxTokens || 500;
+  $('apiTemperature').value = botSettings.apiTemperature || 0.7;
+  $('apiTimeout').value = botSettings.apiTimeout || 30;
+
+  $('botSystemPrompt').value = botSettings.systemPrompt || DEFAULT_BOT_SETTINGS.systemPrompt;
+  $('botContextTemplate').value = botSettings.contextTemplate || DEFAULT_BOT_SETTINGS.contextTemplate;
+
+  $('botWelcomeMsg').value = botSettings.welcomeMsg || DEFAULT_BOT_SETTINGS.welcomeMsg;
+  $('botTransferMsg').value = botSettings.transferMsg || DEFAULT_BOT_SETTINGS.transferMsg;
+  $('botReturnMsg').value = botSettings.returnMsg || DEFAULT_BOT_SETTINGS.returnMsg;
+  $('botApiErrorMsg').value = botSettings.apiErrorMsg || DEFAULT_BOT_SETTINGS.apiErrorMsg;
 
   updateBotIndicator();
 }
@@ -3073,6 +3876,7 @@ function updateBotIndicator() {
   if (botSettings.enabled) {
     btn.classList.add('bot-active');
     ind.classList.add('show');
+    ind.classList.toggle('api', botSettings.apiEnabled === true);
   } else {
     btn.classList.remove('bot-active');
     ind.classList.remove('show');
@@ -3083,13 +3887,37 @@ $('botSaveBtn').addEventListener('click', async () => {
   const errEl = $('botError');
   errEl.classList.remove('show');
 
+  // تحقق من JSON الهيدرز
+  const headersStr = cleanInput($('apiHeaders').value);
+  if (headersStr) {
+    try { JSON.parse(headersStr); }
+    catch (e) { showBotMsg('error', 'ترويسة إضافية غير صالحة (JSON)'); return; }
+  }
+
   const data = {
     enabled: $('botEnabled').checked,
     accessDb: $('botAccessDb').checked,
     autoGreet: $('botAutoGreet').checked,
-    welcomeMsg: cleanInput($('botWelcomeMsg').value),
-    transferMsg: cleanInput($('botTransferMsg').value),
-    returnMsg: cleanInput($('botReturnMsg').value),
+    typingSignal: $('botTypingSignal').checked,
+
+    apiEnabled: $('apiEnabled').checked,
+    botName: cleanInput($('botName').value) || DEFAULT_BOT_SETTINGS.botName,
+    apiUrl: cleanInput($('apiUrl').value),
+    apiKey: $('apiKey').value,
+    apiModel: cleanInput($('apiModel').value),
+    apiHeaders: cleanInput($('apiHeaders').value),
+    apiMaxTokens: parseInt($('apiMaxTokens').value) || 500,
+    apiTemperature: parseFloat($('apiTemperature').value) || 0.7,
+    apiTimeout: parseInt($('apiTimeout').value) || 30,
+
+    systemPrompt: $('botSystemPrompt').value,
+    contextTemplate: $('botContextTemplate').value,
+
+    welcomeMsg: $('botWelcomeMsg').value,
+    transferMsg: $('botTransferMsg').value,
+    returnMsg: $('botReturnMsg').value,
+    apiErrorMsg: $('botApiErrorMsg').value,
+
     updatedAt: serverTimestamp()
   };
 
@@ -3098,10 +3926,9 @@ $('botSaveBtn').addEventListener('click', async () => {
     botSettings = { ...botSettings, ...data };
     updateBotIndicator();
     showToast('تم حفظ إعدادات البوت ✓', 'success');
-    setTimeout(() => $('botModal').classList.remove('show'), 1000);
+    setTimeout(() => $('botModal').classList.remove('show'), 800);
   } catch (e) {
-    errEl.textContent = 'حدث خطأ: ' + e.message;
-    errEl.classList.add('show');
+    showBotMsg('error', 'حدث خطأ: ' + e.message);
   }
 });
 
@@ -3114,22 +3941,39 @@ $('botResetBtn').addEventListener('click', async () => {
   });
   if (!c) return;
 
-  $('botWelcomeMsg').value = 'أهلاً بك يا {name} 👋\nأنا ميزان الذكي، مساعدك في المنصة.\nكيف أقدر أساعدك اليوم؟';
-  $('botTransferMsg').value = '✅ تم تحويل محادثتك لفريق الدعم الفني.\nسيتم الرد عليك في أقرب وقت.\nشكراً لصبرك 🌸';
-  $('botReturnMsg').value = '🤖 تم إعادة تحويل محادثتك للبوت الذكي.\nأنا هنا لمساعدتك! كيف أقدر أساعدك؟';
+  $('botName').value = DEFAULT_BOT_SETTINGS.botName;
+  $('apiEnabled').checked = false;
+  $('apiUrl').value = '';
+  $('apiKey').value = '';
+  $('apiModel').value = '';
+  $('apiHeaders').value = '';
+  $('apiMaxTokens').value = 500;
+  $('apiTemperature').value = 0.7;
+  $('apiTimeout').value = 30;
+  $('botSystemPrompt').value = DEFAULT_BOT_SETTINGS.systemPrompt;
+  $('botContextTemplate').value = DEFAULT_BOT_SETTINGS.contextTemplate;
+  $('botWelcomeMsg').value = DEFAULT_BOT_SETTINGS.welcomeMsg;
+  $('botTransferMsg').value = DEFAULT_BOT_SETTINGS.transferMsg;
+  $('botReturnMsg').value = DEFAULT_BOT_SETTINGS.returnMsg;
+  $('botApiErrorMsg').value = DEFAULT_BOT_SETTINGS.apiErrorMsg;
   $('botEnabled').checked = true;
   $('botAutoGreet').checked = true;
   $('botAccessDb').checked = true;
+  $('botTypingSignal').checked = true;
+
   showToast('تمت استعادة الافتراضي', 'info');
 });
 
 // ============================================================
-// 📡 مراقبة الإعدادات
+// 📡 مراقبة الإعدادات Real-time
 // ============================================================
 onSnapshot(doc(db, 'settings', 'bot'), (snap) => {
   if (snap.exists()) {
     botSettings = { ...botSettings, ...snap.data() };
     updateBotIndicator();
+    if (currentChat) {
+      renderChatStatusBar(currentChat);
+    }
   }
 }, (e) => {});
 
@@ -3151,9 +3995,16 @@ document.addEventListener('keydown', (e) => {
 startChatsListener();
 loadBotSettings();
 
+// مؤقت لتحديث حالة كتابة المستخدم
+setInterval(() => {
+  if (currentChat) renderChatStatusBar(currentChat);
+}, 3000);
+
+// مراقب الثيم
 new MutationObserver(() => {
   renderChatsList();
 }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
 </script>
 
 </body>
