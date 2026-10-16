@@ -395,15 +395,14 @@
   .form-group { margin-bottom: 14px; }
 
   .form-label {
-    display: block;
-    font-size: 12.5px;
-    font-weight: 700;
-    color: var(--text-main);
-    margin-bottom: 6px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 6px;
   }
 
   .form-label .value-display {
@@ -441,12 +440,6 @@
     box-shadow: 0 0 0 3px rgba(11, 61, 46, 0.1);
   }
 
-  .form-textarea {
-    resize: vertical;
-    min-height: 70px;
-    line-height: 1.6;
-  }
-
   .form-hint {
     font-size: 11px;
     color: var(--text-sub);
@@ -455,9 +448,7 @@
     display: block;
   }
 
-  /* ============================================================
-     Color Input
-     ============================================================ */
+  /* Color Input */
   .color-input-wrap {
     display: flex;
     align-items: center;
@@ -496,9 +487,7 @@
     text-align: left;
   }
 
-  /* ============================================================
-     Range Slider
-     ============================================================ */
+  /* Range Slider */
   .range-wrap {
     display: flex;
     align-items: center;
@@ -533,19 +522,7 @@
     background: linear-gradient(135deg, var(--accent), var(--accent-light));
   }
 
-  .range-input::-moz-range-thumb {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--primary);
-    cursor: pointer;
-    border: 3px solid var(--bg-card);
-    box-shadow: 0 3px 10px var(--shadow);
-  }
-
-  /* ============================================================
-     Switch
-     ============================================================ */
+  /* Switch */
   .switch-row {
     display: flex;
     align-items: center;
@@ -620,9 +597,7 @@
   .switch input:checked + .slider { background: var(--success); }
   .switch input:checked + .slider:before { transform: translateX(-22px); }
 
-  /* ============================================================
-     Action Buttons
-     ============================================================ */
+  /* Buttons */
   .btn {
     padding: 11px 18px;
     border-radius: 11px;
@@ -648,21 +623,14 @@
 
   [data-theme="dark"] .btn-primary { color: var(--bg-page); }
 
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px var(--shadow);
-  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 24px var(--shadow); }
 
   .btn-success {
     background: linear-gradient(135deg, #1E7A5A, #2ECC71);
     color: #fff;
-    box-shadow: 0 6px 16px rgba(30, 122, 90, 0.3);
   }
 
-  .btn-success:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(30, 122, 90, 0.4);
-  }
+  .btn-success:hover { transform: translateY(-2px); }
 
   .btn-info {
     background: linear-gradient(135deg, #2980B9, #3498DB);
@@ -690,13 +658,6 @@
     color: var(--text-main);
     border: 1.5px solid var(--border) !important;
   }
-
-  .btn-cancel:hover {
-    background: var(--bg-card);
-    transform: translateY(-2px);
-  }
-
-  .btn-block { width: 100%; }
 
   .buttons-row {
     display: grid;
@@ -759,39 +720,48 @@
     overflow: hidden;
     min-height: 400px;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
   }
 
   .cert-scale-holder {
     width: 100%;
+    max-width: 1000px;
     position: relative;
     overflow: hidden;
   }
 
   /* ============================================================
-     🎓 CERTIFICATE — جميع الأنماط ديناميكية عبر CSS Variables
+     🎓 CERTIFICATE — نفس تصميم نسخة المستخدم
      ============================================================ */
-  #certificateRender {
+  #certificateRender,
+  #issueCertificateRender,
+  #viewCertificateRender {
     width: 1000px;
     height: 700px;
-    background: var(--cv-bg-color, #FFFEF7);
+    background: var(--cv-bg-color, #FFFDF4);
     position: absolute;
     top: 0;
     left: 0;
     overflow: hidden;
     font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    unicode-bidi: isolate;
     box-sizing: border-box;
     transform-origin: top left;
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35);
   }
 
-  /* طبقة نمط الخلفية */
-  #certificateRender::before {
+  #certificateRender::before,
+  #issueCertificateRender::before,
+  #viewCertificateRender::before {
     content: '';
     position: absolute;
     inset: 0;
     background-image:
-      repeating-linear-gradient(45deg, var(--cv-bg-pattern-color, rgba(201, 169, 97, 0.03)) 0px, var(--cv-bg-pattern-color, rgba(201, 169, 97, 0.03)) 1px, transparent 1px, transparent 12px),
-      repeating-linear-gradient(-45deg, var(--cv-bg-pattern-color, rgba(201, 169, 97, 0.03)) 0px, var(--cv-bg-pattern-color, rgba(201, 169, 97, 0.03)) 1px, transparent 1px, transparent 12px);
+      repeating-linear-gradient(45deg, var(--cv-bg-pattern-color, rgba(201, 169, 97, 0.035)) 0px, var(--cv-bg-pattern-color, rgba(201, 169, 97, 0.035)) 1px, transparent 1px, transparent 14px),
+      repeating-linear-gradient(-45deg, var(--cv-bg-pattern-color, rgba(201, 169, 97, 0.035)) 0px, var(--cv-bg-pattern-color, rgba(201, 169, 97, 0.035)) 1px, transparent 1px, transparent 14px);
     pointer-events: none;
     z-index: 0;
     opacity: var(--cv-bg-pattern-enabled, 1);
@@ -800,28 +770,31 @@
   /* الإطار الخارجي */
   .cert-frame-outer {
     position: absolute;
-    top: var(--cv-frame-offset, 20px);
-    left: var(--cv-frame-offset, 20px);
-    right: var(--cv-frame-offset, 20px);
-    bottom: var(--cv-frame-offset, 20px);
-    border: var(--cv-frame-width, 12px) solid var(--cv-frame-color, #C9A961);
+    top: var(--cv-frame-offset, 22px);
+    left: var(--cv-frame-offset, 22px);
+    right: var(--cv-frame-offset, 22px);
+    bottom: var(--cv-frame-offset, 22px);
+    border: var(--cv-frame-width, 14px) solid var(--cv-frame-color, #C9A961);
     border-radius: var(--cv-frame-radius, 4px);
     box-shadow:
-      inset 0 0 0 3px var(--cv-frame-inner-bg, #FFFBEE),
-      inset 0 0 0 5px var(--cv-frame-inner-color, #8B6914),
-      inset 0 0 40px var(--cv-frame-shadow, rgba(201, 169, 97, 0.35));
+      inset 0 0 0 2px #FFFBEE,
+      inset 0 0 0 4px var(--cv-frame-inner-color, #8B6914),
+      inset 0 0 0 6px #FFFBEE,
+      inset 0 0 55px var(--cv-frame-shadow, rgba(201, 169, 97, 0.28));
     pointer-events: none;
     z-index: 1;
+    background:
+      repeating-linear-gradient(45deg, transparent 0, transparent 8px, rgba(255, 255, 255, 0.06) 8px, rgba(255, 255, 255, 0.06) 9px);
   }
 
   /* الإطار الداخلي */
   .cert-frame-inner {
     position: absolute;
-    top: calc(var(--cv-frame-offset, 20px) + 26px);
-    left: calc(var(--cv-frame-offset, 20px) + 26px);
-    right: calc(var(--cv-frame-offset, 20px) + 26px);
-    bottom: calc(var(--cv-frame-offset, 20px) + 26px);
-    border: 2px solid var(--cv-frame-inner-color, #8B6914);
+    top: calc(var(--cv-frame-offset, 22px) + 32px);
+    left: calc(var(--cv-frame-offset, 22px) + 32px);
+    right: calc(var(--cv-frame-offset, 22px) + 32px);
+    bottom: calc(var(--cv-frame-offset, 22px) + 32px);
+    border: 1.5px solid var(--cv-frame-inner-color, #8B6914);
     border-radius: 2px;
     pointer-events: none;
     z-index: 1;
@@ -831,29 +804,17 @@
   /* زخارف الأركان */
   .cert-corner {
     position: absolute;
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
     pointer-events: none;
     z-index: 2;
     display: var(--cv-corners-display, block);
   }
 
-  .cert-corner.top-right {
-    top: calc(var(--cv-frame-offset, 20px) + 24px);
-    right: calc(var(--cv-frame-offset, 20px) + 24px);
-  }
-  .cert-corner.top-left {
-    top: calc(var(--cv-frame-offset, 20px) + 24px);
-    left: calc(var(--cv-frame-offset, 20px) + 24px);
-  }
-  .cert-corner.bottom-right {
-    bottom: calc(var(--cv-frame-offset, 20px) + 24px);
-    right: calc(var(--cv-frame-offset, 20px) + 24px);
-  }
-  .cert-corner.bottom-left {
-    bottom: calc(var(--cv-frame-offset, 20px) + 24px);
-    left: calc(var(--cv-frame-offset, 20px) + 24px);
-  }
+  .cert-corner.top-right { top: calc(var(--cv-frame-offset, 22px) + 30px); right: calc(var(--cv-frame-offset, 22px) + 30px); }
+  .cert-corner.top-left { top: calc(var(--cv-frame-offset, 22px) + 30px); left: calc(var(--cv-frame-offset, 22px) + 30px); }
+  .cert-corner.bottom-right { bottom: calc(var(--cv-frame-offset, 22px) + 30px); right: calc(var(--cv-frame-offset, 22px) + 30px); }
+  .cert-corner.bottom-left { bottom: calc(var(--cv-frame-offset, 22px) + 30px); left: calc(var(--cv-frame-offset, 22px) + 30px); }
 
   .cert-corner::before,
   .cert-corner::after {
@@ -863,31 +824,28 @@
     border-radius: 2px;
   }
 
-  .cert-corner.top-right::before { top: 0; right: 0; width: 55px; height: 3px; }
-  .cert-corner.top-right::after { top: 0; right: 0; width: 3px; height: 55px; }
-
-  .cert-corner.top-left::before { top: 0; left: 0; width: 55px; height: 3px; }
-  .cert-corner.top-left::after { top: 0; left: 0; width: 3px; height: 55px; }
-
-  .cert-corner.bottom-right::before { bottom: 0; right: 0; width: 55px; height: 3px; }
-  .cert-corner.bottom-right::after { bottom: 0; right: 0; width: 3px; height: 55px; }
-
-  .cert-corner.bottom-left::before { bottom: 0; left: 0; width: 55px; height: 3px; }
-  .cert-corner.bottom-left::after { bottom: 0; left: 0; width: 3px; height: 55px; }
+  .cert-corner.top-right::before { top: 0; right: 0; width: 65px; height: 3px; }
+  .cert-corner.top-right::after { top: 0; right: 0; width: 3px; height: 65px; }
+  .cert-corner.top-left::before { top: 0; left: 0; width: 65px; height: 3px; }
+  .cert-corner.top-left::after { top: 0; left: 0; width: 3px; height: 65px; }
+  .cert-corner.bottom-right::before { bottom: 0; right: 0; width: 65px; height: 3px; }
+  .cert-corner.bottom-right::after { bottom: 0; right: 0; width: 3px; height: 65px; }
+  .cert-corner.bottom-left::before { bottom: 0; left: 0; width: 65px; height: 3px; }
+  .cert-corner.bottom-left::after { bottom: 0; left: 0; width: 3px; height: 65px; }
 
   .cert-corner-circle {
     position: absolute;
-    width: 14px;
-    height: 14px;
-    background: radial-gradient(circle at 30% 30%, var(--cv-corner-circle-light, #F5EBC8) 0%, var(--cv-corner-color, #C9A961) 70%, var(--cv-frame-inner-color, #8B6914) 100%);
+    width: 16px;
+    height: 16px;
+    background: radial-gradient(circle at 30% 30%, #F5EBC8 0%, var(--cv-corner-color, #C9A961) 70%, var(--cv-frame-inner-color, #8B6914) 100%);
     border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(139, 105, 20, 0.5);
+    box-shadow: 0 2px 6px rgba(139, 105, 20, 0.5);
   }
 
-  .cert-corner.top-right .cert-corner-circle { top: -6px; right: -6px; }
-  .cert-corner.top-left .cert-corner-circle { top: -6px; left: -6px; }
-  .cert-corner.bottom-right .cert-corner-circle { bottom: -6px; right: -6px; }
-  .cert-corner.bottom-left .cert-corner-circle { bottom: -6px; left: -6px; }
+  .cert-corner.top-right .cert-corner-circle { top: -8px; right: -8px; }
+  .cert-corner.top-left .cert-corner-circle { top: -8px; left: -8px; }
+  .cert-corner.bottom-right .cert-corner-circle { bottom: -8px; right: -8px; }
+  .cert-corner.bottom-left .cert-corner-circle { bottom: -8px; left: -8px; }
 
   /* حاوية المحتوى */
   .cert-content {
@@ -896,7 +854,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    padding: var(--cv-content-padding, 75px 100px 210px);
+    padding: var(--cv-content-padding, 68px 100px 190px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -908,15 +866,15 @@
 
   /* اللوجو */
   .cert-logo {
-    width: var(--cv-logo-size, 82px);
-    height: var(--cv-logo-size, 82px);
+    width: var(--cv-logo-size, 74px);
+    height: var(--cv-logo-size, 74px);
     object-fit: contain;
     border-radius: 50%;
-    background: var(--cv-logo-bg, #FFFFFF);
-    padding: 5px;
-    border: var(--cv-logo-border-width, 3px) solid var(--cv-logo-border-color, #C9A961);
-    box-shadow: 0 6px 22px rgba(201, 169, 97, 0.45);
-    margin-bottom: var(--cv-logo-margin, 12px);
+    background: #FFFFFF;
+    padding: 4px;
+    border: 2.5px solid var(--cv-logo-border-color, #C9A961);
+    box-shadow: 0 6px 22px rgba(201, 169, 97, 0.4);
+    margin-bottom: 10px;
     box-sizing: border-box;
     flex-shrink: 0;
     display: var(--cv-logo-display, inline-block);
@@ -925,51 +883,49 @@
   /* العنوان الرئيسي */
   .cert-main-title {
     font-family: var(--cv-title-font, 'Aref Ruqaa'), serif;
-    font-size: var(--cv-title-size, 56px);
+    font-size: var(--cv-title-size, 52px);
     font-weight: var(--cv-title-weight, 700);
     color: var(--cv-title-color, #0B3D2E);
     margin: 0;
     padding: 0;
-    line-height: 1.1;
-    letter-spacing: var(--cv-title-spacing, 1px);
-    text-shadow:
-      1px 1px 0 rgba(201, 169, 97, 0.35),
-      -1px -1px 0 rgba(255, 255, 255, 0.9);
+    line-height: 1.15;
+    letter-spacing: 0;
+    unicode-bidi: isolate;
   }
 
   /* العنوان الإنجليزي */
   .cert-en-title {
     font-family: 'Cairo', sans-serif;
-    font-size: var(--cv-entitle-size, 10.5px);
+    font-size: var(--cv-entitle-size, 10px);
     font-weight: 800;
     color: var(--cv-entitle-color, #8B6914);
-    letter-spacing: var(--cv-entitle-spacing, 8px);
-    margin: 6px 0 0 0;
-    padding-left: 8px;
+    letter-spacing: 6px;
+    margin: 4px 0 0 0;
+    padding-left: 6px;
     text-transform: uppercase;
     flex-shrink: 0;
   }
 
   /* الفاصل */
   .cert-divider {
-    display: var(--cv-divider-display, flex);
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin: var(--cv-divider-margin, 14px 0 12px);
+    margin: 12px 0 10px;
     width: 100%;
     flex-shrink: 0;
   }
 
   .cert-divider .line {
-    width: var(--cv-divider-line-width, 100px);
+    width: 110px;
     height: 1.5px;
     background: linear-gradient(90deg, transparent, var(--cv-divider-color, #C9A961) 50%, transparent);
   }
 
   .cert-divider .diamond {
-    width: var(--cv-divider-diamond-size, 8px);
-    height: var(--cv-divider-diamond-size, 8px);
+    width: 9px;
+    height: 9px;
     background: var(--cv-divider-color, #C9A961);
     transform: rotate(45deg);
     box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.18);
@@ -978,60 +934,65 @@
 
   /* النصوص */
   .cert-line-1 {
-    font-family: var(--cv-body-font, 'Cairo'), sans-serif;
     font-size: var(--cv-line1-size, 15px);
-    color: var(--cv-line1-color, #5A6B66);
+    color: var(--cv-line1-color, #4A5B56);
     font-weight: 600;
-    margin: 0 0 6px 0;
-    line-height: 1.4;
+    margin: 0 0 4px 0;
+    line-height: 1.5;
+    letter-spacing: 0;
     flex-shrink: 0;
   }
 
-  /* اسم الطالب */
+  /* ✅ اسم الطالب — يقبل الالتفاف */
   .cert-student-name {
     font-family: var(--cv-name-font, 'Aref Ruqaa'), serif;
-    font-size: var(--cv-name-size, 40px);
+    font-size: var(--cv-name-size, 38px);
     font-weight: 700;
     color: var(--cv-name-color, #0B3D2E);
-    line-height: 1.2;
-    margin: 4px 0 0 0;
-    padding: 0 15px;
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 1.35;
+    margin: 8px 0 0 0;
+    padding: 4px 20px;
+    max-width: 90%;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    word-break: break-word;
+    text-align: center;
+    letter-spacing: 0;
+    unicode-bidi: isolate;
+    display: block;
     flex-shrink: 0;
   }
 
   .cert-name-underline {
-    width: var(--cv-underline-width, 380px);
+    width: var(--cv-underline-width, 400px);
     max-width: 70%;
-    height: var(--cv-underline-height, 2px);
+    height: 2px;
     background: linear-gradient(90deg, transparent, var(--cv-underline-color, #0B3D2E) 50%, transparent);
-    margin: 6px 0 5px;
+    margin: 8px 0 6px;
     border-radius: 2px;
     flex-shrink: 0;
     display: var(--cv-underline-display, block);
   }
 
   .cert-student-code {
-    font-family: 'Cairo', monospace;
-    font-size: var(--cv-code-size, 12px);
+    font-family: 'Cairo', sans-serif;
+    font-size: var(--cv-code-size, 11.5px);
     color: var(--cv-code-color, #5A6B66);
     font-weight: 700;
-    letter-spacing: 1px;
-    direction: ltr;
-    margin: 0 0 12px 0;
+    letter-spacing: 0;
+    margin: 0 0 10px 0;
     flex-shrink: 0;
+    unicode-bidi: isolate;
   }
 
   .cert-line-2 {
-    font-family: var(--cv-body-font, 'Cairo'), sans-serif;
     font-size: var(--cv-line2-size, 14px);
-    color: var(--cv-line2-color, #5A6B66);
+    color: var(--cv-line2-color, #4A5B56);
     font-weight: 600;
     margin: 0 0 8px 0;
-    line-height: 1.4;
+    line-height: 1.5;
+    letter-spacing: 0;
     flex-shrink: 0;
   }
 
@@ -1040,7 +1001,7 @@
     font-size: var(--cv-item-size, 22px);
     font-weight: 700;
     color: var(--cv-item-color, #8B6914);
-    background: var(--cv-item-bg, rgba(201, 169, 97, 0.15));
+    background: var(--cv-item-bg, linear-gradient(135deg, rgba(201, 169, 97, 0.18), rgba(224, 200, 136, 0.08)));
     border: 1.5px dashed var(--cv-item-border-color, #C9A961);
     border-radius: 10px;
     padding: 7px 24px;
@@ -1050,40 +1011,40 @@
     overflow: hidden;
     text-overflow: ellipsis;
     flex-shrink: 0;
+    letter-spacing: 0;
+    unicode-bidi: isolate;
   }
 
   .cert-score {
-    font-family: var(--cv-body-font, 'Cairo'), sans-serif;
     font-size: var(--cv-score-size, 17px);
     font-weight: 800;
     color: var(--cv-score-color, #1E7A5A);
-    direction: ltr;
-    margin: 0 0 6px 0;
-    letter-spacing: 0.5px;
+    margin: 0 0 5px 0;
+    letter-spacing: 0;
     flex-shrink: 0;
+    unicode-bidi: isolate;
   }
 
   .cert-score .highlight {
     color: var(--cv-score-highlight, #C9A961);
     font-size: calc(var(--cv-score-size, 17px) * 1.18);
     font-weight: 900;
-    text-shadow: 0 1px 2px rgba(201, 169, 97, 0.3);
   }
 
   .cert-date {
-    font-family: var(--cv-body-font, 'Cairo'), sans-serif;
     font-size: var(--cv-date-size, 12px);
     color: var(--cv-date-color, #5A6B66);
     font-weight: 700;
     margin: 0;
-    letter-spacing: 0.3px;
+    letter-spacing: 0;
     flex-shrink: 0;
+    unicode-bidi: isolate;
   }
 
   /* التوقيعات */
   .cert-footer {
     position: absolute;
-    bottom: var(--cv-footer-bottom, 70px);
+    bottom: var(--cv-footer-bottom, 68px);
     left: var(--cv-footer-left, 100px);
     right: var(--cv-footer-right, 100px);
     display: var(--cv-footer-display, flex);
@@ -1094,12 +1055,12 @@
 
   .cert-signature-block {
     text-align: center;
-    width: var(--cv-signature-width, 210px);
+    width: var(--cv-signature-width, 220px);
   }
 
   .cert-sig-line {
     width: 100%;
-    height: var(--cv-sig-line-height, 1.5px);
+    height: 1.5px;
     background: var(--cv-sig-line-color, #0B3D2E);
     margin-bottom: 8px;
     border-radius: 2px;
@@ -1107,47 +1068,48 @@
 
   .cert-sig-name {
     font-family: var(--cv-sig-font, 'Aref Ruqaa'), serif;
-    font-size: var(--cv-sig-name-size, 16px);
+    font-size: var(--cv-sig-name-size, 15px);
     font-weight: 700;
     color: var(--cv-sig-name-color, #0B3D2E);
     margin-bottom: 2px;
     line-height: 1.2;
+    letter-spacing: 0;
+    unicode-bidi: isolate;
   }
 
   .cert-sig-title {
-    font-family: 'Cairo', sans-serif;
     font-size: var(--cv-sig-title-size, 11px);
     color: var(--cv-sig-title-color, #5A6B66);
     font-weight: 600;
+    letter-spacing: 0;
+    unicode-bidi: isolate;
   }
 
   /* الخاتم */
   .cert-seal {
     position: absolute;
-    bottom: var(--cv-seal-bottom, 60px);
+    bottom: var(--cv-seal-bottom, 55px);
     left: 50%;
     transform: translateX(-50%);
-    width: var(--cv-seal-size, 95px);
-    height: var(--cv-seal-size, 95px);
+    width: var(--cv-seal-size, 96px);
+    height: var(--cv-seal-size, 96px);
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, var(--cv-seal-light, #FFFDF5) 0%, var(--cv-seal-mid, #E0C888) 45%, var(--cv-seal-color, #C9A961) 100%);
+    background: radial-gradient(circle at 35% 30%, #FFFDF5 0%, var(--cv-seal-mid, #E0C888) 45%, var(--cv-seal-color, #C9A961) 100%);
     border: 3px double var(--cv-seal-border, #8B6914);
     display: var(--cv-seal-display, flex);
     align-items: center;
     justify-content: center;
     color: var(--cv-seal-icon-color, #8B6914);
-    font-size: calc(var(--cv-seal-size, 95px) * 0.36);
+    font-size: calc(var(--cv-seal-size, 96px) * 0.35);
     box-shadow:
-      0 8px 24px rgba(139, 105, 20, 0.45),
+      0 8px 24px rgba(139, 105, 20, 0.4),
       inset 0 0 0 2px #FFFBEE,
       inset 0 0 0 4px var(--cv-seal-border, #8B6914),
       inset 0 0 15px rgba(139, 105, 20, 0.3);
     z-index: 5;
   }
 
-  .cert-seal i {
-    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
-  }
+  .cert-seal i { filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2)); }
 
   .cert-seal::before {
     content: '';
@@ -1155,8 +1117,7 @@
     inset: -8px;
     border: 1.5px dashed var(--cv-seal-color, #C9A961);
     border-radius: 50%;
-    opacity: var(--cv-seal-ring-opacity, 0.6);
-    display: var(--cv-seal-ring-display, block);
+    opacity: 0.6;
   }
 
   /* ============================================================
@@ -1230,7 +1191,6 @@
     color: var(--text-main);
     outline: none;
     font-weight: 500;
-    transition: all 0.25s ease;
   }
 
   .search-input:focus {
@@ -1286,12 +1246,7 @@
     overflow: hidden;
   }
 
-  [data-theme="dark"] .cert-admin-avatar { color: var(--bg-page); }
-
-  .cert-admin-avatar img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-  }
+  .cert-admin-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
   .cert-admin-info { flex: 1; min-width: 0; }
 
@@ -1310,7 +1265,6 @@
     color: var(--text-sub);
     font-weight: 700;
     direction: ltr;
-    font-family: 'Cairo', monospace;
   }
 
   .cert-admin-body {
@@ -1328,16 +1282,8 @@
     gap: 8px;
   }
 
-  .cert-admin-row i {
-    color: var(--accent);
-    width: 16px;
-    font-size: 12px;
-  }
-
-  .cert-admin-row strong {
-    color: var(--text-main);
-    font-weight: 800;
-  }
+  .cert-admin-row i { color: var(--accent); width: 16px; font-size: 12px; }
+  .cert-admin-row strong { color: var(--text-main); font-weight: 800; }
 
   .cert-admin-badge {
     display: inline-flex;
@@ -1377,13 +1323,10 @@
     justify-content: center;
     gap: 3px;
     transition: all 0.2s;
-    white-space: nowrap;
   }
 
   .btn-mini i { font-size: 13px; }
-
   .btn-mini:hover { transform: translateY(-2px); border-color: var(--accent); }
-
   .btn-mini.view:hover { background: var(--info); color: #fff; border-color: var(--info); }
   .btn-mini.download:hover { background: var(--success); color: #fff; border-color: var(--success); }
   .btn-mini.delete { color: var(--error); border-color: rgba(192, 57, 43, 0.3); }
@@ -1448,15 +1391,8 @@
     flex-shrink: 0;
   }
 
-  [data-theme="dark"] .modal-header-icon { color: var(--bg-page); }
-
   .modal-header-text { flex: 1; min-width: 0; }
-
-  .modal-header-text h2 {
-    font-size: 17px;
-    font-weight: 800;
-    color: var(--text-main);
-  }
+  .modal-header-text h2 { font-size: 17px; font-weight: 800; color: var(--text-main); }
 
   .modal-close {
     width: 38px;
@@ -1476,16 +1412,6 @@
 
   .modal-close:hover { background: var(--error); color: #fff; }
 
-  .modal-body-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  .modal-body-grid .full {
-    grid-column: 1 / -1;
-  }
-
   .modal-actions {
     display: flex;
     gap: 10px;
@@ -1497,9 +1423,7 @@
 
   .modal-actions .btn { flex: 1; min-width: 120px; padding: 13px; }
 
-  /* ============================================================
-     Toast
-     ============================================================ */
+  /* Toast */
   .toast {
     position: fixed;
     bottom: 24px;
@@ -1532,9 +1456,7 @@
   .toast.info { border-color: var(--info); }
   .toast.info i { color: var(--info); }
 
-  /* ============================================================
-     Confirm Modal
-     ============================================================ */
+  /* Confirm */
   .confirm-icon {
     width: 72px;
     height: 72px;
@@ -1546,14 +1468,10 @@
     justify-content: center;
     font-size: 30px;
     margin: 0 auto 18px;
-    box-shadow: 0 10px 25px var(--shadow);
   }
 
   [data-theme="dark"] .confirm-icon { color: var(--bg-page); }
-
-  .confirm-icon.danger {
-    background: linear-gradient(135deg, #C0392B, #E74C3C);
-  }
+  .confirm-icon.danger { background: linear-gradient(135deg, #C0392B, #E74C3C); }
 
   .confirm-title {
     font-size: 19px;
@@ -1570,12 +1488,9 @@
     line-height: 1.7;
     text-align: center;
     margin-bottom: 22px;
-    padding: 0 8px;
   }
 
-  /* ============================================================
-     Colors Presets (Quick Picks)
-     ============================================================ */
+  /* Presets */
   .preset-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
@@ -1593,10 +1508,7 @@
     overflow: hidden;
   }
 
-  .preset-item:hover {
-    transform: scale(1.05);
-    border-color: var(--accent);
-  }
+  .preset-item:hover { transform: scale(1.05); border-color: var(--accent); }
 
   .preset-item span {
     position: absolute;
@@ -1611,23 +1523,11 @@
     font-weight: 700;
   }
 
-  /* ============================================================
-     Responsive
-     ============================================================ */
+  /* Responsive */
   @media (max-width: 1100px) {
-    .settings-layout {
-      grid-template-columns: 1fr;
-    }
-
-    .settings-panel,
-    .preview-panel {
-      position: static;
-      max-height: none;
-    }
-
-    .preview-panel {
-      order: -1;
-    }
+    .settings-layout { grid-template-columns: 1fr; }
+    .settings-panel, .preview-panel { position: static; max-height: none; }
+    .preview-panel { order: -1; }
   }
 
   @media (max-width: 900px) {
@@ -1640,16 +1540,12 @@
     .topbar-actions .icon-btn { display: none; }
     .topbar-actions .menu-btn { display: flex; }
     .container { padding: 16px 12px 100px; }
-
     .main-tab { padding: 12px 16px; font-size: 13px; }
-    .main-tab i { font-size: 14px; }
   }
 
   @media (max-width: 600px) {
     .settings-panel { padding: 16px; }
-    .modal-body-grid { grid-template-columns: 1fr; }
     .buttons-row { grid-template-columns: 1fr; }
-    .cert-admin-actions { grid-template-columns: repeat(3, 1fr); }
   }
 
   @media (min-width: 901px) {
@@ -1659,9 +1555,7 @@
 </head>
 <body>
 
-<!-- ============================================================
-     Topbar
-     ============================================================ -->
+<!-- Topbar -->
 <header class="topbar">
   <div class="topbar-inner">
     <div class="topbar-brand">
@@ -1694,9 +1588,7 @@
   </div>
 </header>
 
-<!-- ============================================================
-     Main Tabs
-     ============================================================ -->
+<!-- Main Tabs -->
 <div class="main-tabs">
   <div class="main-tabs-inner">
     <button class="main-tab active" data-tab="design">
@@ -1715,29 +1607,22 @@
   </div>
 </div>
 
-<!-- ============================================================
-     Container
-     ============================================================ -->
+<!-- Container -->
 <div class="container">
 
-  <!-- ============ TAB 1: Design ============ -->
+  <!-- TAB 1: Design -->
   <div class="section-content active" id="section-design">
     <div class="settings-layout">
 
-      <!-- Settings Panel -->
       <aside class="settings-panel">
-
         <div class="panel-header">
-          <div class="panel-header-icon">
-            <i class="fas fa-palette"></i>
-          </div>
+          <div class="panel-header-icon"><i class="fas fa-palette"></i></div>
           <div class="panel-header-text">
             <h2>تخصيص الشهادة</h2>
             <small>غيّر أي عنصر وستراه فوراً</small>
           </div>
         </div>
 
-        <!-- ============= Section: Content ============= -->
         <div class="form-section">
           <div class="form-section-title">
             <i class="fas fa-font"></i>
@@ -1748,71 +1633,58 @@
             <label class="form-label">اسم المنصة (عربي)</label>
             <input type="text" class="form-input" id="cfgSiteNameAr" placeholder="ميزان">
           </div>
-
           <div class="form-group">
             <label class="form-label">اسم المنصة (إنجليزي)</label>
-            <input type="text" class="form-input" id="cfgSiteNameEn" placeholder="MEEZAN" style="direction:ltr;text-align:left;">
+            <input type="text" class="form-input" id="cfgSiteNameEn" style="direction:ltr;text-align:left;">
           </div>
-
           <div class="form-group">
             <label class="form-label">اسم المدير</label>
-            <input type="text" class="form-input" id="cfgAdminName" placeholder="د. أحمد محمد">
+            <input type="text" class="form-input" id="cfgAdminName">
           </div>
-
           <div class="form-group">
             <label class="form-label">لقب المدير</label>
-            <input type="text" class="form-input" id="cfgAdminTitle" placeholder="المدير التنفيذي">
+            <input type="text" class="form-input" id="cfgAdminTitle">
           </div>
-
           <div class="form-group">
-            <label class="form-label">رابط الشعار (اللوجو)</label>
-            <input type="url" class="form-input" id="cfgLogoUrl" placeholder="https://..." style="direction:ltr;text-align:left;">
+            <label class="form-label">رابط الشعار</label>
+            <input type="url" class="form-input" id="cfgLogoUrl" style="direction:ltr;text-align:left;">
           </div>
-
           <div class="form-group">
             <label class="form-label">العنوان الرئيسي</label>
-            <input type="text" class="form-input" id="cfgMainTitle" placeholder="شهادة تقدير">
+            <input type="text" class="form-input" id="cfgMainTitle">
           </div>
-
           <div class="form-group">
             <label class="form-label">العنوان الإنجليزي</label>
-            <input type="text" class="form-input" id="cfgEnTitle" placeholder="CERTIFICATE OF ACHIEVEMENT" style="direction:ltr;text-align:left;">
+            <input type="text" class="form-input" id="cfgEnTitle" style="direction:ltr;text-align:left;">
           </div>
-
           <div class="form-group">
             <label class="form-label">النص الأول (قبل الاسم)</label>
-            <input type="text" class="form-input" id="cfgLine1" placeholder="تشهد إدارة منصة {site} التعليمية بأن">
+            <input type="text" class="form-input" id="cfgLine1">
             <small class="form-hint">{site} = اسم المنصة</small>
           </div>
-
           <div class="form-group">
-            <label class="form-label">النص الثاني (قبل اسم الواجب/الامتحان)</label>
-            <input type="text" class="form-input" id="cfgLine2" placeholder="قد حصل على هذه الشهادة تقديراً لتفوقه في {type}">
+            <label class="form-label">النص الثاني</label>
+            <input type="text" class="form-input" id="cfgLine2">
             <small class="form-hint">{type} = واجب / امتحان</small>
           </div>
-
           <div class="form-group">
             <label class="form-label">كلمة الواجب</label>
-            <input type="text" class="form-input" id="cfgHomeworkLabel" placeholder="الواجب">
+            <input type="text" class="form-input" id="cfgHomeworkLabel">
           </div>
-
           <div class="form-group">
             <label class="form-label">كلمة الامتحان</label>
-            <input type="text" class="form-input" id="cfgExamLabel" placeholder="الامتحان">
+            <input type="text" class="form-input" id="cfgExamLabel">
           </div>
-
           <div class="form-group">
             <label class="form-label">نص التوقيع الأيمن</label>
-            <input type="text" class="form-input" id="cfgRightSigTitle" placeholder="المنصة التعليمية">
+            <input type="text" class="form-input" id="cfgRightSigTitle">
           </div>
-
           <div class="form-group" style="margin-bottom:0;">
-            <label class="form-label">نص التوقيع الأيسر (تحت اسم المدير)</label>
-            <input type="text" class="form-input" id="cfgLeftSigTitle" placeholder="المدير التنفيذي">
+            <label class="form-label">نص التوقيع الأيسر</label>
+            <input type="text" class="form-input" id="cfgLeftSigTitle">
           </div>
         </div>
 
-        <!-- ============= Section: Colors ============= -->
         <div class="form-section">
           <div class="form-section-title">
             <i class="fas fa-palette"></i>
@@ -1831,13 +1703,11 @@
           <div class="form-group" style="margin-top:14px;">
             <label class="form-label">
               لون الخلفية
-              <span class="value-display" id="valBgColor">#FFFEF7</span>
+              <span class="value-display" id="valBgColor">#FFFDF4</span>
             </label>
             <div class="color-input-wrap">
-              <label class="color-swatch">
-                <input type="color" id="cfgBgColor" value="#FFFEF7">
-              </label>
-              <input type="text" class="form-input" id="cfgBgColorText" value="#FFFEF7" maxlength="7">
+              <label class="color-swatch"><input type="color" id="cfgBgColor" value="#FFFDF4"></label>
+              <input type="text" class="form-input" id="cfgBgColorText" value="#FFFDF4" maxlength="7">
             </div>
           </div>
 
@@ -1847,9 +1717,7 @@
               <span class="value-display" id="valFrameColor">#C9A961</span>
             </label>
             <div class="color-input-wrap">
-              <label class="color-swatch">
-                <input type="color" id="cfgFrameColor" value="#C9A961">
-              </label>
+              <label class="color-swatch"><input type="color" id="cfgFrameColor" value="#C9A961"></label>
               <input type="text" class="form-input" id="cfgFrameColorText" value="#C9A961" maxlength="7">
             </div>
           </div>
@@ -1860,9 +1728,7 @@
               <span class="value-display" id="valTitleColor">#0B3D2E</span>
             </label>
             <div class="color-input-wrap">
-              <label class="color-swatch">
-                <input type="color" id="cfgTitleColor" value="#0B3D2E">
-              </label>
+              <label class="color-swatch"><input type="color" id="cfgTitleColor" value="#0B3D2E"></label>
               <input type="text" class="form-input" id="cfgTitleColorText" value="#0B3D2E" maxlength="7">
             </div>
           </div>
@@ -1873,9 +1739,7 @@
               <span class="value-display" id="valNameColor">#0B3D2E</span>
             </label>
             <div class="color-input-wrap">
-              <label class="color-swatch">
-                <input type="color" id="cfgNameColor" value="#0B3D2E">
-              </label>
+              <label class="color-swatch"><input type="color" id="cfgNameColor" value="#0B3D2E"></label>
               <input type="text" class="form-input" id="cfgNameColorText" value="#0B3D2E" maxlength="7">
             </div>
           </div>
@@ -1886,9 +1750,7 @@
               <span class="value-display" id="valItemColor">#8B6914</span>
             </label>
             <div class="color-input-wrap">
-              <label class="color-swatch">
-                <input type="color" id="cfgItemColor" value="#8B6914">
-              </label>
+              <label class="color-swatch"><input type="color" id="cfgItemColor" value="#8B6914"></label>
               <input type="text" class="form-input" id="cfgItemColorText" value="#8B6914" maxlength="7">
             </div>
           </div>
@@ -1899,9 +1761,7 @@
               <span class="value-display" id="valScoreColor">#1E7A5A</span>
             </label>
             <div class="color-input-wrap">
-              <label class="color-swatch">
-                <input type="color" id="cfgScoreColor" value="#1E7A5A">
-              </label>
+              <label class="color-swatch"><input type="color" id="cfgScoreColor" value="#1E7A5A"></label>
               <input type="text" class="form-input" id="cfgScoreColorText" value="#1E7A5A" maxlength="7">
             </div>
           </div>
@@ -1912,15 +1772,12 @@
               <span class="value-display" id="valBodyColor">#5A6B66</span>
             </label>
             <div class="color-input-wrap">
-              <label class="color-swatch">
-                <input type="color" id="cfgBodyColor" value="#5A6B66">
-              </label>
+              <label class="color-swatch"><input type="color" id="cfgBodyColor" value="#5A6B66"></label>
               <input type="text" class="form-input" id="cfgBodyColorText" value="#5A6B66" maxlength="7">
             </div>
           </div>
         </div>
 
-        <!-- ============= Section: Fonts & Sizes ============= -->
         <div class="form-section">
           <div class="form-section-title">
             <i class="fas fa-text-height"></i>
@@ -1930,10 +1787,10 @@
           <div class="form-group">
             <label class="form-label">خط العنوان الرئيسي</label>
             <select class="form-select" id="cfgTitleFont">
-              <option value="Aref Ruqaa">Aref Ruqaa (عربي فخم)</option>
-              <option value="Amiri">Amiri (عربي كلاسيكي)</option>
-              <option value="Reem Kufi">Reem Kufi (كوفي حديث)</option>
-              <option value="Cairo">Cairo (حديث)</option>
+              <option value="Aref Ruqaa">Aref Ruqaa</option>
+              <option value="Amiri">Amiri</option>
+              <option value="Reem Kufi">Reem Kufi</option>
+              <option value="Cairo">Cairo</option>
               <option value="Tajawal">Tajawal</option>
             </select>
           </div>
@@ -1941,20 +1798,20 @@
           <div class="form-group">
             <label class="form-label">
               حجم العنوان
-              <span class="value-display" id="valTitleSize">56</span>
+              <span class="value-display" id="valTitleSize">52</span>
             </label>
             <div class="range-wrap">
-              <input type="range" class="range-input" id="cfgTitleSize" min="30" max="80" value="56">
+              <input type="range" class="range-input" id="cfgTitleSize" min="30" max="80" value="52">
             </div>
           </div>
 
           <div class="form-group">
             <label class="form-label">خط الاسم</label>
             <select class="form-select" id="cfgNameFont">
-              <option value="Aref Ruqaa">Aref Ruqaa (عربي فخم)</option>
-              <option value="Amiri">Amiri (عربي كلاسيكي)</option>
-              <option value="Reem Kufi">Reem Kufi (كوفي حديث)</option>
-              <option value="Cairo">Cairo (حديث)</option>
+              <option value="Aref Ruqaa">Aref Ruqaa</option>
+              <option value="Amiri">Amiri</option>
+              <option value="Reem Kufi">Reem Kufi</option>
+              <option value="Cairo">Cairo</option>
               <option value="Tajawal">Tajawal</option>
             </select>
           </div>
@@ -1962,10 +1819,10 @@
           <div class="form-group">
             <label class="form-label">
               حجم اسم الطالب
-              <span class="value-display" id="valNameSize">40</span>
+              <span class="value-display" id="valNameSize">38</span>
             </label>
             <div class="range-wrap">
-              <input type="range" class="range-input" id="cfgNameSize" min="24" max="60" value="40">
+              <input type="range" class="range-input" id="cfgNameSize" min="24" max="60" value="38">
             </div>
           </div>
 
@@ -1990,7 +1847,6 @@
           </div>
         </div>
 
-        <!-- ============= Section: Frame ============= -->
         <div class="form-section">
           <div class="form-section-title">
             <i class="fas fa-border-all"></i>
@@ -2000,26 +1856,26 @@
           <div class="form-group">
             <label class="form-label">
               سماكة الإطار
-              <span class="value-display" id="valFrameWidth">12</span>
+              <span class="value-display" id="valFrameWidth">14</span>
             </label>
             <div class="range-wrap">
-              <input type="range" class="range-input" id="cfgFrameWidth" min="2" max="24" value="12">
+              <input type="range" class="range-input" id="cfgFrameWidth" min="2" max="24" value="14">
             </div>
           </div>
 
           <div class="form-group">
             <label class="form-label">
-              إزاحة الإطار من الحواف
-              <span class="value-display" id="valFrameOffset">20</span>
+              إزاحة الإطار
+              <span class="value-display" id="valFrameOffset">22</span>
             </label>
             <div class="range-wrap">
-              <input type="range" class="range-input" id="cfgFrameOffset" min="0" max="50" value="20">
+              <input type="range" class="range-input" id="cfgFrameOffset" min="0" max="50" value="22">
             </div>
           </div>
 
           <div class="form-group">
             <label class="form-label">
-              نصف قطر انحناء الإطار
+              انحناء الإطار
               <span class="value-display" id="valFrameRadius">4</span>
             </label>
             <div class="range-wrap">
@@ -2040,8 +1896,8 @@
 
           <div class="switch-row active" id="switchInnerFrameRow">
             <div class="switch-info">
-              <strong>الإطار الداخلي الرفيع</strong>
-              <small>خط رفيع داخل الإطار الذهبي</small>
+              <strong>الإطار الداخلي</strong>
+              <small>خط رفيع داخل الإطار</small>
             </div>
             <label class="switch">
               <input type="checkbox" id="cfgInnerFrameEnabled" checked>
@@ -2051,8 +1907,8 @@
 
           <div class="switch-row active" id="switchBgPatternRow" style="margin-bottom:0;">
             <div class="switch-info">
-              <strong>نمط الخلفية الخفيف</strong>
-              <small>خطوط مائلة ناعمة في الخلفية</small>
+              <strong>نمط الخلفية</strong>
+              <small>خطوط مائلة ناعمة</small>
             </div>
             <label class="switch">
               <input type="checkbox" id="cfgBgPatternEnabled" checked>
@@ -2061,20 +1917,19 @@
           </div>
         </div>
 
-        <!-- ============= Section: Logo ============= -->
         <div class="form-section">
           <div class="form-section-title">
             <i class="fas fa-image"></i>
-            <span>الشعار (اللوجو)</span>
+            <span>الشعار</span>
           </div>
 
           <div class="form-group">
             <label class="form-label">
               حجم الشعار
-              <span class="value-display" id="valLogoSize">82</span>
+              <span class="value-display" id="valLogoSize">74</span>
             </label>
             <div class="range-wrap">
-              <input type="range" class="range-input" id="cfgLogoSize" min="40" max="140" value="82">
+              <input type="range" class="range-input" id="cfgLogoSize" min="40" max="140" value="74">
             </div>
           </div>
 
@@ -2090,43 +1945,38 @@
           </div>
         </div>
 
-        <!-- ============= Section: Seal ============= -->
         <div class="form-section">
           <div class="form-section-title">
             <i class="fas fa-certificate"></i>
-            <span>الخاتم (Seal)</span>
+            <span>الخاتم</span>
           </div>
 
           <div class="form-group">
             <label class="form-label">
               حجم الخاتم
-              <span class="value-display" id="valSealSize">95</span>
+              <span class="value-display" id="valSealSize">96</span>
             </label>
             <div class="range-wrap">
-              <input type="range" class="range-input" id="cfgSealSize" min="50" max="160" value="95">
+              <input type="range" class="range-input" id="cfgSealSize" min="50" max="160" value="96">
             </div>
           </div>
 
           <div class="form-group" style="margin-bottom:0;">
-            <label class="form-label">
-              أيقونة الخاتم (FontAwesome)
-              <span class="value-display" id="valSealIcon">fa-certificate</span>
-            </label>
+            <label class="form-label">أيقونة الخاتم</label>
             <select class="form-select" id="cfgSealIcon">
-              <option value="fa-certificate">شهادة (certificate)</option>
-              <option value="fa-award">جائزة (award)</option>
-              <option value="fa-trophy">كأس (trophy)</option>
-              <option value="fa-medal">ميدالية (medal)</option>
-              <option value="fa-star">نجمة (star)</option>
-              <option value="fa-crown">تاج (crown)</option>
-              <option value="fa-graduation-cap">قبعة تخرج (graduation-cap)</option>
-              <option value="fa-scroll">لفافة (scroll)</option>
-              <option value="fa-check">صح (check)</option>
+              <option value="fa-certificate">شهادة</option>
+              <option value="fa-award">جائزة</option>
+              <option value="fa-trophy">كأس</option>
+              <option value="fa-medal">ميدالية</option>
+              <option value="fa-star">نجمة</option>
+              <option value="fa-crown">تاج</option>
+              <option value="fa-graduation-cap">قبعة تخرج</option>
+              <option value="fa-scroll">لفافة</option>
+              <option value="fa-check">صح</option>
             </select>
           </div>
         </div>
 
-        <!-- ============= Actions ============= -->
         <div class="form-section" style="border:none;">
           <div class="buttons-row">
             <button class="btn btn-success" id="saveSettingsBtn">
@@ -2139,10 +1989,8 @@
             </button>
           </div>
         </div>
-
       </aside>
 
-      <!-- Preview Panel -->
       <div class="preview-panel">
         <div class="preview-header">
           <div class="preview-header-title">
@@ -2166,14 +2014,14 @@
     </div>
   </div>
 
-  <!-- ============ TAB 2: Certificates List ============ -->
+  <!-- TAB 2: List -->
   <div class="section-content" id="section-list">
     <div class="certs-list-header">
       <div class="certs-list-header-info">
         <i class="fas fa-award"></i>
         <div>
           <h3>الشهادات الممنوحة</h3>
-          <p>عرض كل الشهادات التي حصل عليها الطلاب (تلقائياً بنسبة 80%+)</p>
+          <p>عرض كل الشهادات (تلقائياً 80%+ ويدوية)</p>
         </div>
       </div>
 
@@ -2189,21 +2037,19 @@
     </div>
 
     <div class="cert-admin-grid" id="certAdminGrid">
-      <div class="empty-state" style="grid-column: 1 / -1;">
-        <i class="fas fa-spinner fa-spin"></i>
-        <h3>جاري التحميل...</h3>
+      <div class="empty-state" style="grid-column: 1 / -1; padding: 60px 24px; text-align: center;">
+        <i class="fas fa-spinner fa-spin" style="font-size: 42px; color: var(--accent);"></i>
+        <h3 style="margin-top: 12px;">جاري التحميل...</h3>
       </div>
     </div>
   </div>
 
-  <!-- ============ TAB 3: Issue Manual ============ -->
+  <!-- TAB 3: Issue Manual -->
   <div class="section-content" id="section-issue">
     <div class="settings-layout">
       <aside class="settings-panel">
         <div class="panel-header">
-          <div class="panel-header-icon">
-            <i class="fas fa-plus-circle"></i>
-          </div>
+          <div class="panel-header-icon"><i class="fas fa-plus-circle"></i></div>
           <div class="panel-header-text">
             <h2>إصدار شهادة يدوياً</h2>
             <small>اختر طالب ثم عيّن له شهادة</small>
@@ -2231,7 +2077,7 @@
             <select class="form-select" id="issueType">
               <option value="exam">امتحان</option>
               <option value="homework">واجب</option>
-              <option value="custom">مخصصة (يدوي)</option>
+              <option value="custom">مخصصة</option>
             </select>
           </div>
 
@@ -2242,12 +2088,12 @@
 
           <div class="form-group">
             <label class="form-label">الدرجة</label>
-            <input type="number" class="form-input" id="issueScore" placeholder="90" min="0" value="90">
+            <input type="number" class="form-input" id="issueScore" value="90" min="0">
           </div>
 
           <div class="form-group">
-            <label class="form-label">من أصل (المجموع)</label>
-            <input type="number" class="form-input" id="issueTotal" placeholder="100" min="1" value="100">
+            <label class="form-label">من أصل</label>
+            <input type="number" class="form-input" id="issueTotal" value="100" min="1">
           </div>
 
           <div class="form-group" style="margin-bottom:0;">
@@ -2256,19 +2102,6 @@
               <span class="value-display" id="valIssueDate">اليوم</span>
             </label>
             <input type="date" class="form-input" id="issueDate">
-          </div>
-        </div>
-
-        <div class="form-section" style="border:none;">
-          <div class="switch-row active" id="issueCustomStyleRow">
-            <div class="switch-info">
-              <strong>استخدام تصميم مخصص لهذه الشهادة</strong>
-              <small>عند التفعيل، يمكنك اختيار ألوان وأحجام خاصة</small>
-            </div>
-            <label class="switch">
-              <input type="checkbox" id="issueCustomStyle">
-              <span class="slider"></span>
-            </label>
           </div>
         </div>
 
@@ -2284,7 +2117,6 @@
         </div>
       </aside>
 
-      <!-- Live Preview for Issue -->
       <div class="preview-panel">
         <div class="preview-header">
           <div class="preview-header-title">
@@ -2304,9 +2136,7 @@
 
 </div>
 
-<!-- ============================================================
-     Modal: Certificate View
-     ============================================================ -->
+<!-- Modal: View Certificate -->
 <div class="modal-overlay" id="viewCertModal">
   <div class="modal-box wide">
     <div class="modal-header">
@@ -2322,7 +2152,7 @@
       </button>
     </div>
 
-    <div class="cert-preview-wrap" style="background: #E8E2D0;">
+    <div class="cert-preview-wrap">
       <div class="cert-scale-holder" id="viewScaleHolder">
         <div id="viewCertificateRender"></div>
       </div>
@@ -2345,14 +2175,10 @@
   </div>
 </div>
 
-<!-- ============================================================
-     Modal: Confirm
-     ============================================================ -->
+<!-- Modal: Confirm -->
 <div class="modal-overlay" id="confirmModal">
   <div class="modal-box" style="max-width: 460px; text-align: center;">
-    <div class="confirm-icon" id="confirmIcon">
-      <i class="fas fa-question-circle"></i>
-    </div>
+    <div class="confirm-icon" id="confirmIcon"><i class="fas fa-question-circle"></i></div>
     <h2 class="confirm-title" id="confirmTitle">تأكيد</h2>
     <p class="confirm-message" id="confirmMessage">—</p>
     <div class="modal-actions">
@@ -2368,24 +2194,19 @@
   </div>
 </div>
 
-<!-- ============================================================
-     Toast
-     ============================================================ -->
+<!-- Toast -->
 <div class="toast" id="toast">
   <i class="fas fa-check-circle" id="toastIcon"></i>
   <span id="toastText"></span>
 </div>
 
-<!-- ============================================================
-     Dependencies
-     ============================================================ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { 
-  getFirestore, doc, onSnapshot, setDoc, getDoc, serverTimestamp, deleteDoc
+  getFirestore, doc, onSnapshot, setDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -2446,10 +2267,9 @@ function formatDateFull(iso) {
 }
 
 // ============================================================
-// 📊 الحالة العامة — إعدادات الشهادة الافتراضية
+// 📊 DEFAULT SETTINGS — مطابقة لنسخة المستخدم
 // ============================================================
 const DEFAULT_SETTINGS = {
-  // محتوى
   siteNameAr: 'ميزان',
   siteNameEn: 'MEEZAN',
   adminName: 'مدير المنصة',
@@ -2464,9 +2284,8 @@ const DEFAULT_SETTINGS = {
   rightSigTitle: 'المنصة التعليمية',
   leftSigTitle: 'المدير التنفيذي',
 
-  // ألوان
-  bgColor: '#FFFEF7',
-  bgPatternColor: 'rgba(201, 169, 97, 0.05)',
+  bgColor: '#FFFDF4',
+  bgPatternColor: 'rgba(201, 169, 97, 0.035)',
   frameColor: '#C9A961',
   frameInnerColor: '#8B6914',
   titleColor: '#0B3D2E',
@@ -2474,43 +2293,37 @@ const DEFAULT_SETTINGS = {
   itemColor: '#8B6914',
   scoreColor: '#1E7A5A',
   scoreHighlight: '#C9A961',
-  bodyColor: '#5A6B66',
+  bodyColor: '#4A5B56',
   cornerColor: '#C9A961',
 
-  // خطوط
   titleFont: 'Aref Ruqaa',
   nameFont: 'Aref Ruqaa',
   itemFont: 'Reem Kufi',
   bodyFont: 'Cairo',
 
-  // أحجام
-  titleSize: 56,
-  nameSize: 40,
+  titleSize: 52,
+  nameSize: 38,
   itemSize: 22,
   bodySize: 15,
 
-  // إطار
-  frameWidth: 12,
-  frameOffset: 20,
+  frameWidth: 14,
+  frameOffset: 22,
   frameRadius: 4,
   cornersEnabled: true,
   innerFrameEnabled: true,
   bgPatternEnabled: true,
 
-  // لوجو
-  logoSize: 82,
+  logoSize: 74,
   logoEnabled: true,
 
-  // خاتم
-  sealSize: 95,
+  sealSize: 96,
   sealIcon: 'fa-certificate',
 
-  // تواقيع
-  footerBottom: 70,
+  footerBottom: 68,
   footerLeft: 100,
   footerRight: 100,
-  signatureWidth: 210,
-  sealBottom: 60
+  signatureWidth: 220,
+  sealBottom: 55
 };
 
 let certSettings = { ...DEFAULT_SETTINGS };
@@ -2524,11 +2337,10 @@ let autoCertificates = [];
 let manualCertificates = [];
 
 let currentViewCertData = null;
-
 let issueSelectedStudent = null;
 
 // ============================================================
-// 🌙 الوضع
+// 🌙 Theme
 // ============================================================
 const savedTheme = localStorage.getItem('meezan_theme') || 'light';
 document.documentElement.setAttribute('data-theme', savedTheme);
@@ -2567,7 +2379,7 @@ function showToast(text, type = 'success') {
 }
 
 // ============================================================
-// 🔔 Confirm Modal
+// 🔔 Confirm
 // ============================================================
 let confirmResolve = null;
 function showConfirm(options = {}) {
@@ -2639,10 +2451,10 @@ document.querySelectorAll('.main-tab').forEach(tab => {
 });
 
 // ============================================================
-// ✅ تطبيق الإعدادات على الـ CSS Variables
+// ✅ تطبيق الإعدادات على CSS Variables
 // ============================================================
-function applySettingsToCSS(settings, targetEl) {
-  const el = targetEl || document.documentElement;
+function applySettingsToCSS(settings) {
+  const el = document.documentElement;
   el.style.setProperty('--cv-bg-color', settings.bgColor);
   el.style.setProperty('--cv-bg-pattern-color', settings.bgPatternColor);
   el.style.setProperty('--cv-frame-color', settings.frameColor);
@@ -2668,29 +2480,25 @@ function applySettingsToCSS(settings, targetEl) {
   el.style.setProperty('--cv-seal-color', settings.frameColor);
   el.style.setProperty('--cv-seal-border', settings.frameInnerColor);
   el.style.setProperty('--cv-seal-mid', settings.scoreHighlight);
-  el.style.setProperty('--cv-seal-light', '#FFFDF5');
   el.style.setProperty('--cv-seal-icon-color', settings.frameInnerColor);
 
-  // خطوط
   el.style.setProperty('--cv-title-font', `'${settings.titleFont}'`);
   el.style.setProperty('--cv-name-font', `'${settings.nameFont}'`);
   el.style.setProperty('--cv-item-font', `'${settings.itemFont}'`);
   el.style.setProperty('--cv-body-font', `'${settings.bodyFont}'`);
   el.style.setProperty('--cv-sig-font', `'${settings.nameFont}'`);
 
-  // أحجام
   el.style.setProperty('--cv-title-size', settings.titleSize + 'px');
   el.style.setProperty('--cv-name-size', settings.nameSize + 'px');
   el.style.setProperty('--cv-item-size', settings.itemSize + 'px');
   el.style.setProperty('--cv-line1-size', settings.bodySize + 'px');
   el.style.setProperty('--cv-line2-size', settings.bodySize + 'px');
-  el.style.setProperty('--cv-code-size', (settings.bodySize - 3) + 'px');
+  el.style.setProperty('--cv-code-size', (settings.bodySize - 3.5) + 'px');
   el.style.setProperty('--cv-date-size', (settings.bodySize - 3) + 'px');
-  el.style.setProperty('--cv-sig-name-size', (settings.bodySize + 1) + 'px');
+  el.style.setProperty('--cv-sig-name-size', (settings.bodySize) + 'px');
   el.style.setProperty('--cv-sig-title-size', (settings.bodySize - 4) + 'px');
   el.style.setProperty('--cv-score-size', (settings.bodySize + 2) + 'px');
 
-  // إطار
   el.style.setProperty('--cv-frame-width', settings.frameWidth + 'px');
   el.style.setProperty('--cv-frame-offset', settings.frameOffset + 'px');
   el.style.setProperty('--cv-frame-radius', settings.frameRadius + 'px');
@@ -2698,15 +2506,12 @@ function applySettingsToCSS(settings, targetEl) {
   el.style.setProperty('--cv-inner-frame-display', settings.innerFrameEnabled ? 'block' : 'none');
   el.style.setProperty('--cv-bg-pattern-enabled', settings.bgPatternEnabled ? '1' : '0');
 
-  // لوجو
   el.style.setProperty('--cv-logo-size', settings.logoSize + 'px');
   el.style.setProperty('--cv-logo-display', settings.logoEnabled ? 'inline-block' : 'none');
 
-  // خاتم
   el.style.setProperty('--cv-seal-size', settings.sealSize + 'px');
   el.style.setProperty('--cv-seal-bottom', settings.sealBottom + 'px');
 
-  // تواقيع
   el.style.setProperty('--cv-footer-bottom', settings.footerBottom + 'px');
   el.style.setProperty('--cv-footer-left', settings.footerLeft + 'px');
   el.style.setProperty('--cv-footer-right', settings.footerRight + 'px');
@@ -2722,7 +2527,7 @@ function hexToRgba(hex, alpha) {
 }
 
 // ============================================================
-// 🎨 رسم الشهادة (HTML)
+// 🎨 buildCertHTML — مطابق تماماً لنسخة المستخدم
 // ============================================================
 function buildCertHTML(opts) {
   const {
@@ -2809,7 +2614,7 @@ function buildCertHTML(opts) {
 }
 
 // ============================================================
-// 📐 ضبط مقياس الشهادة داخل الحاوية
+// 📐 ضبط مقياس الشهادة
 // ============================================================
 function scaleCertificate(holderId, renderId) {
   const holder = $(holderId);
@@ -2825,6 +2630,27 @@ function scaleCertificate(holderId, renderId) {
   holder.style.height = (700 * scale) + 'px';
 }
 
+// ✅ تصغير خط الاسم تلقائياً
+function autoFitStudentName(containerId) {
+  const container = $(containerId);
+  if (!container) return;
+  const nameEl = container.querySelector('.cert-student-name');
+  if (!nameEl) return;
+
+  const MAX_SIZE = certSettings.nameSize || 38;
+  const MIN_SIZE = 20;
+  let size = MAX_SIZE;
+  nameEl.style.fontSize = size + 'px';
+
+  const maxWidth = 760;
+  let guard = 0;
+  while (nameEl.scrollWidth > maxWidth && size > MIN_SIZE && guard < 30) {
+    size -= 1;
+    nameEl.style.fontSize = size + 'px';
+    guard++;
+  }
+}
+
 window.addEventListener('resize', () => {
   scaleCertificate('certScaleHolder', 'certificateRender');
   scaleCertificate('issueCertScaleHolder', 'issueCertificateRender');
@@ -2834,7 +2660,7 @@ window.addEventListener('resize', () => {
 });
 
 // ============================================================
-// 🎨 عرض الشهادة في المعاينة الرئيسية
+// 🎨 رسم الشهادة (المعاينة الرئيسية)
 // ============================================================
 function renderCertificate() {
   const container = $('certificateRender');
@@ -2850,7 +2676,7 @@ function renderCertificate() {
     mainTitle: certSettings.mainTitle,
     enTitle: certSettings.enTitle,
     line1: certSettings.line1,
-    line2: certSettings.line2.replace(/{type}/g, 'الامتحان'),
+    line2: certSettings.line2.replace(/{type}/g, certSettings.examLabel || 'الامتحان'),
     studentName: 'أحمد محمد عبد الله',
     studentCode: 'STD-10001',
     itemName: 'امتحان الرياضيات النهائي',
@@ -2864,10 +2690,14 @@ function renderCertificate() {
   };
 
   container.innerHTML = buildCertHTML(sampleOpts);
+
+  requestAnimationFrame(() => {
+    autoFitStudentName('certificateRender');
+  });
 }
 
 // ============================================================
-// 📡 تحميل الإعدادات من Firebase
+// 📡 Firebase Listeners
 // ============================================================
 function startCertSettingsListener() {
   onSnapshot(doc(db, 'settings', 'certificates'), (snap) => {
@@ -2885,383 +2715,6 @@ function startCertSettingsListener() {
   }, (err) => console.log('cert settings error:', err.message));
 }
 
-// ============================================================
-// 📝 ملء الحقول
-// ============================================================
-function fillSettingsFields() {
-  $('cfgSiteNameAr').value = certSettings.siteNameAr || '';
-  $('cfgSiteNameEn').value = certSettings.siteNameEn || '';
-  $('cfgAdminName').value = certSettings.adminName || '';
-  $('cfgAdminTitle').value = certSettings.adminTitle || '';
-  $('cfgLogoUrl').value = certSettings.logoUrl || '';
-  $('cfgMainTitle').value = certSettings.mainTitle || '';
-  $('cfgEnTitle').value = certSettings.enTitle || '';
-  $('cfgLine1').value = certSettings.line1 || '';
-  $('cfgLine2').value = certSettings.line2 || '';
-  $('cfgHomeworkLabel').value = certSettings.homeworkLabel || '';
-  $('cfgExamLabel').value = certSettings.examLabel || '';
-  $('cfgRightSigTitle').value = certSettings.rightSigTitle || '';
-  $('cfgLeftSigTitle').value = certSettings.leftSigTitle || '';
-
-  // ألوان
-  setColorField('cfgBgColor', 'cfgBgColorText', 'valBgColor', certSettings.bgColor);
-  setColorField('cfgFrameColor', 'cfgFrameColorText', 'valFrameColor', certSettings.frameColor);
-  setColorField('cfgTitleColor', 'cfgTitleColorText', 'valTitleColor', certSettings.titleColor);
-  setColorField('cfgNameColor', 'cfgNameColorText', 'valNameColor', certSettings.nameColor);
-  setColorField('cfgItemColor', 'cfgItemColorText', 'valItemColor', certSettings.itemColor);
-  setColorField('cfgScoreColor', 'cfgScoreColorText', 'valScoreColor', certSettings.scoreColor);
-  setColorField('cfgBodyColor', 'cfgBodyColorText', 'valBodyColor', certSettings.bodyColor);
-
-  // خطوط
-  $('cfgTitleFont').value = certSettings.titleFont;
-  $('cfgNameFont').value = certSettings.nameFont;
-
-  // أحجام
-  setRangeField('cfgTitleSize', 'valTitleSize', certSettings.titleSize);
-  setRangeField('cfgNameSize', 'valNameSize', certSettings.nameSize);
-  setRangeField('cfgItemSize', 'valItemSize', certSettings.itemSize);
-  setRangeField('cfgBodySize', 'valBodySize', certSettings.bodySize);
-
-  // إطار
-  setRangeField('cfgFrameWidth', 'valFrameWidth', certSettings.frameWidth);
-  setRangeField('cfgFrameOffset', 'valFrameOffset', certSettings.frameOffset);
-  setRangeField('cfgFrameRadius', 'valFrameRadius', certSettings.frameRadius);
-
-  $('cfgCornersEnabled').checked = certSettings.cornersEnabled !== false;
-  $('cfgInnerFrameEnabled').checked = certSettings.innerFrameEnabled !== false;
-  $('cfgBgPatternEnabled').checked = certSettings.bgPatternEnabled !== false;
-
-  // لوجو
-  setRangeField('cfgLogoSize', 'valLogoSize', certSettings.logoSize);
-  $('cfgLogoEnabled').checked = certSettings.logoEnabled !== false;
-
-  // خاتم
-  setRangeField('cfgSealSize', 'valSealSize', certSettings.sealSize);
-  $('cfgSealIcon').value = certSettings.sealIcon;
-
-  // تحديث switch rows
-  updateSwitchRows();
-}
-
-function setColorField(colorId, textId, valId, value) {
-  $(colorId).value = value || '#000000';
-  $(textId).value = value || '';
-  $(valId).textContent = value || '';
-}
-
-function setRangeField(rangeId, valId, value) {
-  $(rangeId).value = value;
-  $(valId).textContent = value;
-}
-
-function updateSwitchRows() {
-  ['switchCornersRow', 'switchInnerFrameRow', 'switchBgPatternRow', 'switchLogoRow'].forEach(id => {
-    const row = $(id);
-    if (!row) return;
-    const checkbox = row.querySelector('input[type="checkbox"]');
-    row.classList.toggle('active', checkbox.checked);
-  });
-}
-
-// ============================================================
-// 🔗 ربط كل الحقول بحيث تتحدث الشهادة فورياً
-// ============================================================
-function bindSettingInputs() {
-  // النصوص
-  const textBindings = [
-    ['cfgSiteNameAr', 'siteNameAr'],
-    ['cfgSiteNameEn', 'siteNameEn'],
-    ['cfgAdminName', 'adminName'],
-    ['cfgAdminTitle', 'adminTitle'],
-    ['cfgLogoUrl', 'logoUrl'],
-    ['cfgMainTitle', 'mainTitle'],
-    ['cfgEnTitle', 'enTitle'],
-    ['cfgLine1', 'line1'],
-    ['cfgLine2', 'line2'],
-    ['cfgHomeworkLabel', 'homeworkLabel'],
-    ['cfgExamLabel', 'examLabel'],
-    ['cfgRightSigTitle', 'rightSigTitle'],
-    ['cfgLeftSigTitle', 'leftSigTitle']
-  ];
-
-  textBindings.forEach(([elId, key]) => {
-    const el = $(elId);
-    if (!el) return;
-    el.addEventListener('input', () => {
-      certSettings[key] = el.value;
-      renderCertificate();
-    });
-  });
-
-  // الألوان
-  const colorBindings = [
-    ['cfgBgColor', 'cfgBgColorText', 'valBgColor', 'bgColor'],
-    ['cfgFrameColor', 'cfgFrameColorText', 'valFrameColor', 'frameColor'],
-    ['cfgTitleColor', 'cfgTitleColorText', 'valTitleColor', 'titleColor'],
-    ['cfgNameColor', 'cfgNameColorText', 'valNameColor', 'nameColor'],
-    ['cfgItemColor', 'cfgItemColorText', 'valItemColor', 'itemColor'],
-    ['cfgScoreColor', 'cfgScoreColorText', 'valScoreColor', 'scoreColor'],
-    ['cfgBodyColor', 'cfgBodyColorText', 'valBodyColor', 'bodyColor']
-  ];
-
-  colorBindings.forEach(([pickerId, textId, valId, key]) => {
-    const picker = $(pickerId);
-    const text = $(textId);
-
-    picker.addEventListener('input', () => {
-      certSettings[key] = picker.value;
-      text.value = picker.value;
-      $(valId).textContent = picker.value;
-
-      // إعادة حساب الألوان المشتقة
-      if (key === 'frameColor') {
-        certSettings.cornerColor = picker.value;
-        certSettings.itemColor = picker.value;
-        certSettings.dividerColor = picker.value;
-      }
-      if (key === 'nameColor') {
-        certSettings.underlineColor = picker.value;
-      }
-
-      renderCertificate();
-    });
-
-    text.addEventListener('input', () => {
-      const v = text.value.trim();
-      if (/^#[0-9A-Fa-f]{6}$/.test(v)) {
-        picker.value = v;
-        certSettings[key] = v;
-        $(valId).textContent = v;
-        renderCertificate();
-      }
-    });
-  });
-
-  // خطوط
-  $('cfgTitleFont').addEventListener('change', (e) => {
-    certSettings.titleFont = e.target.value;
-    renderCertificate();
-  });
-  $('cfgNameFont').addEventListener('change', (e) => {
-    certSettings.nameFont = e.target.value;
-    renderCertificate();
-  });
-
-  // أحجام
-  const rangeBindings = [
-    ['cfgTitleSize', 'valTitleSize', 'titleSize'],
-    ['cfgNameSize', 'valNameSize', 'nameSize'],
-    ['cfgItemSize', 'valItemSize', 'itemSize'],
-    ['cfgBodySize', 'valBodySize', 'bodySize'],
-    ['cfgFrameWidth', 'valFrameWidth', 'frameWidth'],
-    ['cfgFrameOffset', 'valFrameOffset', 'frameOffset'],
-    ['cfgFrameRadius', 'valFrameRadius', 'frameRadius'],
-    ['cfgLogoSize', 'valLogoSize', 'logoSize'],
-    ['cfgSealSize', 'valSealSize', 'sealSize']
-  ];
-
-  rangeBindings.forEach(([rangeId, valId, key]) => {
-    const el = $(rangeId);
-    el.addEventListener('input', () => {
-      const val = parseFloat(el.value);
-      certSettings[key] = val;
-      $(valId).textContent = val;
-      renderCertificate();
-    });
-  });
-
-  // سويتشات
-  $('cfgCornersEnabled').addEventListener('change', (e) => {
-    certSettings.cornersEnabled = e.target.checked;
-    updateSwitchRows();
-    renderCertificate();
-  });
-  $('cfgInnerFrameEnabled').addEventListener('change', (e) => {
-    certSettings.innerFrameEnabled = e.target.checked;
-    updateSwitchRows();
-    renderCertificate();
-  });
-  $('cfgBgPatternEnabled').addEventListener('change', (e) => {
-    certSettings.bgPatternEnabled = e.target.checked;
-    updateSwitchRows();
-    renderCertificate();
-  });
-  $('cfgLogoEnabled').addEventListener('change', (e) => {
-    certSettings.logoEnabled = e.target.checked;
-    updateSwitchRows();
-    renderCertificate();
-  });
-
-  // أيقونة الخاتم
-  $('cfgSealIcon').addEventListener('change', (e) => {
-    certSettings.sealIcon = e.target.value;
-    $('valSealIcon').textContent = e.target.value;
-    renderCertificate();
-  });
-}
-
-// ============================================================
-// 💾 حفظ الإعدادات
-// ============================================================
-$('saveSettingsBtn').addEventListener('click', async () => {
-  const btn = $('saveSettingsBtn');
-  const originalHTML = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
-
-  try {
-    await setDoc(doc(db, 'settings', 'certificates'), {
-      ...certSettings,
-      updatedAt: serverTimestamp(),
-      updatedBy: adminName
-    }, { merge: true });
-
-    showToast('✅ تم حفظ إعدادات الشهادة', 'success');
-  } catch (e) {
-    console.error(e);
-    showToast('حدث خطأ أثناء الحفظ', 'error');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = originalHTML;
-  }
-});
-
-// ============================================================
-// 🔄 إعادة تعيين
-// ============================================================
-$('resetSettingsBtn').addEventListener('click', async () => {
-  const ok = await showConfirm({
-    title: 'إعادة تعيين الإعدادات',
-    message: 'هل تريد استعادة الإعدادات الافتراضية للشهادة؟',
-    icon: 'fa-rotate-left',
-    danger: true,
-    okText: 'إعادة تعيين'
-  });
-  if (!ok) return;
-
-  certSettings = { ...DEFAULT_SETTINGS };
-  fillSettingsFields();
-  renderCertificate();
-  showToast('تمت إعادة التعيين — لا تنسَ الحفظ', 'warning');
-});
-
-// ============================================================
-// 🎨 Presets
-// ============================================================
-const PRESETS = {
-  classic: {
-    bgColor: '#FFFEF7', frameColor: '#C9A961', frameInnerColor: '#8B6914',
-    titleColor: '#0B3D2E', nameColor: '#0B3D2E', itemColor: '#8B6914',
-    scoreColor: '#1E7A5A', bodyColor: '#5A6B66', cornerColor: '#C9A961'
-  },
-  green: {
-    bgColor: '#F1F9F3', frameColor: '#1E7A5A', frameInnerColor: '#0B3D2E',
-    titleColor: '#0B3D2E', nameColor: '#0B3D2E', itemColor: '#1E7A5A',
-    scoreColor: '#1E7A5A', bodyColor: '#4A6B5A', cornerColor: '#1E7A5A'
-  },
-  blue: {
-    bgColor: '#F1F8FC', frameColor: '#2980B9', frameInnerColor: '#1A5276',
-    titleColor: '#1A5276', nameColor: '#1A5276', itemColor: '#2980B9',
-    scoreColor: '#2980B9', bodyColor: '#4A6B7A', cornerColor: '#2980B9'
-  },
-  royal: {
-    bgColor: '#FAF5FB', frameColor: '#8E44AD', frameInnerColor: '#5B2C6F',
-    titleColor: '#5B2C6F', nameColor: '#5B2C6F', itemColor: '#8E44AD',
-    scoreColor: '#8E44AD', bodyColor: '#6A5A7A', cornerColor: '#8E44AD'
-  },
-  red: {
-    bgColor: '#FDF3F3', frameColor: '#C0392B', frameInnerColor: '#7B241C',
-    titleColor: '#7B241C', nameColor: '#7B241C', itemColor: '#C0392B',
-    scoreColor: '#C0392B', bodyColor: '#6B4A4A', cornerColor: '#C0392B'
-  },
-  dark: {
-    bgColor: '#1A1A1A', frameColor: '#C9A961', frameInnerColor: '#8B6914',
-    titleColor: '#C9A961', nameColor: '#F5F1E8', itemColor: '#E0C888',
-    scoreColor: '#E0C888', bodyColor: '#C0B8A0', cornerColor: '#C9A961'
-  }
-};
-
-document.querySelectorAll('.preset-item').forEach(item => {
-  item.addEventListener('click', () => {
-    const preset = PRESETS[item.dataset.preset];
-    if (!preset) return;
-
-    Object.assign(certSettings, preset);
-    fillSettingsFields();
-    renderCertificate();
-    showToast(`تم تطبيق "${item.querySelector('span').textContent}" — لا تنسَ الحفظ`, 'info');
-  });
-});
-
-// ============================================================
-// 📥 تحميل المعاينة كصورة
-// ============================================================
-$('previewDownloadBtn').addEventListener('click', async () => {
-  const btn = $('previewDownloadBtn');
-  const originalHTML = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-
-  try {
-    const canvas = await renderToCanvas('certificateRender');
-    const dataUrl = canvas.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.download = `شهادة_معاينة_${Date.now()}.png`;
-    link.href = dataUrl;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    showToast('✅ تم التحميل', 'success');
-  } catch (e) {
-    console.error(e);
-    showToast('حدث خطأ', 'error');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = originalHTML;
-  }
-});
-
-// ============================================================
-// 🖼️ تحويل الشهادة لـ Canvas (بإلغاء الـ scale مؤقتاً)
-// ============================================================
-async function renderToCanvas(elementId) {
-  const element = $(elementId);
-
-  await document.fonts.ready;
-  await new Promise(r => setTimeout(r, 500));
-
-  const originalTransform = element.style.transform;
-  const originalOrigin = element.style.transformOrigin;
-
-  element.style.transform = 'none';
-  element.style.transformOrigin = 'top left';
-
-  await new Promise(r => setTimeout(r, 100));
-
-  let canvas;
-  try {
-    canvas = await html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: certSettings.bgColor || '#FFFEF7',
-      logging: false,
-      width: 1000,
-      height: 700,
-      windowWidth: 1000,
-      windowHeight: 700
-    });
-  } finally {
-    element.style.transform = originalTransform;
-    element.style.transformOrigin = originalOrigin;
-  }
-
-  return canvas;
-}
-
-// ============================================================
-// 📚 تحميل البيانات من Firebase
-// ============================================================
 function startStudentsListener() {
   onSnapshot(doc(db, 'users', 'all'), (snap) => {
     allStudents = snap.exists() ? (snap.data().items || []) : [];
@@ -3300,23 +2753,445 @@ function startExamSubsListener() {
 
 function startManualCertsListener() {
   onSnapshot(doc(db, 'settings', 'manual_certificates'), (snap) => {
-    if (snap.exists()) {
-      manualCertificates = snap.data().items || [];
-    } else {
-      manualCertificates = [];
-    }
+    manualCertificates = snap.exists() ? (snap.data().items || []) : [];
     renderAutoCertificates();
   }, (err) => console.log('manual certs error:', err.message));
 }
 
 // ============================================================
-// 🎓 بناء الشهادات التلقائية (80%+)
+// 📝 ملء الحقول
+// ============================================================
+function fillSettingsFields() {
+  $('cfgSiteNameAr').value = certSettings.siteNameAr || '';
+  $('cfgSiteNameEn').value = certSettings.siteNameEn || '';
+  $('cfgAdminName').value = certSettings.adminName || '';
+  $('cfgAdminTitle').value = certSettings.adminTitle || '';
+  $('cfgLogoUrl').value = certSettings.logoUrl || '';
+  $('cfgMainTitle').value = certSettings.mainTitle || '';
+  $('cfgEnTitle').value = certSettings.enTitle || '';
+  $('cfgLine1').value = certSettings.line1 || '';
+  $('cfgLine2').value = certSettings.line2 || '';
+  $('cfgHomeworkLabel').value = certSettings.homeworkLabel || '';
+  $('cfgExamLabel').value = certSettings.examLabel || '';
+  $('cfgRightSigTitle').value = certSettings.rightSigTitle || '';
+  $('cfgLeftSigTitle').value = certSettings.leftSigTitle || '';
+
+  setColorField('cfgBgColor', 'cfgBgColorText', 'valBgColor', certSettings.bgColor);
+  setColorField('cfgFrameColor', 'cfgFrameColorText', 'valFrameColor', certSettings.frameColor);
+  setColorField('cfgTitleColor', 'cfgTitleColorText', 'valTitleColor', certSettings.titleColor);
+  setColorField('cfgNameColor', 'cfgNameColorText', 'valNameColor', certSettings.nameColor);
+  setColorField('cfgItemColor', 'cfgItemColorText', 'valItemColor', certSettings.itemColor);
+  setColorField('cfgScoreColor', 'cfgScoreColorText', 'valScoreColor', certSettings.scoreColor);
+  setColorField('cfgBodyColor', 'cfgBodyColorText', 'valBodyColor', certSettings.bodyColor);
+
+  $('cfgTitleFont').value = certSettings.titleFont;
+  $('cfgNameFont').value = certSettings.nameFont;
+
+  setRangeField('cfgTitleSize', 'valTitleSize', certSettings.titleSize);
+  setRangeField('cfgNameSize', 'valNameSize', certSettings.nameSize);
+  setRangeField('cfgItemSize', 'valItemSize', certSettings.itemSize);
+  setRangeField('cfgBodySize', 'valBodySize', certSettings.bodySize);
+
+  setRangeField('cfgFrameWidth', 'valFrameWidth', certSettings.frameWidth);
+  setRangeField('cfgFrameOffset', 'valFrameOffset', certSettings.frameOffset);
+  setRangeField('cfgFrameRadius', 'valFrameRadius', certSettings.frameRadius);
+
+  $('cfgCornersEnabled').checked = certSettings.cornersEnabled !== false;
+  $('cfgInnerFrameEnabled').checked = certSettings.innerFrameEnabled !== false;
+  $('cfgBgPatternEnabled').checked = certSettings.bgPatternEnabled !== false;
+
+  setRangeField('cfgLogoSize', 'valLogoSize', certSettings.logoSize);
+  $('cfgLogoEnabled').checked = certSettings.logoEnabled !== false;
+
+  setRangeField('cfgSealSize', 'valSealSize', certSettings.sealSize);
+  $('cfgSealIcon').value = certSettings.sealIcon;
+
+  updateSwitchRows();
+}
+
+function setColorField(colorId, textId, valId, value) {
+  $(colorId).value = value || '#000000';
+  $(textId).value = value || '';
+  $(valId).textContent = value || '';
+}
+
+function setRangeField(rangeId, valId, value) {
+  $(rangeId).value = value;
+  $(valId).textContent = value;
+}
+
+function updateSwitchRows() {
+  ['switchCornersRow', 'switchInnerFrameRow', 'switchBgPatternRow', 'switchLogoRow'].forEach(id => {
+    const row = $(id);
+    if (!row) return;
+    const checkbox = row.querySelector('input[type="checkbox"]');
+    row.classList.toggle('active', checkbox.checked);
+  });
+}
+
+// ============================================================
+// 🔗 ربط الحقول
+// ============================================================
+function bindSettingInputs() {
+  const textBindings = [
+    ['cfgSiteNameAr', 'siteNameAr'],
+    ['cfgSiteNameEn', 'siteNameEn'],
+    ['cfgAdminName', 'adminName'],
+    ['cfgAdminTitle', 'adminTitle'],
+    ['cfgLogoUrl', 'logoUrl'],
+    ['cfgMainTitle', 'mainTitle'],
+    ['cfgEnTitle', 'enTitle'],
+    ['cfgLine1', 'line1'],
+    ['cfgLine2', 'line2'],
+    ['cfgHomeworkLabel', 'homeworkLabel'],
+    ['cfgExamLabel', 'examLabel'],
+    ['cfgRightSigTitle', 'rightSigTitle'],
+    ['cfgLeftSigTitle', 'leftSigTitle']
+  ];
+
+  textBindings.forEach(([elId, key]) => {
+    const el = $(elId);
+    if (!el) return;
+    el.addEventListener('input', () => {
+      certSettings[key] = el.value;
+      renderCertificate();
+    });
+  });
+
+  const colorBindings = [
+    ['cfgBgColor', 'cfgBgColorText', 'valBgColor', 'bgColor'],
+    ['cfgFrameColor', 'cfgFrameColorText', 'valFrameColor', 'frameColor'],
+    ['cfgTitleColor', 'cfgTitleColorText', 'valTitleColor', 'titleColor'],
+    ['cfgNameColor', 'cfgNameColorText', 'valNameColor', 'nameColor'],
+    ['cfgItemColor', 'cfgItemColorText', 'valItemColor', 'itemColor'],
+    ['cfgScoreColor', 'cfgScoreColorText', 'valScoreColor', 'scoreColor'],
+    ['cfgBodyColor', 'cfgBodyColorText', 'valBodyColor', 'bodyColor']
+  ];
+
+  colorBindings.forEach(([pickerId, textId, valId, key]) => {
+    const picker = $(pickerId);
+    const text = $(textId);
+
+    picker.addEventListener('input', () => {
+      certSettings[key] = picker.value;
+      text.value = picker.value;
+      $(valId).textContent = picker.value;
+
+      if (key === 'frameColor') {
+        certSettings.cornerColor = picker.value;
+        certSettings.itemColor = picker.value;
+      }
+      if (key === 'nameColor') {
+        // underline يتحدث تلقائياً
+      }
+
+      renderCertificate();
+    });
+
+    text.addEventListener('input', () => {
+      const v = text.value.trim();
+      if (/^#[0-9A-Fa-f]{6}$/.test(v)) {
+        picker.value = v;
+        certSettings[key] = v;
+        $(valId).textContent = v;
+        renderCertificate();
+      }
+    });
+  });
+
+  $('cfgTitleFont').addEventListener('change', (e) => {
+    certSettings.titleFont = e.target.value;
+    renderCertificate();
+  });
+  $('cfgNameFont').addEventListener('change', (e) => {
+    certSettings.nameFont = e.target.value;
+    renderCertificate();
+  });
+
+  const rangeBindings = [
+    ['cfgTitleSize', 'valTitleSize', 'titleSize'],
+    ['cfgNameSize', 'valNameSize', 'nameSize'],
+    ['cfgItemSize', 'valItemSize', 'itemSize'],
+    ['cfgBodySize', 'valBodySize', 'bodySize'],
+    ['cfgFrameWidth', 'valFrameWidth', 'frameWidth'],
+    ['cfgFrameOffset', 'valFrameOffset', 'frameOffset'],
+    ['cfgFrameRadius', 'valFrameRadius', 'frameRadius'],
+    ['cfgLogoSize', 'valLogoSize', 'logoSize'],
+    ['cfgSealSize', 'valSealSize', 'sealSize']
+  ];
+
+  rangeBindings.forEach(([rangeId, valId, key]) => {
+    const el = $(rangeId);
+    el.addEventListener('input', () => {
+      const val = parseFloat(el.value);
+      certSettings[key] = val;
+      $(valId).textContent = val;
+      renderCertificate();
+    });
+  });
+
+  $('cfgCornersEnabled').addEventListener('change', (e) => {
+    certSettings.cornersEnabled = e.target.checked;
+    updateSwitchRows();
+    renderCertificate();
+  });
+  $('cfgInnerFrameEnabled').addEventListener('change', (e) => {
+    certSettings.innerFrameEnabled = e.target.checked;
+    updateSwitchRows();
+    renderCertificate();
+  });
+  $('cfgBgPatternEnabled').addEventListener('change', (e) => {
+    certSettings.bgPatternEnabled = e.target.checked;
+    updateSwitchRows();
+    renderCertificate();
+  });
+  $('cfgLogoEnabled').addEventListener('change', (e) => {
+    certSettings.logoEnabled = e.target.checked;
+    updateSwitchRows();
+    renderCertificate();
+  });
+
+  $('cfgSealIcon').addEventListener('change', (e) => {
+    certSettings.sealIcon = e.target.value;
+    renderCertificate();
+  });
+}
+
+// ============================================================
+// 💾 حفظ
+// ============================================================
+$('saveSettingsBtn').addEventListener('click', async () => {
+  const btn = $('saveSettingsBtn');
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+  try {
+    await setDoc(doc(db, 'settings', 'certificates'), {
+      ...certSettings,
+      updatedAt: serverTimestamp(),
+      updatedBy: adminName
+    }, { merge: true });
+
+    showToast('✅ تم حفظ إعدادات الشهادة', 'success');
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ أثناء الحفظ', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+});
+
+$('resetSettingsBtn').addEventListener('click', async () => {
+  const ok = await showConfirm({
+    title: 'إعادة تعيين',
+    message: 'هل تريد استعادة الإعدادات الافتراضية؟',
+    icon: 'fa-rotate-left',
+    danger: true,
+    okText: 'إعادة تعيين'
+  });
+  if (!ok) return;
+
+  certSettings = { ...DEFAULT_SETTINGS };
+  fillSettingsFields();
+  renderCertificate();
+  showToast('تمت إعادة التعيين — لا تنسَ الحفظ', 'warning');
+});
+
+// ============================================================
+// 🎨 Presets
+// ============================================================
+const PRESETS = {
+  classic: {
+    bgColor: '#FFFDF4', frameColor: '#C9A961', frameInnerColor: '#8B6914',
+    titleColor: '#0B3D2E', nameColor: '#0B3D2E', itemColor: '#8B6914',
+    scoreColor: '#1E7A5A', bodyColor: '#4A5B56', cornerColor: '#C9A961'
+  },
+  green: {
+    bgColor: '#F1F9F3', frameColor: '#1E7A5A', frameInnerColor: '#0B3D2E',
+    titleColor: '#0B3D2E', nameColor: '#0B3D2E', itemColor: '#1E7A5A',
+    scoreColor: '#1E7A5A', bodyColor: '#4A6B5A', cornerColor: '#1E7A5A'
+  },
+  blue: {
+    bgColor: '#F1F8FC', frameColor: '#2980B9', frameInnerColor: '#1A5276',
+    titleColor: '#1A5276', nameColor: '#1A5276', itemColor: '#2980B9',
+    scoreColor: '#2980B9', bodyColor: '#4A6B7A', cornerColor: '#2980B9'
+  },
+  royal: {
+    bgColor: '#FAF5FB', frameColor: '#8E44AD', frameInnerColor: '#5B2C6F',
+    titleColor: '#5B2C6F', nameColor: '#5B2C6F', itemColor: '#8E44AD',
+    scoreColor: '#8E44AD', bodyColor: '#6A5A7A', cornerColor: '#8E44AD'
+  },
+  red: {
+    bgColor: '#FDF3F3', frameColor: '#C0392B', frameInnerColor: '#7B241C',
+    titleColor: '#7B241C', nameColor: '#7B241C', itemColor: '#C0392B',
+    scoreColor: '#C0392B', bodyColor: '#6B4A4A', cornerColor: '#C0392B'
+  },
+  dark: {
+    bgColor: '#1A1A1A', frameColor: '#C9A961', frameInnerColor: '#8B6914',
+    titleColor: '#C9A961', nameColor: '#F5F1E8', itemColor: '#E0C888',
+    scoreColor: '#E0C888', bodyColor: '#C0B8A0', cornerColor: '#C9A961'
+  }
+};
+
+document.querySelectorAll('.preset-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const preset = PRESETS[item.dataset.preset];
+    if (!preset) return;
+
+    Object.assign(certSettings, preset);
+    fillSettingsFields();
+    renderCertificate();
+    showToast(`تم تطبيق "${item.querySelector('span').textContent}"`, 'info');
+  });
+});
+
+// ============================================================
+// 📥 تحميل معاينة
+// ============================================================
+$('previewDownloadBtn').addEventListener('click', async () => {
+  const btn = $('previewDownloadBtn');
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+  try {
+    const canvas = await renderToCanvas('certificateRender');
+    const dataUrl = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = `شهادة_معاينة_${Date.now()}.png`;
+    link.href = dataUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast('✅ تم التحميل', 'success');
+  } catch (e) {
+    console.error(e);
+    showToast('حدث خطأ', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+});
+
+// ============================================================
+// 🖼️ renderToCanvas — مع دعم كامل للعربية
+// ============================================================
+async function renderToCanvas(elementId) {
+  const element = $(elementId);
+  if (!element) throw new Error('Element not found');
+
+  if (document.fonts && document.fonts.ready) {
+    try { await document.fonts.ready; } catch (e) {}
+  }
+
+  const images = element.querySelectorAll('img');
+  await Promise.all(Array.from(images).map(img => {
+    if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+    return new Promise(resolve => {
+      img.onload = resolve;
+      img.onerror = resolve;
+      setTimeout(resolve, 2500);
+    });
+  }));
+
+  const originalTransform = element.style.transform;
+  const originalOrigin = element.style.transformOrigin;
+  const originalPosition = element.style.position;
+
+  element.style.transform = 'none';
+  element.style.transformOrigin = 'top left';
+  element.style.position = 'relative';
+
+  const allEls = element.querySelectorAll('*');
+  const savedStyles = [];
+  const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+
+  allEls.forEach(el => {
+    const text = el.textContent || '';
+    if (arabicRegex.test(text)) {
+      savedStyles.push({
+        el,
+        direction: el.style.direction,
+        unicodeBidi: el.style.unicodeBidi,
+        letterSpacing: el.style.letterSpacing,
+        textShadow: el.style.textShadow,
+        fontFeature: el.style.fontFeatureSettings
+      });
+      el.style.direction = 'rtl';
+      el.style.unicodeBidi = 'isolate';
+      el.style.letterSpacing = '0';
+      el.style.textShadow = 'none';
+      el.style.fontFeatureSettings = '"liga" 1, "calt" 1, "kern" 1';
+    }
+  });
+
+  await new Promise(r => setTimeout(r, 300));
+
+  let canvas;
+  try {
+    canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: certSettings.bgColor || '#FFFDF4',
+      logging: false,
+      width: 1000,
+      height: 700,
+      windowWidth: 1000,
+      windowHeight: 700,
+      scrollX: 0,
+      scrollY: 0,
+      onclone: (clonedDoc) => {
+        const clonedEl = clonedDoc.getElementById(elementId);
+        if (!clonedEl) return;
+        clonedEl.style.direction = 'rtl';
+        clonedEl.style.unicodeBidi = 'isolate';
+        clonedEl.style.transform = 'none';
+        clonedEl.style.transformOrigin = 'top left';
+        clonedEl.style.position = 'relative';
+
+        clonedEl.querySelectorAll('*').forEach(el => {
+          const txt = el.textContent || '';
+          if (arabicRegex.test(txt)) {
+            el.style.direction = 'rtl';
+            el.style.unicodeBidi = 'isolate';
+            el.style.letterSpacing = '0';
+            el.style.textShadow = 'none';
+            el.style.fontFeatureSettings = '"liga" 1, "calt" 1, "kern" 1';
+          }
+        });
+      }
+    });
+  } finally {
+    savedStyles.forEach(({ el, direction, unicodeBidi, letterSpacing, textShadow, fontFeature }) => {
+      el.style.direction = direction;
+      el.style.unicodeBidi = unicodeBidi;
+      el.style.letterSpacing = letterSpacing;
+      el.style.textShadow = textShadow;
+      el.style.fontFeatureSettings = fontFeature;
+    });
+    element.style.transform = originalTransform;
+    element.style.transformOrigin = originalOrigin;
+    element.style.position = originalPosition;
+    scaleCertificate('certScaleHolder', 'certificateRender');
+    scaleCertificate('issueCertScaleHolder', 'issueCertificateRender');
+    if ($('viewCertModal').classList.contains('show')) {
+      scaleCertificate('viewScaleHolder', 'viewCertificateRender');
+    }
+  }
+
+  return canvas;
+}
+
+// ============================================================
+// 🎓 بناء الشهادات التلقائية
 // ============================================================
 function renderAutoCertificates() {
   autoCertificates = [];
   const MIN_PERCENT = 80;
 
-  // شهادات الواجبات
   allHWSubs.forEach(sub => {
     if (!sub.submitted || !sub.corrected) return;
     const total = sub.totalScore || 0;
@@ -3348,7 +3223,6 @@ function renderAutoCertificates() {
     });
   });
 
-  // شهادات الامتحانات
   allExamSubs.forEach(sub => {
     if (!sub.submitted || !sub.corrected) return;
     const total = sub.totalScore || 0;
@@ -3384,7 +3258,7 @@ function renderAutoCertificates() {
 }
 
 // ============================================================
-// 🎨 عرض قائمة الشهادات (تلقائية + يدوية)
+// 🎨 قائمة الشهادات
 // ============================================================
 function renderCertsList() {
   const grid = $('certAdminGrid');
@@ -3413,10 +3287,10 @@ function renderCertsList() {
 
   if (filtered.length === 0) {
     grid.innerHTML = `
-      <div class="empty-state">
-        <i class="fas fa-award"></i>
-        <h3>${allCerts.length === 0 ? 'لا توجد شهادات ممنوحة بعد' : 'لا توجد نتائج'}</h3>
-        <p>${allCerts.length === 0 ? 'ستظهر هنا الشهادات التي حصل عليها الطلاب تلقائياً (80%+)' : 'جرّب البحث بكلمة أخرى'}</p>
+      <div class="empty-state" style="grid-column: 1 / -1; padding: 60px 24px; text-align: center; border: 2px dashed var(--border); border-radius: 16px;">
+        <i class="fas fa-award" style="font-size: 56px; color: var(--accent); opacity: 0.5;"></i>
+        <h3 style="margin-top: 12px;">${allCerts.length === 0 ? 'لا توجد شهادات بعد' : 'لا توجد نتائج'}</h3>
+        <p style="color: var(--text-sub); margin-top: 6px;">${allCerts.length === 0 ? 'ستظهر هنا الشهادات تلقائياً (80%+)' : 'جرّب البحث بكلمة أخرى'}</p>
       </div>
     `;
     return;
@@ -3501,7 +3375,7 @@ function createCertAdminCard(cert) {
     if (cert.source === 'manual') {
       deleteManualCert(cert);
     } else {
-      showToast('لا يمكن حذف الشهادات التلقائية — يمكنك إخفاؤها من نتائج الطالب', 'warning');
+      showToast('لا يمكن حذف الشهادات التلقائية', 'warning');
     }
   });
 
@@ -3509,7 +3383,7 @@ function createCertAdminCard(cert) {
 }
 
 // ============================================================
-// 👁️ عرض الشهادة في Modal
+// 👁️ Modal العرض
 // ============================================================
 function openViewCert(cert) {
   currentViewCertData = cert;
@@ -3544,12 +3418,13 @@ function openViewCert(cert) {
 
   setTimeout(() => {
     scaleCertificate('viewScaleHolder', 'viewCertificateRender');
+    autoFitStudentName('viewCertificateRender');
   }, 100);
 }
 
 async function openViewCertAndDownload(cert) {
   openViewCert(cert);
-  await new Promise(r => setTimeout(r, 800));
+  await new Promise(r => setTimeout(r, 900));
   $('viewDownloadImg').click();
 }
 
@@ -3624,9 +3499,6 @@ $('viewDownloadPdf').addEventListener('click', async () => {
   }
 });
 
-// ============================================================
-// 🗑️ حذف شهادة يدوية
-// ============================================================
 async function deleteManualCert(cert) {
   const ok = await showConfirm({
     title: 'حذف الشهادة',
@@ -3651,7 +3523,7 @@ async function deleteManualCert(cert) {
 }
 
 // ============================================================
-// ➕ TAB 3: إصدار شهادة يدوياً
+// ➕ Issue Manual
 // ============================================================
 function renderIssueStudents() {
   const container = $('issueStudentsList');
@@ -3695,7 +3567,7 @@ function renderIssueStudents() {
       </div>
       <div style="flex: 1; min-width: 0;">
         <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(s.fullName || s.username || 'طالب')}</div>
-        <div style="font-size: 11px; color: var(--text-sub); font-family: 'Cairo', monospace; direction: ltr;">${escapeHtml(s.code || s.id || '')}</div>
+        <div style="font-size: 11px; color: var(--text-sub); direction: ltr; text-align: right;">${escapeHtml(s.code || s.id || '')}</div>
       </div>
     `;
 
@@ -3715,9 +3587,6 @@ function selectIssueStudent(s) {
 
 $('issueSearchStudent').addEventListener('input', renderIssueStudents);
 
-// ============================================================
-// 🎨 رسم الشهادة في تبويب الإصدار
-// ============================================================
 function renderIssueCertificate() {
   const container = $('issueCertificateRender');
   if (!container) return;
@@ -3762,21 +3631,20 @@ function renderIssueCertificate() {
     leftSigTitle: certSettings.leftSigTitle,
     sealIcon: certSettings.sealIcon
   });
+
+  requestAnimationFrame(() => {
+    autoFitStudentName('issueCertificateRender');
+  });
 }
 
-// ربط حقول الإصدار بالمعاينة
 ['issueType', 'issueItemName', 'issueScore', 'issueTotal', 'issueDate'].forEach(id => {
   $(id).addEventListener('input', renderIssueCertificate);
   $(id).addEventListener('change', renderIssueCertificate);
 });
 
-// تعيين تاريخ اليوم افتراضياً
 $('issueDate').value = new Date().toISOString().split('T')[0];
 $('valIssueDate').textContent = new Date().toLocaleDateString('ar-EG');
 
-// ============================================================
-// 💾 إصدار شهادة يدوية
-// ============================================================
 $('issueGenerateBtn').addEventListener('click', async () => {
   if (!issueSelectedStudent) {
     return showToast('الرجاء اختيار طالب أولاً', 'warning');
@@ -3831,8 +3699,6 @@ $('issueGenerateBtn').addEventListener('click', async () => {
     });
 
     showToast(`✅ تم إصدار الشهادة لـ ${newCert.studentName}`, 'success');
-
-    // انتقل إلى قائمة الشهادات
     document.querySelector('[data-tab="list"]').click();
 
   } catch (e) {
@@ -3844,7 +3710,6 @@ $('issueGenerateBtn').addEventListener('click', async () => {
   }
 });
 
-// إعادة تعيين نموذج الإصدار
 $('issueResetBtn').addEventListener('click', () => {
   issueSelectedStudent = null;
   $('issueSearchStudent').value = '';
@@ -3892,7 +3757,6 @@ startManualCertsListener();
 
 bindSettingInputs();
 
-// رسم أولي
 setTimeout(() => {
   renderCertificate();
   scaleCertificate('certScaleHolder', 'certificateRender');
