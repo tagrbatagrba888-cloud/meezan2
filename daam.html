@@ -214,7 +214,6 @@
   }
 
   .bot-indicator.show { display: block; }
-
   .bot-indicator.api { background: var(--info); }
 
   /* ===== Layout ===== */
@@ -1982,16 +1981,30 @@
           شخصية البوت / كيف يفكر
           <span class="hint">(System Prompt - يُرسل للـ API)</span>
         </label>
-        <textarea class="form-textarea" id="botSystemPrompt" style="min-height:180px;">أنت "ميزان الذكي"، مساعد دعم فني ذكي ولطيف في منصة MEEZAN التعليمية.
-مهمتك: مساعدة الطلاب والمعلمين في حل مشاكلهم، والإجابة على استفساراتهم حول المنصة.
+        <textarea class="form-textarea" id="botSystemPrompt" style="min-height:180px;">أنت "ميزان الذكي"، المساعد الرسمي لمنصة ميزان التعليمية (MEEZAN).
+أنت جزء لا يتجزأ من المنصة، لست بوتاً خارجياً.
 
-قواعد أساسية:
-1. تحدث بالعربية الفصحى المبسطة، وبودّ.
-2. استخدم الإيموجي باعتدال.
-3. إذا لم تعرف الإجابة، اقترح تحويل المستخدم للدعم البشري.
-4. لديك وصول لكل بيانات المستخدم (الاسم، الكود، الفرقة، الامتحانات، الواجبات، الدرجات).
-5. اجعل ردودك مختصرة (2-4 أسطر) إلا لو طُلب التفصيل.
-6. لا تختلق معلومات. إذا لم تتوفر بيانات، قل ذلك بوضوح.</textarea>
+== هويتك ==
+- اسمك: ميزان الذكي
+- أنت المساعد الرسمي لمنصة ميزان
+- تتحدث بلسان المنصة
+- تعرف كل شيء عن المنصة (الميزات، الصفحات، البيانات العامة)
+
+== قدراتك ==
+- لديك وصول لكل بيانات المستخدم (اسمه، كوده، فرقته، امتحاناته، واجباته، نسبته)
+- تعرف إحصائيات المنصة (عدد الطلاب، المعلمين، الامتحانات، إلخ)
+- تعرف الميزات المتاحة (كورسات، مكتبة، مسابقات، شهادات)
+- تعرف الصفحات المتاحة في المنصة
+
+== قواعد صارمة ==
+1. ⛔ لا تكشف أبداً عن: كلمات السر، الإيميلات الكاملة، الأرقام القومية، أكواد الدفع، أو أي معلومات حساسة
+2. ✅ يمكنك ذكر: اسم المستخدم، الكود، الفرقة، عدد الامتحانات/الواجبات، النسبة المئوية
+3. إذا سألك عن شيء لا تعرفه، اقترح التحويل للدعم البشري
+4. ردودك مختصرة (2-4 أسطر) إلا لو طُلب التفصيل
+5. استخدم إيموجي باعتدال
+6. تحدث بالعربية الفصحى المبسطة، وبود
+7. لا تختلق معلومات. إذا لم تتوفر بيانات، قل ذلك بوضوح
+8. إذا سألك "مين أنت"، قل إنك المساعد الرسمي لمنصة ميزان</textarea>
       </div>
 
       <div class="form-group">
@@ -2004,7 +2017,6 @@
 الدور: {role}
 الكود: {code}
 الفرقة: {grade}
-الهاتف: {phone}
 الامتحانات: {completedExams}/{totalExams}
 الواجبات: {completedHomeworks}/{totalHomeworks}
 == نهاية البيانات ==</textarea>
@@ -2210,6 +2222,11 @@ let cachedUsersTime = 0;
 let cachedTeachersTime = 0;
 const CACHE_TTL = 60000; // دقيقة
 
+// كاش كامل لبيانات المنصة (للبوت الخارجي)
+let platformCache = null;
+let platformCacheTime = 0;
+const PLATFORM_CACHE_TTL = 120000; // دقيقتين
+
 // إعدادات البوت
 const DEFAULT_BOT_SETTINGS = {
   enabled: true,
@@ -2227,8 +2244,38 @@ const DEFAULT_BOT_SETTINGS = {
   apiTemperature: 0.7,
   apiTimeout: 30,
   // Persona
-  systemPrompt: 'أنت "ميزان الذكي"، مساعد دعم فني ذكي ولطيف في منصة MEEZAN التعليمية.\nمهمتك: مساعدة الطلاب والمعلمين في حل مشاكلهم، والإجابة على استفساراتهم حول المنصة.\n\nقواعد أساسية:\n1. تحدث بالعربية الفصحى المبسطة، وبودّ.\n2. استخدم الإيموجي باعتدال.\n3. إذا لم تعرف الإجابة، اقترح تحويل المستخدم للدعم البشري.\n4. لديك وصول لكل بيانات المستخدم.\n5. اجعل ردودك مختصرة (2-4 أسطر).\n6. لا تختلق معلومات.',
-  contextTemplate: '== بيانات المستخدم ==\nالاسم: {name}\nالدور: {role}\nالكود: {code}\nالفرقة: {grade}\nالهاتف: {phone}\nالامتحانات: {completedExams}/{totalExams}\nالواجبات: {completedHomeworks}/{totalHomeworks}\n== نهاية البيانات ==',
+  systemPrompt: `أنت "ميزان الذكي"، المساعد الرسمي لمنصة ميزان التعليمية (MEEZAN).
+أنت جزء لا يتجزأ من المنصة، لست بوتاً خارجياً.
+
+== هويتك ==
+- اسمك: ميزان الذكي
+- أنت المساعد الرسمي لمنصة ميزان
+- تتحدث بلسان المنصة
+- تعرف كل شيء عن المنصة (الميزات، الصفحات، البيانات العامة)
+
+== قدراتك ==
+- لديك وصول لكل بيانات المستخدم (اسمه، كوده، فرقته، امتحاناته، واجباته، نسبته)
+- تعرف إحصائيات المنصة (عدد الطلاب، المعلمين، الامتحانات، إلخ)
+- تعرف الميزات المتاحة (كورسات، مكتبة، مسابقات، شهادات)
+- تعرف الصفحات المتاحة في المنصة
+
+== قواعد صارمة ==
+1. ⛔ لا تكشف أبداً عن: كلمات السر، الإيميلات الكاملة، الأرقام القومية، أكواد الدفع، أو أي معلومات حساسة
+2. ✅ يمكنك ذكر: اسم المستخدم، الكود، الفرقة، عدد الامتحانات/الواجبات، النسبة المئوية
+3. إذا سألك عن شيء لا تعرفه، اقترح التحويل للدعم البشري
+4. ردودك مختصرة (2-4 أسطر) إلا لو طُلب التفصيل
+5. استخدم إيموجي باعتدال
+6. تحدث بالعربية الفصحى المبسطة، وبود
+7. لا تختلق معلومات. إذا لم تتوفر بيانات، قل ذلك بوضوح
+8. إذا سألك "مين أنت"، قل إنك المساعد الرسمي لمنصة ميزان`,
+  contextTemplate: `== بيانات المستخدم ==
+الاسم: {name}
+الدور: {role}
+الكود: {code}
+الفرقة: {grade}
+الامتحانات: {completedExams}/{totalExams}
+الواجبات: {completedHomeworks}/{totalHomeworks}
+== نهاية البيانات ==`,
   // Messages
   welcomeMsg: 'أهلاً بك يا {name} 👋\nأنا ميزان الذكي، مساعدك في المنصة.\nكيف أقدر أساعدك اليوم؟',
   transferMsg: '✅ تم تحويل محادثتك لفريق الدعم الفني.\nسيتم الرد عليك في أقرب وقت ممكن.\nشكراً لصبرك 🌸',
@@ -2663,13 +2710,12 @@ function renderChatStatusBar(chat) {
     $('otherAdminStatus').style.display = 'none';
   }
 
-  // حالة كتابة المستخدم
   const userTyping = chat.userTypingAt && (Date.now() - new Date(chat.userTypingAt).getTime() < 4000);
   $('userTypingStatus').style.display = userTyping ? 'flex' : 'none';
 }
 
 // ============================================================
-// 📌 زر الاستلام (تحسين: فوري)
+// 📌 زر الاستلام
 // ============================================================
 function updateClaimButton(chat) {
   const btn = $('claimChatBtn');
@@ -2697,7 +2743,6 @@ $('claimChatBtn').addEventListener('click', async () => {
   const btn = $('claimChatBtn');
 
   if (currentChat.claimedBy === adminId) {
-    // التنازل
     const c = await showConfirm({
       title: 'التنازل',
       message: 'هل تريد التنازل عن هذه المحادثة؟',
@@ -2706,7 +2751,6 @@ $('claimChatBtn').addEventListener('click', async () => {
     });
     if (!c) return;
 
-    // ✅ تحديث فوري
     currentChat.claimedBy = null;
     currentChat.claimedByName = null;
     renderChatStatusBar(currentChat);
@@ -2722,7 +2766,6 @@ $('claimChatBtn').addEventListener('click', async () => {
       showToast('تم التنازل', 'info');
     } catch (e) {
       showToast('حدث خطأ', 'error');
-      // استرجع
       currentChat.claimedBy = adminId;
       currentChat.claimedByName = adminName;
       renderChatStatusBar(currentChat);
@@ -2730,7 +2773,6 @@ $('claimChatBtn').addEventListener('click', async () => {
     }
 
   } else if (!currentChat.claimedBy) {
-    // ✅ استلام فوري (Optimistic)
     const prevClaimedBy = currentChat.claimedBy;
     const prevClaimedByName = currentChat.claimedByName;
     currentChat.claimedBy = adminId;
@@ -2751,10 +2793,8 @@ $('claimChatBtn').addEventListener('click', async () => {
       }, { merge: true });
 
       showToast('تم استلام المحادثة ✓', 'success');
-      // أرسل رسالة نظام (بدون انتظار)
       addSystemMessage('استلم المحادثة: ' + adminName).catch(() => {});
     } catch (e) {
-      // استرجع
       currentChat.claimedBy = prevClaimedBy;
       currentChat.claimedByName = prevClaimedByName;
       renderChatStatusBar(currentChat);
@@ -2841,6 +2881,8 @@ async function showUserInfo() {
   if (!currentChat) return;
 
   let user = null;
+  let enrichedData = null;
+  
   if (currentChat.userId && currentChat.userRole !== 'guest') {
     const coll = currentChat.userRole === 'teacher' ? 'teachers' : 'users';
     try {
@@ -2850,6 +2892,9 @@ async function showUserInfo() {
         user = items.find(u => u.id === currentChat.userId);
       }
     } catch (e) {}
+    
+    // جلب الإحصائيات
+    enrichedData = await fetchUserData(currentChat.userId, currentChat.userRole);
   }
 
   const data = user || currentChat;
@@ -2868,6 +2913,13 @@ async function showUserInfo() {
   const grid = $('userInfoGrid');
   grid.innerHTML = '';
 
+  const examPct = enrichedData?.totalExams > 0 
+    ? Math.round((enrichedData.completedExams / enrichedData.totalExams) * 100) 
+    : 0;
+  const hwPct = enrichedData?.totalHomeworks > 0 
+    ? Math.round((enrichedData.completedHomeworks / enrichedData.totalHomeworks) * 100) 
+    : 0;
+
   const infoItems = [
     { icon: 'fa-user-tag', label: 'النوع', value: currentChat.userRole === 'teacher' ? 'معلم' : (currentChat.userRole === 'student' ? 'طالب' : 'ضيف') },
     { icon: 'fa-hashtag', label: 'الكود', value: data.code || currentChat.userCode || '—', ltr: true },
@@ -2876,8 +2928,10 @@ async function showUserInfo() {
     { icon: 'fa-envelope', label: 'البريد', value: data.email || '—', ltr: true },
     { icon: 'fa-id-card', label: 'الرقم القومي', value: data.nationalId || 'غير مسجل', ltr: true },
     { icon: 'fa-calendar', label: 'تاريخ الميلاد', value: data.birthDate || '—' },
-    { icon: 'fa-file-pen', label: 'الامتحانات', value: `${data.completedExams || 0} / ${data.totalExams || 0}` },
-    { icon: 'fa-book', label: 'الواجبات', value: `${data.completedHomeworks || 0} / ${data.totalHomeworks || 0}` },
+    { icon: 'fa-file-pen', label: 'الامتحانات', value: `${enrichedData?.completedExams || 0} / ${enrichedData?.totalExams || 0} (${examPct}%)` },
+    { icon: 'fa-book', label: 'الواجبات', value: `${enrichedData?.completedHomeworks || 0} / ${enrichedData?.totalHomeworks || 0} (${hwPct}%)` },
+    { icon: 'fa-certificate', label: 'الشهادات المستحقة', value: enrichedData?.certificatesCount || 0 },
+    { icon: 'fa-graduation-cap', label: 'الكورسات المسجل بها', value: enrichedData?.enrolledCourses || 0 },
     { icon: 'fa-clock', label: 'آخر ظهور', value: data.lastSeen ? formatDateTime(data.lastSeen) : '—' },
     { icon: 'fa-sign-in-alt', label: 'طريقة التسجيل', value: data.googleAuth ? 'جوجل' : 'يدوي' }
   ];
@@ -2933,7 +2987,6 @@ function renderMessages(messages) {
 function createMessageElement(msg) {
   const sender = msg.sender || 'user';
 
-  // رسالة نظام
   if (msg.isSystem) {
     const el = document.createElement('div');
     el.className = 'msg system';
@@ -2985,7 +3038,6 @@ function createMessageElement(msg) {
     }
   }
 
-  // أزرار البوت
   if (sender === 'bot' && msg.actions && msg.actions.length > 0 && !msg.actionsUsed) {
     html += `<div class="msg-actions">`;
     msg.actions.forEach(action => {
@@ -3047,7 +3099,6 @@ async function handleBotAction(action, msgId) {
 
 async function sendBotResponseAsMessage(userText) {
   const reply = await buildBotReply(userText);
-
   if (!reply) return;
 
   if (reply.transferToSupport) {
@@ -3078,16 +3129,15 @@ async function sendBotResponseAsMessage(userText) {
 }
 
 // ============================================================
-// 🧠 منطق البوت (محلي + API)
+// 🧠 منطق البوت (محلي + API) — تركيز على API
 // ============================================================
 
 /**
- * جلب بيانات المستخدم من Firestore (users/teachers)
+ * ⭐ جلب بيانات المستخدم الكاملة من قاعدة البيانات (مع كل الإحصائيات الحقيقية)
  */
 async function fetchUserData(userId, role) {
   if (!userId || role === 'guest') return null;
 
-  // كاش
   const cacheKey = `${role}_${userId}`;
   const now = Date.now();
   const cached = userDataCache.get(cacheKey);
@@ -3097,110 +3147,311 @@ async function fetchUserData(userId, role) {
 
   const collName = role === 'teacher' ? 'teachers' : 'users';
 
-  // كاش جماعي
-  if (role === 'teacher' && cachedTeachers && (now - cachedTeachersTime) < CACHE_TTL) {
-    const found = cachedTeachers.find(u => u.id === userId);
-    userDataCache.set(cacheKey, { data: found, time: now });
-    return found;
-  }
-  if (role !== 'teacher' && cachedUsers && (now - cachedUsersTime) < CACHE_TTL) {
-    const found = cachedUsers.find(u => u.id === userId);
-    userDataCache.set(cacheKey, { data: found, time: now });
-    return found;
-  }
-
   try {
+    // 1) احصل على بيانات المستخدم
+    let userData = null;
     const snap = await getDoc(doc(db, collName, 'all'));
     if (snap.exists()) {
       const items = snap.data().items || [];
-      if (role === 'teacher') {
-        cachedTeachers = items;
-        cachedTeachersTime = now;
-      } else {
-        cachedUsers = items;
-        cachedUsersTime = now;
-      }
-      const found = items.find(u => u.id === userId);
-      userDataCache.set(cacheKey, { data: found, time: now });
-      return found;
+      userData = items.find(u => u.id === userId);
     }
+
+    if (!userData) return null;
+
+    // 2) ⭐ احسب عدد الامتحانات والواجبات الحقيقية
+    let totalExams = 0;
+    let completedExams = 0;
+    let totalHomeworks = 0;
+    let completedHomeworks = 0;
+    let certificatesCount = 0;
+    let enrolledCourses = 0;
+
+    if (role === 'student') {
+      // === الامتحانات ===
+      const examsSnap = await getDoc(doc(db, 'exams', 'all'));
+      const allExams = examsSnap.exists() ? (examsSnap.data().items || []) : [];
+      
+      const studentExams = allExams.filter(e => 
+        e.status === 'published' && e.grade === userData.grade
+      );
+      totalExams = studentExams.length;
+
+      // === تسليمات الامتحانات ===
+      const examSubsSnap = await getDoc(doc(db, 'exam_subs', 'all'));
+      const allExamSubs = examSubsSnap.exists() ? (examSubsSnap.data().items || []) : [];
+      
+      const studentExamSubs = allExamSubs.filter(s => 
+        s.userId === userId && s.submitted
+      );
+      completedExams = studentExamSubs.length;
+
+      // حساب الشهادات من الامتحانات (80%+)
+      studentExamSubs.forEach(s => {
+        if (s.corrected) {
+          const pct = s.totalScore > 0 ? (s.score / s.totalScore) * 100 : 0;
+          if (pct >= 80) certificatesCount++;
+        }
+      });
+
+      // === الواجبات ===
+      const homeworksSnap = await getDoc(doc(db, 'homeworks', 'all'));
+      const allHomeworks = homeworksSnap.exists() ? (homeworksSnap.data().items || []) : [];
+      
+      const studentHomeworks = allHomeworks.filter(h => 
+        h.status === 'published' && h.grade === userData.grade
+      );
+      totalHomeworks = studentHomeworks.length;
+
+      // === تسليمات الواجبات ===
+      const hwSubsSnap = await getDoc(doc(db, 'homework_subs', 'all'));
+      const allHWSubs = hwSubsSnap.exists() ? (hwSubsSnap.data().items || []) : [];
+      
+      const studentHWSubs = allHWSubs.filter(s => 
+        s.userId === userId && s.submitted
+      );
+      completedHomeworks = studentHWSubs.length;
+
+      // حساب الشهادات من الواجبات (80%+)
+      studentHWSubs.forEach(s => {
+        if (s.corrected) {
+          const pct = s.totalScore > 0 ? (s.score / s.totalScore) * 100 : 0;
+          if (pct >= 80) certificatesCount++;
+        }
+      });
+
+      // === الكورسات المسجل بها ===
+      const codesSnap = await getDoc(doc(db, 'payment_codes', 'all'));
+      if (codesSnap.exists()) {
+        const codes = codesSnap.data().items || [];
+        enrolledCourses = codes.filter(c => 
+          c.userId === userId && c.used
+        ).length;
+      }
+
+    } else if (role === 'teacher') {
+      // للمعلم: عدد الامتحانات والواجبات في مادته
+      const examsSnap = await getDoc(doc(db, 'exams', 'all'));
+      const allExams = examsSnap.exists() ? (examsSnap.data().items || []) : [];
+      totalExams = allExams.filter(e => 
+        e.status === 'published' && e.grade === userData.grade
+      ).length;
+
+      const homeworksSnap = await getDoc(doc(db, 'homeworks', 'all'));
+      const allHomeworks = homeworksSnap.exists() ? (homeworksSnap.data().items || []) : [];
+      totalHomeworks = allHomeworks.filter(h => 
+        h.status === 'published' && h.grade === userData.grade
+      ).length;
+    }
+
+    const enriched = {
+      ...userData,
+      totalExams,
+      completedExams,
+      totalHomeworks,
+      completedHomeworks,
+      certificatesCount,
+      enrolledCourses
+    };
+
+    userDataCache.set(cacheKey, { data: enriched, time: now });
+    return enriched;
+
   } catch (e) {
     console.warn('fetchUserData error:', e);
+    return null;
   }
-
-  return null;
 }
 
 /**
- * بناء سياق المستخدم (Context) من بيانات قاعدة البيانات
+ * ⭐ بناء سياق المستخدم الكامل (للـ API)
  */
 function buildUserContext(chat, userData) {
   const name = userData?.fullName || chat.userName || 'مستخدم';
   const role = chat.userRole === 'teacher' ? 'معلم' : (chat.userRole === 'student' ? 'طالب' : 'ضيف');
   const code = userData?.code || chat.userCode || '—';
   const grade = userData?.grade || '—';
-  const phone = userData?.phone || chat.userPhone || '—';
+  
+  // ⚠️ لا نرسل معلومات حساسة (هاتف، إيميل، رقم قومي، كلمة سر)
   const completedExams = userData?.completedExams || 0;
   const totalExams = userData?.totalExams || 0;
   const completedHomeworks = userData?.completedHomeworks || 0;
   const totalHomeworks = userData?.totalHomeworks || 0;
+  const enrolledCourses = userData?.enrolledCourses || 0;
+  const certificatesCount = userData?.certificatesCount || 0;
 
-  let template = botSettings.contextTemplate || '';
-  if (!template) return '';
+  const examPct = totalExams > 0 ? Math.round((completedExams / totalExams) * 100) : 0;
+  const hwPct = totalHomeworks > 0 ? Math.round((completedHomeworks / totalHomeworks) * 100) : 0;
+  const totalPct = Math.round((examPct + hwPct) / 2);
 
-  return template
-    .replace(/\{name\}/g, name)
-    .replace(/\{role\}/g, role)
-    .replace(/\{code\}/g, code)
-    .replace(/\{grade\}/g, grade)
-    .replace(/\{phone\}/g, phone)
-    .replace(/\{completedExams\}/g, completedExams)
-    .replace(/\{totalExams\}/g, totalExams)
-    .replace(/\{completedHomeworks\}/g, completedHomeworks)
-    .replace(/\{totalHomeworks\}/g, totalHomeworks);
+  return `== بيانات المستخدم (من قاعدة بيانات ميزان) ==
+الاسم: ${name}
+الدور: ${role}
+الكود: ${code}
+الفرقة/المادة: ${grade}
+
+== إحصائياته ==
+الامتحانات: ${completedExams} مكتمل من ${totalExams} (${examPct}%)
+الواجبات: ${completedHomeworks} مكتمل من ${totalHomeworks} (${hwPct}%)
+النسبة العامة: ${totalPct}%
+الكورسات المسجل بها: ${enrolledCourses}
+الشهادات المستحقة (80%+): ${certificatesCount}
+
+⚠️ ملاحظة: هذه البيانات حقيقية من قاعدة البيانات. لا تكشف أي معلومات حساسة (كلمة سر، إيميل، رقم قومي، أكواد دفع).
+== نهاية البيانات ==`;
 }
 
 /**
- * بناء سياق الموقع الكامل (كل قواعد البيانات)
+ * ⭐ بناء سياق المنصة الكامل (للـ API الخارجي)
  */
 async function buildSiteContext() {
-  const ctx = {};
+  const now = Date.now();
+  
+  // استخدام الكاش لو حديث
+  if (platformCache && (now - platformCacheTime) < PLATFORM_CACHE_TTL) {
+    return platformCache;
+  }
+
+  const ctx = {
+    platformName: 'ميزان',
+    platformNameEn: 'MEEZAN',
+    description: 'منصة تعليمية إلكترونية متكاملة'
+  };
 
   try {
-    // إحصائيات عامة
-    const statsSnap = await getDoc(doc(db, 'settings', 'stats'));
-    if (statsSnap.exists()) ctx.stats = statsSnap.data();
+    // 1) إعدادات الموقع
+    const settingsSnap = await getDoc(doc(db, 'settings', 'login'));
+    if (settingsSnap.exists()) {
+      const s = settingsSnap.data();
+      ctx.platformName = s.siteNameAr || 'ميزان';
+      ctx.platformNameEn = s.siteNameEn || 'MEEZAN';
+      ctx.tagline = s.tagline || '';
+      ctx.welcomeMessage = s.welcomeMessage || '';
+    }
 
-    // إعدادات عامة
-    const genSnap = await getDoc(doc(db, 'settings', 'general'));
-    if (genSnap.exists()) ctx.general = genSnap.data();
-  } catch (e) {}
+    // 2) إحصائيات عامة
+    const usersSnap = await getDoc(doc(db, 'users', 'all'));
+    if (usersSnap.exists()) {
+      ctx.totalStudents = (usersSnap.data().items || []).length;
+    }
+
+    const teachersSnap = await getDoc(doc(db, 'teachers', 'all'));
+    if (teachersSnap.exists()) {
+      ctx.totalTeachers = (teachersSnap.data().items || []).length;
+    }
+
+    const examsSnap = await getDoc(doc(db, 'exams', 'all'));
+    if (examsSnap.exists()) {
+      const items = examsSnap.data().items || [];
+      ctx.totalExams = items.length;
+      ctx.publishedExams = items.filter(e => e.status === 'published').length;
+    }
+
+    const hwSnap = await getDoc(doc(db, 'homeworks', 'all'));
+    if (hwSnap.exists()) {
+      const items = hwSnap.data().items || [];
+      ctx.totalHomeworks = items.length;
+      ctx.publishedHomeworks = items.filter(h => h.status === 'published').length;
+    }
+
+    const coursesSnap = await getDoc(doc(db, 'courses', 'all'));
+    if (coursesSnap.exists()) {
+      const items = coursesSnap.data().items || [];
+      ctx.totalCourses = items.length;
+      ctx.publishedCourses = items.filter(c => c.status === 'published').length;
+    }
+
+    const librarySnap = await getDoc(doc(db, 'settings', 'library'));
+    if (librarySnap.exists()) {
+      const items = librarySnap.data().items || [];
+      ctx.totalLibraryItems = items.length;
+    }
+
+    // 3) الفرق والمواد المتاحة
+    const catsSnap = await getDoc(doc(db, 'users', 'categories'));
+    if (catsSnap.exists()) {
+      ctx.availableGrades = (catsSnap.data().items || []).slice(0, 10);
+    }
+
+    const teacherCatsSnap = await getDoc(doc(db, 'teachers', 'categories'));
+    if (teacherCatsSnap.exists()) {
+      ctx.availableSubjects = (teacherCatsSnap.data().items || []).slice(0, 10);
+    }
+
+    // 4) الصفحات المتاحة
+    ctx.availablePages = [
+      'الرئيسية (index.html)',
+      'الإشعارات',
+      'المكتبة (كتب وتلخيصات)',
+      'الكورسات',
+      'الامتحانات',
+      'الواجبات',
+      'المسابقات',
+      'النتائج',
+      'الشهادات',
+      'الدعم الفني',
+      'إعدادات الحساب'
+    ];
+
+    // 5) الميزات
+    ctx.features = [
+      'امتحانات إلكترونية بتصحيح تلقائي أو يدوي',
+      'واجبات مع تصحيح تلقائي',
+      'كورسات مدفوعة ومجانية',
+      'أكواد دفع خاصة لكل طالب',
+      'شهادات تلقائية عند تحقيق 80%+',
+      'مسابقات جماعية مباشرة',
+      'مكتبة كتب وتلخيصات',
+      'نظام إشعارات فوري',
+      'دعم فني بالذكاء الاصطناعي'
+    ];
+
+    platformCache = ctx;
+    platformCacheTime = now;
+
+  } catch (e) {
+    console.warn('buildSiteContext error:', e);
+  }
 
   return ctx;
 }
 
 /**
- * استدعاء الـ API الخارجي
+ * ⭐ استدعاء الـ API الخارجي (الجزء الأهم - مع التركيز الكبير)
  */
 async function callExternalAPI(userMessage, chat, userData) {
   if (!botSettings.apiEnabled || !botSettings.apiUrl) {
     return { ok: false, reason: 'api_disabled' };
   }
 
-  // بناء الرسائل
+  // 1) بناء كل السياقات
   const systemPrompt = botSettings.systemPrompt || DEFAULT_BOT_SETTINGS.systemPrompt;
   const userContext = buildUserContext(chat, userData);
   const siteContext = botSettings.accessDb ? await buildSiteContext() : {};
 
-  const systemContent = systemPrompt + (userContext ? '\n\n' + userContext : '') +
-    (Object.keys(siteContext).length ? '\n\n== سياق الموقع ==\n' + JSON.stringify(siteContext, null, 2) + '\n== نهاية السياق ==' : '');
+  // 2) صياغة system prompt الكامل
+  const siteContextStr = Object.keys(siteContext).length 
+    ? `\n\n== سياق منصة ميزان الكامل ==\n${JSON.stringify(siteContext, null, 2)}\n== نهاية السياق ==`
+    : '';
 
-  // آخر 10 رسائل للسياق
+  const systemContent = `${systemPrompt}
+
+${userContext}
+${siteContextStr}
+
+== تذكير أخير ==
+أنت ميزان الذكي، البوت الرسمي لمنصة ميزان.
+- لا تكشف معلومات حساسة (كلمة سر، إيميل، رقم قومي، أكواد دفع)
+- استخدم البيانات الحقيقية اللي فوق
+- لو السؤال خارج نطاق معرفتك، اقترح التحويل للدعم البشري
+- ردودك مختصرة (2-4 أسطر) إلا لو طُلب التفصيل`;
+
+  // 3) بناء تاريخ الرسائل (آخر 10)
   const history = (chat.messages || []).slice(-10).map(m => ({
     role: m.sender === 'user' ? 'user' : 'assistant',
     content: m.text || ''
   }));
 
+  // 4) بناء body الـ API
   const body = {
     model: botSettings.apiModel || 'default',
     messages: [
@@ -3212,7 +3463,7 @@ async function callExternalAPI(userMessage, chat, userData) {
     temperature: parseFloat(botSettings.apiTemperature) || 0.7
   };
 
-  // Headers
+  // 5) Headers
   let extraHeaders = {};
   if (botSettings.apiHeaders) {
     try { extraHeaders = JSON.parse(botSettings.apiHeaders); } catch (e) {}
@@ -3227,12 +3478,13 @@ async function callExternalAPI(userMessage, chat, userData) {
     headers['Authorization'] = 'Bearer ' + botSettings.apiKey;
   }
 
-  // Timeout
+  // 6) Timeout
   const controller = new AbortController();
   const timeoutMs = (parseInt(botSettings.apiTimeout) || 30) * 1000;
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
+    // 7) إرسال الطلب
     const res = await fetch(botSettings.apiUrl, {
       method: 'POST',
       headers,
@@ -3243,12 +3495,13 @@ async function callExternalAPI(userMessage, chat, userData) {
     clearTimeout(timer);
 
     if (!res.ok) {
+      console.warn('API HTTP error:', res.status);
       return { ok: false, reason: 'http_' + res.status };
     }
 
     const data = await res.json();
 
-    // استخراج الرد - أشهر الصيغ
+    // 8) استخراج الرد من مختلف الصيغ
     let replyText = '';
     if (data.choices && data.choices[0]?.message?.content) {
       replyText = data.choices[0].message.content;
@@ -3306,7 +3559,12 @@ async function testApiConnection() {
   const headersStr = cleanInput($('apiHeaders').value);
   if (headersStr) {
     try { extraHeaders = JSON.parse(headersStr); }
-    catch (e) { showBotMsg('error', 'ترويسة إضافية غير صالحة (JSON)'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-vial"></i> اختبار الاتصال بالـ API'; return; }
+    catch (e) { 
+      showBotMsg('error', 'ترويسة إضافية غير صالحة (JSON)'); 
+      btn.disabled = false; 
+      btn.innerHTML = '<i class="fas fa-vial"></i> اختبار الاتصال بالـ API'; 
+      return; 
+    }
   }
 
   const headers = { 'Content-Type': 'application/json', ...extraHeaders };
@@ -3366,20 +3624,20 @@ function showBotMsg(type, text) {
 }
 
 /**
- * المحرك الرئيسي للبوت: يحاول API أولاً، ثم يرجع للمحلي
+ * ⭐ المحرك الرئيسي للبوت: يحاول API أولاً، ثم يرجع للمحلي
  */
 async function buildBotReply(userText) {
   if (!currentChat) return null;
 
   const name = currentChat.userName || 'صديقي';
 
-  // جلب بيانات المستخدم
+  // جلب بيانات المستخدم الكاملة
   let userData = null;
   if (botSettings.accessDb && currentChat.userId) {
     userData = await fetchUserData(currentChat.userId, currentChat.userRole);
   }
 
-  // ✅ 1) جرب الـ API إذا مفعّل
+  // ✅ 1) جرب الـ API أولاً إذا مفعّل
   if (botSettings.apiEnabled && botSettings.apiUrl) {
     const apiResult = await callExternalAPI(userText, currentChat, userData);
     if (apiResult.ok) {
@@ -3391,8 +3649,6 @@ async function buildBotReply(userText) {
     }
     // فشل - نكمل للمحلي
     console.warn('API failed, falling back to local. Reason:', apiResult.reason);
-    // لو المستخدم اختار خطأ API صريح، ممكن نضيف رسالة
-    // (لكن الأفضل نكمل صامتاً)
   }
 
   // ✅ 2) البوت المحلي (Fallback)
@@ -3400,18 +3656,16 @@ async function buildBotReply(userText) {
 }
 
 /**
- * البوت المحلي الذكي (بدون API) - نسخة محسّنة ومنظمة
+ * البوت المحلي (Fallback) — يستخدم البيانات الحقيقية
  */
 function buildLocalBotReply(userText, name, userData) {
   const lower = userText.toLowerCase().trim();
-
-  // ============ مساعدات ============
   const has = (...kws) => kws.some(k => lower.includes(k));
 
   // ============ الترحيب ============
   if (has('مرحبا', 'اهلا', 'أهلا', 'السلام', 'هاي', 'hi', 'hello', 'صباح', 'مساء', 'ازيك', 'إزيك')) {
     return {
-      text: `أهلاً بك يا ${name} 👋\nكيف أقدر أساعدك اليوم؟`,
+      text: `أهلاً بك يا ${name} في منصة ميزان 👋\nأنا "ميزان الذكي" - المساعد الرسمي للمنصة.\nكيف أقدر أساعدك اليوم؟`,
       actions: getMainMenu(),
       source: 'local'
     };
@@ -3431,9 +3685,8 @@ function buildLocalBotReply(userText, name, userData) {
     let text = `📊 معلوماتك يا ${name}:\n\n`;
     if (userData) {
       text += `• الاسم: ${userData.fullName || name}\n`;
-      text += `• الكود: ${userData.code || currentChat.userCode || '—'}\n`;
+      text += `• الكود: ${userData.code || '—'}\n`;
       text += `• الفرقة/المادة: ${userData.grade || '—'}\n`;
-      text += `• الهاتف: ${userData.phone || '—'}\n`;
     } else {
       text += `• الكود: ${currentChat.userCode || '—'}\n`;
       text += `• الدور: ${currentChat.userRole === 'teacher' ? 'معلم' : (currentChat.userRole === 'student' ? 'طالب' : 'ضيف')}\n`;
@@ -3448,8 +3701,8 @@ function buildLocalBotReply(userText, name, userData) {
     };
   }
 
-  // ============ نسبة التفوق / الدرجات ============
-  if (has('نسبه', 'نسبة', 'تفوق', 'معدل', 'درجات', 'نتيجه', 'نتيجة')) {
+  // ============ نسبة التفوق ============
+  if (has('نسبه', 'نسبة', 'تفوق', 'معدل', 'درجات', 'نتيجه', 'نتيجة', 'تقدمي', 'مستواي')) {
     let text = `📊 نسبة تفوقك يا ${name}:\n\n`;
     if (userData) {
       const ce = userData.completedExams || 0;
@@ -3459,9 +3712,15 @@ function buildLocalBotReply(userText, name, userData) {
       const examPct = te > 0 ? Math.round((ce / te) * 100) : 0;
       const hwPct = th > 0 ? Math.round((ch / th) * 100) : 0;
       const totalPct = Math.round((examPct + hwPct) / 2);
+      
       text += `• الامتحانات: ${ce} / ${te} (${examPct}%)\n`;
       text += `• الواجبات: ${ch} / ${th} (${hwPct}%)\n`;
-      text += `• الإجمالي: ${totalPct}%`;
+      text += `• الإجمالي: ${totalPct}%\n\n`;
+      
+      if (totalPct >= 90) text += `🏆 ممتاز! استمر في التفوق!`;
+      else if (totalPct >= 75) text += `👏 جيد جداً! تحتاج لمزيد من الجهد للوصول للامتياز.`;
+      else if (totalPct >= 50) text += `💪 مقبول، تحتاج لمذاكرة أكثر.`;
+      else text += `⚠️ تحتاج لمتابعة دراستك بجدية أكبر.`;
     } else {
       text += `لا تتوفر بيانات حالياً.`;
     }
@@ -3481,7 +3740,14 @@ function buildLocalBotReply(userText, name, userData) {
     let text = `📝 امتحاناتك يا ${name}:\n\n`;
     if (userData) {
       text += `• المكتملة: ${userData.completedExams || 0}\n`;
-      text += `• الإجمالية: ${userData.totalExams || 0}`;
+      text += `• الإجمالية: ${userData.totalExams || 0}\n`;
+      text += `• المتبقية: ${(userData.totalExams || 0) - (userData.completedExams || 0)}\n\n`;
+      
+      if ((userData.completedExams || 0) < (userData.totalExams || 0)) {
+        text += `💡 لديك امتحانات لم تكملها بعد. افتح صفحة الامتحانات للمتابعة.`;
+      } else if ((userData.totalExams || 0) > 0) {
+        text += `✅ أكملت كل الامتحانات المتاحة!`;
+      }
     } else {
       text += `لا تتوفر بيانات حالياً.`;
     }
@@ -3497,9 +3763,44 @@ function buildLocalBotReply(userText, name, userData) {
     let text = `📚 واجباتك يا ${name}:\n\n`;
     if (userData) {
       text += `• المكتملة: ${userData.completedHomeworks || 0}\n`;
-      text += `• الإجمالية: ${userData.totalHomeworks || 0}`;
+      text += `• الإجمالية: ${userData.totalHomeworks || 0}\n`;
+      text += `• المتبقية: ${(userData.totalHomeworks || 0) - (userData.completedHomeworks || 0)}\n\n`;
+      
+      if ((userData.completedHomeworks || 0) < (userData.totalHomeworks || 0)) {
+        text += `💡 لديك واجبات لم تكملها بعد. افتح صفحة الواجبات للمتابعة.`;
+      } else if ((userData.totalHomeworks || 0) > 0) {
+        text += `✅ أكملت كل الواجبات المتاحة!`;
+      }
     } else {
       text += `لا تتوفر بيانات حالياً.`;
+    }
+    return {
+      text,
+      actions: [{ id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }],
+      source: 'local'
+    };
+  }
+
+  // ============ الكورسات ============
+  if (has('كورس', 'كورسات', 'course', 'دورة', 'دورات')) {
+    let text = `🎓 كورساتك يا ${name}:\n\n`;
+    if (userData) {
+      text += `• المسجل بها: ${userData.enrolledCourses || 0}\n\n`;
+    }
+    text += `💡 لتصفح الكورسات المتاحة، افتح صفحة الكورسات من القائمة الرئيسية.`;
+    return {
+      text,
+      actions: [{ id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }],
+      source: 'local'
+    };
+  }
+
+  // ============ الشهادات ============
+  if (has('شهاده', 'شهادة', 'شهادات', 'certificate')) {
+    let text = `🏆 شهاداتك يا ${name}:\n\n`;
+    if (userData) {
+      text += `• الشهادات المستحقة: ${userData.certificatesCount || 0}\n\n`;
+      text += `💡 تحصل على الشهادة تلقائياً عند تحقيق 80% أو أكثر في أي امتحان أو واجب.`;
     }
     return {
       text,
@@ -3511,7 +3812,7 @@ function buildLocalBotReply(userText, name, userData) {
   // ============ كلمة السر ============
   if (has('كلمه', 'كلمة', 'باسورد', 'password', 'سر')) {
     return {
-      text: '🔑 بخصوص كلمة السر:\n\n• لتغييرها: افتح sora.html\n• لو نسيتها: تواصل مع الدعم البشري',
+      text: '🔑 بخصوص كلمة السر:\n\n• لتغييرها: افتح صفحة حسابك الشخصي\n• لو نسيتها: تواصل مع الدعم البشري\n\n⚠️ لأسباب أمنية، لا يمكن للبوت عرض كلمة السر.',
       actions: [
         { id: 'support', label: '💬 الدعم البشري', icon: 'fa-headset', type: 'danger' },
         { id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }
@@ -3529,7 +3830,7 @@ function buildLocalBotReply(userText, name, userData) {
     };
   }
 
-  // ============ موادي / المقررات ============
+  // ============ موادي ============
   if (has('مواد', 'مقرر', 'منهج', 'courses', 'subject')) {
     let text = `📚 موادي يا ${name}:\n\n`;
     if (userData?.grade) text += `• الفرقة/المادة: ${userData.grade}`;
@@ -3541,8 +3842,26 @@ function buildLocalBotReply(userText, name, userData) {
     };
   }
 
+  // ============ المكتبة ============
+  if (has('مكتبه', 'مكتبة', 'كتاب', 'كتب', 'تلخيص', 'تلخيصات', 'library')) {
+    return {
+      text: '📖 المكتبة:\n\nفي المكتبة تجد:\n• كتب PDF\n• تلخيصات للمواد\n\n💡 افتح صفحة المكتبة من القائمة الرئيسية.',
+      actions: [{ id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }],
+      source: 'local'
+    };
+  }
+
+  // ============ المسابقات ============
+  if (has('مسابقه', 'مسابقة', 'مسابقات', 'contest')) {
+    return {
+      text: '🎯 المسابقات:\n\nالمسابقات الجماعية المباشرة تُعلن في الصفحة الرئيسية.\n\n💡 ادخل أي مسابقة نشطة لمتابعة الأسئلة والمنافسة.',
+      actions: [{ id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }],
+      source: 'local'
+    };
+  }
+
   // ============ الدعم البشري ============
-  if (has('دعم', 'بشري', 'مسؤول', 'موظف', 'شكوى', 'مشكله', 'مشكلة', 'خطا', 'خطأ', 'مش شغال', 'مشغال', 'مشكله')) {
+  if (has('دعم', 'بشري', 'مسؤول', 'موظف', 'شكوى', 'مشكله', 'مشكلة', 'خطا', 'خطأ', 'مش شغال', 'مشغال')) {
     return {
       transferToSupport: true,
       text: botSettings.transferMsg || '✅ تم التحويل للدعم',
@@ -3564,6 +3883,15 @@ function buildLocalBotReply(userText, name, userData) {
     return {
       text: `مع السلامة يا ${name} 👋\nلو احتجتني، أنا هنا!`,
       actions: [{ id: 'main_menu', label: '🔙 القائمة', icon: 'fa-arrow-right' }],
+      source: 'local'
+    };
+  }
+
+  // ============ من أنت؟ ============
+  if (has('مين انت', 'من انت', 'مين أنت', 'من أنت', 'who are you', 'انت مين')) {
+    return {
+      text: `أنا "ميزان الذكي" 🤖\nالمساعد الرسمي لمنصة ميزان التعليمية.\nأنا جزء من المنصة، وأقدر أساعدك في أي استفسار عن الامتحانات، الواجبات، الكورسات، والشهادات.\n\nكيف أقدر أساعدك اليوم؟`,
+      actions: getMainMenu(),
       source: 'local'
     };
   }
@@ -3634,7 +3962,7 @@ function formatDateTime(iso) {
 }
 
 // ============================================================
-// ⌨️ شريط الكتابة الفوري (تحسين كبير)
+// ⌨️ شريط الكتابة
 // ============================================================
 let typingTimeout = null;
 let isTypingNow = false;
@@ -3643,12 +3971,10 @@ $('chatInput').addEventListener('input', function() {
   this.style.height = 'auto';
   this.style.height = Math.min(this.scrollHeight, 120) + 'px';
 
-  // ✅ إشارة كتابة فورية
   if (!currentChatId) return;
 
   if (!isTypingNow) {
     isTypingNow = true;
-    // إرسال إشارة "أكتب"
     setDoc(doc(db, 'support_chats', currentChatId), {
       adminTypingAt: new Date().toISOString(),
       adminTypingBy: adminName
@@ -3658,7 +3984,6 @@ $('chatInput').addEventListener('input', function() {
   clearTimeout(typingTimeout);
   typingTimeout = setTimeout(() => {
     isTypingNow = false;
-    // إخفاء الإشارة
     setDoc(doc(db, 'support_chats', currentChatId), {
       adminTypingAt: null,
       adminTypingBy: null
@@ -3667,7 +3992,7 @@ $('chatInput').addEventListener('input', function() {
 });
 
 // ============================================================
-// 📤 إرسال رسالة من المشرف
+// 📤 إرسال رسالة
 // ============================================================
 $('sendBtn').addEventListener('click', () => sendAdminMessage());
 $('chatInput').addEventListener('keydown', (e) => {
@@ -3685,7 +4010,7 @@ async function sendAdminMessage(text = null, mediaUrl = '', mediaType = '') {
 
   if (!msgText && !mediaUrl) return;
 
-  // ✅ استلام تلقائي فوري (بدون انتظار)
+  // استلام تلقائي
   if (!currentChat?.claimedBy) {
     if (currentChat) {
       currentChat.claimedBy = adminId;
@@ -3825,7 +4150,6 @@ $('botModal').addEventListener('click', (e) => {
   if (e.target === $('botModal')) $('botModal').classList.remove('show');
 });
 
-// تبويبات
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const tab = btn.dataset.tab;
@@ -3887,7 +4211,6 @@ $('botSaveBtn').addEventListener('click', async () => {
   const errEl = $('botError');
   errEl.classList.remove('show');
 
-  // تحقق من JSON الهيدرز
   const headersStr = cleanInput($('apiHeaders').value);
   if (headersStr) {
     try { JSON.parse(headersStr); }
@@ -3995,12 +4318,10 @@ document.addEventListener('keydown', (e) => {
 startChatsListener();
 loadBotSettings();
 
-// مؤقت لتحديث حالة كتابة المستخدم
 setInterval(() => {
   if (currentChat) renderChatStatusBar(currentChat);
 }, 3000);
 
-// مراقب الثيم
 new MutationObserver(() => {
   renderChatsList();
 }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
